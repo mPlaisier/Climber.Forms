@@ -7,12 +7,23 @@
 		<PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
 		<PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
 		<PackageReference Include="FreshMvvm" Version="4.0.1" />
+		<PackageReference Include="MonkeyCache" Version="1.5.2" />
+		<PackageReference Include="MonkeyCache.LiteDB" Version="1.5.2" />
+		<PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Pages\" />
-	  <Folder Include="Logs\" />
-	  <Folder Include="Logs\ViewModels\" />
-	  <Folder Include="Logs\Models\" />
+	  <Folder Include="ClimbingSessions\" />
+	  <Folder Include="ClimbingSessions\ViewModels\" />
+	  <Folder Include="ClimbingSessions\Models\" />
+	  <Folder Include="Database\" />
+	  <Folder Include="ClimbingSessions\Services\" />
+	  <Folder Include="Database\Services\" />
+	  <Folder Include="Database\Services\Interfaces\" />
+	  <Folder Include="ClimbingSessions\Services\Interfaces\" />
+	  <Folder Include="ClimbingSessions\Pages\" />
+	  <Folder Include="ClimbingSessions\Converter\" />
+	  <Folder Include="FreshMvvm\" />
+	  <Folder Include="Extensions\" />
+	  <Folder Include="ClimbingSessions\Enums\" />
 	</ItemGroup>
 </Project>

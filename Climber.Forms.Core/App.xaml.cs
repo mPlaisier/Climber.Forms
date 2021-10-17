@@ -5,25 +5,38 @@ namespace Climber.Forms.Core
 {
     public partial class App : Application
     {
+        #region Constructor
+
         public App()
         {
             InitializeComponent();
 
-            var page = FreshPageModelResolver.ResolvePageModel<MainViewModel>();
-            var basicNavContainer = new FreshNavigationContainer(page);
+            InitializeServices();
+            InitializeNavigation();
+        }
+
+        #endregion
+
+        #region Private
+
+        void InitializeServices()
+        {
+            FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
+            FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
+        }
+
+        void InitializeNavigation()
+        {
+            var page = FreshPageModelResolver.ResolvePageModel<ClimbingSessionsViewModel>();
+            var basicNavContainer = new FreshNavigationContainer(page)
+            {
+                BarBackgroundColor = Color.FromHex("880e4f"),
+                BarTextColor = Color.White
+            };
+
             MainPage = basicNavContainer;
         }
 
-        protected override void OnStart()
-        {
-        }
-
-        protected override void OnSleep()
-        {
-        }
-
-        protected override void OnResume()
-        {
-        }
+        #endregion
     }
 }
