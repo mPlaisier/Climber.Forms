@@ -12,6 +12,8 @@ namespace Climber.Forms.Core
         {
             if (key == EDatabaseKeys.ClimbingSessions)
                 return (T)Convert.ChangeType(GetClimbingSessions(), typeof(T));
+            else if (key == EDatabaseKeys.Subscriptions)
+                return (T)Convert.ChangeType(GetSubscriptions(), typeof(T));
 
             throw new NotImplementedException($"Data not setup for key: {key}");
         }
@@ -48,6 +50,15 @@ namespace Climber.Forms.Core
                 new ClimbingSessionItem(new DateTime(2021, 10, 11), EClimbingType.Boulder),
                 new ClimbingSessionItem(new DateTime(2021, 10, 14), EClimbingType.Length),
                 new ClimbingSessionItem(new DateTime(2021, 10, 17), EClimbingType.Boulder)
+            };
+        }
+
+        List<Subscription> GetSubscriptions()
+        {
+            return new List<Subscription>()
+            {
+                new Subscription(new DateTime(2021, 6, 27), ESubscriptionType.TenTurnCard, 90, false),
+                new Subscription(new DateTime(2021, 8, 22), ESubscriptionType.ThreeMonthSubscription, 130)
             };
         }
 

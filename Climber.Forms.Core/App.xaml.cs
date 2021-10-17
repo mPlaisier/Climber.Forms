@@ -23,18 +23,21 @@ namespace Climber.Forms.Core
         {
             FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
+            FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
         }
 
         void InitializeNavigation()
         {
-            var page = FreshPageModelResolver.ResolvePageModel<ClimbingSessionsViewModel>();
-            var basicNavContainer = new FreshNavigationContainer(page)
+            var mainPage = new FreshTabbedNavigationContainer()
             {
                 BarBackgroundColor = Color.FromHex("880e4f"),
-                BarTextColor = Color.White
+                BarTextColor = Color.White,
             };
 
-            MainPage = basicNavContainer;
+            mainPage.AddTab<ClimbingSessionsViewModel>("Sessions", null);
+            mainPage.AddTab<SubscriptionViewModel>("Subscriptions", null);
+
+            MainPage = mainPage;
         }
 
         #endregion
