@@ -5,7 +5,11 @@ namespace Climber.Forms.Core
     {
         public enum EDatabaseKeys
         {
-            ClimbingSessions
+            //Climbing sessions
+            ClimbingSessions,
+
+            //Subscriptions
+            Subscriptions
         }
     }
 }
