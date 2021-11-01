@@ -10,8 +10,6 @@ namespace Climber.Forms.Core
     {
         readonly ISubscriptionService _subscriptionService;
 
-        Subscription _subscription;
-
         #region Properties
 
         public override string Title => "Create subscription";
