@@ -26,6 +26,14 @@ namespace Climber.Forms.Core
                                 .ThenByDescending(t => t.DatePurchase);
         }
 
+        public void AddSubscription(Subscription subscription)
+        {
+            var subscriptions = GetSubScriptions().ToList();
+            subscriptions.Add(subscription);
+
+            _database.Add(subscriptions, EDatabaseKeys.Subscriptions);
+        }
+
         #endregion
     }
 }

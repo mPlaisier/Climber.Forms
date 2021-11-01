@@ -2,8 +2,9 @@
 <Application
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Climber.Forms.Core.App">
+    x:Class="Climber.Forms.Core.App"
+    xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+    android:Application.WindowSoftInputModeAdjust="Resize">
 	<Application.Resources>
-
 	</Application.Resources>
 </Application>

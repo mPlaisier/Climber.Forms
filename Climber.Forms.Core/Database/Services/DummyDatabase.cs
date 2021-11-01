@@ -6,6 +6,8 @@ namespace Climber.Forms.Core
 {
     public class DummyDatabase : IDatabaseService
     {
+        List<Subscription> _subscriptions;
+
         #region Public
 
         public T Get<T>(EDatabaseKeys key) where T : class
@@ -16,6 +18,12 @@ namespace Climber.Forms.Core
                 return (T)Convert.ChangeType(GetSubscriptions(), typeof(T));
 
             throw new NotImplementedException($"Data not setup for key: {key}");
+        }
+
+        public void Add<T>(T data, EDatabaseKeys key) where T : class
+        {
+            if (key == EDatabaseKeys.Subscriptions)
+                AddSubscription((List<Subscription>)Convert.ChangeType(data, typeof(List<Subscription>)));
         }
 
         #endregion
@@ -55,11 +63,23 @@ namespace Climber.Forms.Core
 
         List<Subscription> GetSubscriptions()
         {
-            return new List<Subscription>()
+            if (_subscriptions == null || _subscriptions.Count == 0)
             {
-                new Subscription(new DateTime(2021, 6, 27), ESubscriptionType.TenTurnCard, 90, false),
-                new Subscription(new DateTime(2021, 8, 22), ESubscriptionType.ThreeMonthSubscription, 130)
-            };
+                _subscriptions = new List<Subscription>()
+                {
+                    new Subscription(new DateTime(2021, 6, 27), ESubscriptionType.TenTurnCard, 90, false),
+                    new Subscription(new DateTime(2021, 8, 22), ESubscriptionType.ThreeMonthSubscription, 130)
+                };
+            }
+            return _subscriptions;
+        }
+
+        void AddSubscription(List<Subscription> subscription)
+        {
+            if (_subscriptions == null || _subscriptions.Count == 0)
+                return;
+
+            _subscriptions = subscription;
         }
 
         #endregion
