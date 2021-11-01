@@ -1,9 +1,6 @@
 name: Build Project
 
-on: 
-  push:
-    branches: [ main, develop ]
-  [pull_request]
+on: [push, pull_request]
 
 jobs:
   # Build App
