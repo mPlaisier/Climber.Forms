@@ -11,34 +11,34 @@
 		<PackageReference Include="MonkeyCache.LiteDB" Version="1.5.2" />
 		<PackageReference Include="Xamarin.Forms.PancakeView" Version="2.3.0.759" />
 		<PackageReference Include="XF.Material" Version="1.7.8" />
-		<PackageReference Include="PropertyChanged.Fody" Version="4.0.0" />
+		<PackageReference Include="PropertyChanged.Fody" Version="4.0.0" PrivateAssets="All" />
 		<PackageReference Include="Fody" Version="6.6.0">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="ClimbingSessions\" />
-	  <Folder Include="ClimbingSessions\ViewModels\" />
-	  <Folder Include="ClimbingSessions\Models\" />
-	  <Folder Include="Database\" />
-	  <Folder Include="ClimbingSessions\Services\" />
-	  <Folder Include="Database\Services\" />
-	  <Folder Include="Database\Services\Interfaces\" />
-	  <Folder Include="ClimbingSessions\Services\Interfaces\" />
-	  <Folder Include="ClimbingSessions\Pages\" />
-	  <Folder Include="ClimbingSessions\Converter\" />
-	  <Folder Include="FreshMvvm\" />
-	  <Folder Include="Extensions\" />
-	  <Folder Include="ClimbingSessions\Enums\" />
-	  <Folder Include="Subscriptions\" />
-	  <Folder Include="Subscriptions\Model\" />
-	  <Folder Include="Subscriptions\Enums\" />
-	  <Folder Include="Subscriptions\ViewModels\" />
-	  <Folder Include="Subscriptions\Services\" />
-	  <Folder Include="Subscriptions\Services\Interfaces\" />
-	  <Folder Include="Subscriptions\Pages\" />
-	  <Folder Include="Subscriptions\ViewModels\Parameters\" />
-	  <Folder Include="FreshMvvm\BaseViewModels\" />
+		<Folder Include="ClimbingSessions\" />
+		<Folder Include="ClimbingSessions\ViewModels\" />
+		<Folder Include="ClimbingSessions\Models\" />
+		<Folder Include="Database\" />
+		<Folder Include="ClimbingSessions\Services\" />
+		<Folder Include="Database\Services\" />
+		<Folder Include="Database\Services\Interfaces\" />
+		<Folder Include="ClimbingSessions\Services\Interfaces\" />
+		<Folder Include="ClimbingSessions\Pages\" />
+		<Folder Include="ClimbingSessions\Converter\" />
+		<Folder Include="FreshMvvm\" />
+		<Folder Include="Extensions\" />
+		<Folder Include="ClimbingSessions\Enums\" />
+		<Folder Include="Subscriptions\" />
+		<Folder Include="Subscriptions\Model\" />
+		<Folder Include="Subscriptions\Enums\" />
+		<Folder Include="Subscriptions\ViewModels\" />
+		<Folder Include="Subscriptions\Services\" />
+		<Folder Include="Subscriptions\Services\Interfaces\" />
+		<Folder Include="Subscriptions\Pages\" />
+		<Folder Include="Subscriptions\ViewModels\Parameters\" />
+		<Folder Include="FreshMvvm\BaseViewModels\" />
 	</ItemGroup>
 </Project>
