@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using FreshMvvm;
 
 namespace Climber.Forms.Core
 {
-    public abstract class BaseViewModelWithParam<T> : FreshBasePageModel where T : class
+    public abstract class BaseViewModel<T> : FreshBasePageModel where T : class
     {
         #region Properties
 
@@ -17,7 +18,7 @@ namespace Climber.Forms.Core
         {
             if (initData is T param)
                 Init(param);
-            else
+            else if (initData != null)
                 throw new ArgumentException($"Parameter is not of type {typeof(T)}");
         }
 

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+    x:Class="Climber.Forms.Core.SubscriptionDetailPage"
+	Title="{Binding Title}">
+	<ContentPage.Content>
+		<StackLayout Margin="10">
+			<!-- Subscription Date -->
+			<material:MaterialDateField Placeholder="{Binding DatePlaceholder}"
+										Date="{Binding SelectedDate}"
+										Format="dd/MM/yyyy"
+										Margin="5,20,5,5"/>
+
+			<!-- Subscription type -->
+			<material:MaterialTextField InputType="SingleImmediateChoice"
+                                        Placeholder="{Binding SubscriptionTypePlaceholder}"
+                                        Choices="{Binding Subscriptions}"
+                                        SelectedChoice="{Binding SelectedType}"
+										ChoicesBindingName="Label"
+										Margin="5,20,5,5"/>
+
+			<!-- Subscription price -->
+			<material:MaterialTextField Margin="5,20,5,5" Placeholder="Price" InputType="Numeric" Text="{Binding PriceValue}"/>
+
+			<!-- Subscription active -->
+			<Line BackgroundColor="LightGray" HeightRequest="1" Margin="5,20,5,5"/>
+			<StackLayout Orientation="Horizontal" Margin="5,0,5,5">
+				<material:MaterialLabel Text="{Binding IsActiveLabel}"
+										TypeScale="Body2"
+										VerticalOptions="CenterAndExpand"/>
+				<material:MaterialSwitch IsActivated="{Binding IsActive}" HorizontalOptions="EndAndExpand"/>
+			</StackLayout>
+
+			<!-- Confirm button -->
+			<material:MaterialButton Text="{Binding ConfirmButtonLabel}"
+									 IsEnabled="{Binding IsConfirmButtonEnabled}"
+									 Command="{Binding CommandConfirm}"
+									 VerticalOptions="EndAndExpand"/>
+		</StackLayout>
+
+	</ContentPage.Content>
+</ContentPage>

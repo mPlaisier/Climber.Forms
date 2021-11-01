@@ -7,6 +7,7 @@ namespace Climber.Forms.Core
     public class LocalDatabase : IDatabaseService
     {
         const string KEY_CLIMBING_SESSIONS = nameof(KEY_CLIMBING_SESSIONS);
+        const string KEY_SUBSCRIPTIONS = nameof(KEY_SUBSCRIPTIONS);
 
         #region Constructor
 
@@ -29,6 +30,13 @@ namespace Climber.Forms.Core
                 return default;
         }
 
+        public void Add<T>(T data, EDatabaseKeys key) where T : class
+        {
+            var keyValue = GetKey(key);
+
+            Barrel.Current.Add(keyValue, data, TimeSpan.MaxValue);
+        }
+
         #endregion
 
         #region Private
@@ -38,6 +46,7 @@ namespace Climber.Forms.Core
             return key switch
             {
                 EDatabaseKeys.ClimbingSessions => KEY_CLIMBING_SESSIONS,
+                EDatabaseKeys.Subscriptions => KEY_SUBSCRIPTIONS,
                 _ => throw new ArgumentException($"Key value not setup for {key}"),
             };
         }

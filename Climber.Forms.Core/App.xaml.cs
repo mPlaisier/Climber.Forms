@@ -10,6 +10,7 @@ namespace Climber.Forms.Core
         public App()
         {
             InitializeComponent();
+            XF.Material.Forms.Material.Init(this);
 
             InitializeServices();
             InitializeNavigation();
@@ -23,18 +24,21 @@ namespace Climber.Forms.Core
         {
             FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
+            FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
         }
 
         void InitializeNavigation()
         {
-            var page = FreshPageModelResolver.ResolvePageModel<ClimbingSessionsViewModel>();
-            var basicNavContainer = new FreshNavigationContainer(page)
+            var mainPage = new FreshTabbedFONavigationContainer("Climber")
             {
                 BarBackgroundColor = Color.FromHex("880e4f"),
-                BarTextColor = Color.White
+                BarTextColor = Color.White,
             };
 
-            MainPage = basicNavContainer;
+            mainPage.AddTab<SubscriptionViewModel>("Subscriptions", null);
+            mainPage.AddTab<ClimbingSessionsViewModel>("Sessions", null);
+
+            MainPage = mainPage;
         }
 
         #endregion
