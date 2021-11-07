@@ -51,10 +51,12 @@ namespace Climber.Forms.Core
 
             if (returnedData is SubscriptionDetailResult result && result.IsSuccess)
             {
-                if (result.IsUpdate)
+                if (result.Action == ECrud.Update)
                     CoreMethods.DisplayAlert(Labels.Subscription_Alert_Updated_Title, Labels.Subscription_Alert_Updated_Body, Labels.Ok);
-                else
+                else if (result.Action == ECrud.Create)
                     CoreMethods.DisplayAlert(Labels.Subscription_Alert_Created_Title, Labels.Subscription_Alert_Created_Body, Labels.Ok);
+                else if (result.Action == ECrud.Delete)
+                    CoreMethods.DisplayAlert(Labels.Subscription_Alert_Deleted_Title, Labels.Subscription_Alert_Deleted_Body, Labels.Ok);
 
                 Init();
             }

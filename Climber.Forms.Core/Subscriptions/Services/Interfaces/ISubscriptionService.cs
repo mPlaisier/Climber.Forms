@@ -8,5 +8,6 @@ namespace Climber.Forms.Core
         Task<IEnumerable<Subscription>> GetSubScriptions();
         Task AddSubscription(Subscription subscription);
         Task UpdateSubscription(Subscription subscription);
+        Task DeleteSubscription(Subscription subscription);
     }
 }
