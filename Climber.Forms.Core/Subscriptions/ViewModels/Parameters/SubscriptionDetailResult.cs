@@ -1,5 +1,4 @@
-﻿using System;
-namespace Climber.Forms.Core
+﻿namespace Climber.Forms.Core
 {
     public class SubscriptionDetailResult
     {

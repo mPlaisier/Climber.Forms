@@ -29,7 +29,7 @@ namespace Climber.Forms.Core
         {
             if (typeof(T) == typeof(DbSubscription))
             {
-                if (data.Id == null)
+                if (data.Id == 0)
                 {
                     AddSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
                     return Task.FromResult(true);
