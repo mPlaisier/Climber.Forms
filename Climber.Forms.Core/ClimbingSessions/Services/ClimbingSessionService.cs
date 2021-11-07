@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static Climber.Forms.Core.Enums;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
@@ -18,9 +18,9 @@ namespace Climber.Forms.Core
 
         #region Public
 
-        public List<ClimbingSessionItem> GetClimbingSessions()
+        public Task<List<ClimbingSessionItem>> GetClimbingSessions()
         {
-            return _database.Get<List<ClimbingSessionItem>>(EDatabaseKeys.ClimbingSessions);
+            return _database.GetListAsync<ClimbingSessionItem>();
         }
 
         #endregion

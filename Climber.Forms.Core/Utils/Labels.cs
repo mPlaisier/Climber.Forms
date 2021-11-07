@@ -5,5 +5,7 @@
         //General
         public static string Ok => "Ok";
 
+        //Error
+        public static string LblError => "Error";
     }
 }

@@ -1,59 +1,98 @@
 ﻿using System;
-using MonkeyCache.LiteDB;
-using static Climber.Forms.Core.Enums;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Polly;
+using SQLite;
 
 namespace Climber.Forms.Core
 {
     public class LocalDatabase : IDatabaseService
     {
-        const string KEY_CLIMBING_SESSIONS = nameof(KEY_CLIMBING_SESSIONS);
-        const string KEY_SUBSCRIPTIONS = nameof(KEY_SUBSCRIPTIONS);
+        readonly SQLiteAsyncConnection _database;
 
         #region Constructor
 
         public LocalDatabase()
         {
-            Barrel.ApplicationId = "Climber.Forms";
+            _database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags, false);
         }
 
         #endregion
 
         #region Public
 
-        public T Get<T>(EDatabaseKeys key) where T : class
+        public async Task<List<T>> GetListAsync<T>() where T : class, new()
         {
-            var keyValue = GetKey(key);
+            await CheckTable<T>();
 
-            if (Barrel.Current.Exists(keyValue))
-                return Barrel.Current.Get<T>(keyValue);
-            else
-                return default;
+            var data = await AttemptAndRetry(() => _database.Table<T>().ToListAsync())
+                                 .ConfigureAwait(false);
+            return data;
         }
 
-        public void Add<T>(T data, EDatabaseKeys key) where T : class
+        public async Task<T> GetAsync<T>(string id) where T : class, IWithId, new()
         {
-            var keyValue = GetKey(key);
+            await CheckTable<T>();
 
-            Barrel.Current.Add(keyValue, data, TimeSpan.MaxValue);
+            var data = await AttemptAndRetry(() => _database.Table<T>()
+                                                   .Where(i => i.Id.Equals(id))
+                                                   .FirstOrDefaultAsync())
+                                 .ConfigureAwait(false);
+            return data;
+        }
+
+        public async Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new()
+        {
+            await CheckTable<T>();
+
+            //Create
+            if (data.Id == 0)
+            {
+                var updated = await AttemptAndRetry(() => _database.InsertAsync(data)).ConfigureAwait(false);
+                return updated == 1;
+            }
+            else //Update
+            {
+                var updated = await AttemptAndRetry(() => _database.UpdateAsync(data)).ConfigureAwait(false);
+                return updated == 1;
+            }
+        }
+
+        public async Task<bool> DeleteAsync<T>(T data) where T : class, new()
+        {
+            await CheckTable<T>();
+
+            var updated = await AttemptAndRetry(() => _database.DeleteAsync(data)).ConfigureAwait(false);
+            return updated == 1;
         }
 
         #endregion
 
         #region Private
 
-        string GetKey(EDatabaseKeys key)
+        async Task CheckTable<T>()
         {
-            return key switch
+            if (!_database.TableMappings.Any(x => x.MappedType == typeof(T)))
             {
-                EDatabaseKeys.ClimbingSessions => KEY_CLIMBING_SESSIONS,
-                EDatabaseKeys.Subscriptions => KEY_SUBSCRIPTIONS,
-                _ => throw new ArgumentException($"Key value not setup for {key}"),
-            };
+                await _database.EnableWriteAheadLoggingAsync().ConfigureAwait(false);
+                await _database.CreateTablesAsync(CreateFlags.None, typeof(T)).ConfigureAwait(false);
+            }
         }
 
-        public void Update<T>(T data, EDatabaseKeys key) where T : class
+        /// <summary>
+        /// Retry task if a SQLiteException is thrown. Using Exponential backoff the error will be thrown after about 4s.
+        /// https://codetraveler.io/2019/11/26/efficiently-initializing-sqlite-database/
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
+        /// <param name="numRetries"></param>
+        /// <returns></returns>
+        static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 10)
         {
-            //TODO
+            return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
+
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromMilliseconds(Math.Pow(2, attemptNumber));
         }
 
         #endregion

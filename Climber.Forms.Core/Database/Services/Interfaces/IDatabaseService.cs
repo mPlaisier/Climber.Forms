@@ -1,4 +1,5 @@
-﻿using static Climber.Forms.Core.Enums;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
@@ -6,9 +7,10 @@ namespace Climber.Forms.Core
     {
         #region Methods
 
-        T Get<T>(EDatabaseKeys key) where T : class;
-        void Add<T>(T data, EDatabaseKeys key) where T : class;
-        void Update<T>(T data, EDatabaseKeys key) where T : class;
+        Task<List<T>> GetListAsync<T>() where T : class, new();
+        Task<T> GetAsync<T>(string id) where T : class, IWithId, new();
+        Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new();
+        Task<bool> DeleteAsync<T>(T data) where T : class, new();
 
         #endregion
     }

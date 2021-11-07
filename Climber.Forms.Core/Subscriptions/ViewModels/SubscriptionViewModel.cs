@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -39,17 +42,7 @@ namespace Climber.Forms.Core
 
         public override void Init()
         {
-            var subscriptions = new ObservableCollection<Subscription>(_subscriptionService.GetSubScriptions());
-
-            subscriptions.ForEach((subscription) =>
-            {
-                subscription.ActionClicked = () =>
-                {
-                    CoreMethods.PushPageModel<SubscriptionDetailViewModel>(subscription);
-                };
-            });
-
-            Subscriptions = subscriptions;
+            LoadData().ConfigureAwait(false);
         }
 
         public override void ReverseInit(object returnedData)
@@ -64,6 +57,38 @@ namespace Climber.Forms.Core
                     CoreMethods.DisplayAlert(Labels.Subscription_Alert_Created_Title, Labels.Subscription_Alert_Created_Body, Labels.Ok);
 
                 Init();
+            }
+        }
+
+        #endregion
+
+        #region Private
+
+        async Task LoadData()
+        {
+            IEnumerable<Subscription> data = null;
+            try
+            {
+                data = await _subscriptionService.GetSubScriptions();
+            }
+            catch (Exception ex)
+            {
+                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+            }
+
+            if (data != null)
+            {
+                var subscriptions = new ObservableCollection<Subscription>(data);
+
+                subscriptions.ForEach((subscription) =>
+                {
+                    subscription.ActionClicked = () =>
+                    {
+                        CoreMethods.PushPageModel<SubscriptionDetailViewModel>(subscription);
+                    };
+                });
+
+                Subscriptions = subscriptions;
             }
         }
 
