@@ -6,5 +6,6 @@ namespace Climber.Forms.Core
     {
         IEnumerable<Subscription> GetSubScriptions();
         void AddSubscription(Subscription subscription);
+        void UpdateSubscription(Subscription subscription);
     }
 }

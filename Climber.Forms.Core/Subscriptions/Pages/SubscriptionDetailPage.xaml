@@ -17,7 +17,8 @@
 			<material:MaterialTextField InputType="SingleImmediateChoice"
                                         Placeholder="{Binding SubscriptionTypePlaceholder}"
                                         Choices="{Binding Subscriptions}"
-                                        SelectedChoice="{Binding SelectedType}"
+                                        SelectedChoice="{Binding SelectedType, Mode=TwoWay}"
+										Text="{Binding DefaultTypeValue}"
 										ChoicesBindingName="Label"
 										Margin="5,20,5,5"/>
 
