@@ -25,7 +25,7 @@ namespace Climber.Forms.Core
             throw new NotImplementedException();
         }
 
-        public Task<bool> SaveAsyn<T>(T data) where T : class, IWithId, new()
+        public Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new()
         {
             if (typeof(T) == typeof(DbSubscription))
             {

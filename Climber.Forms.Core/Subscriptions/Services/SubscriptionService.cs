@@ -21,7 +21,7 @@ namespace Climber.Forms.Core
 
         public async Task<IEnumerable<Subscription>> GetSubScriptions()
         {
-            var dbsubscriptions = await _database.GetListAsync<DbSubscription>(); // new List<Subscription>(); 
+            var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
 
             //Conver Core to Api
             var subscriptions = dbsubscriptions.Select(subscription => (Subscription)subscription)
@@ -33,12 +33,12 @@ namespace Climber.Forms.Core
 
         public async Task AddSubscription(Subscription subscription)
         {
-            await _database.SaveAsyn((DbSubscription)subscription);
+            await _database.SaveAsync((DbSubscription)subscription);
         }
 
         public async Task UpdateSubscription(Subscription subscription)
         {
-            await _database.SaveAsyn((DbSubscription)subscription);
+            await _database.SaveAsync((DbSubscription)subscription);
         }
 
         #endregion

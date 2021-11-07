@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Polly;
 using SQLite;
 
 namespace Climber.Forms.Core
@@ -24,7 +26,8 @@ namespace Climber.Forms.Core
         {
             await CheckTable<T>();
 
-            var data = await _database.Table<T>().ToListAsync();
+            var data = await AttemptAndRetry(() => _database.Table<T>().ToListAsync())
+                                 .ConfigureAwait(false);
             return data;
         }
 
@@ -32,27 +35,26 @@ namespace Climber.Forms.Core
         {
             await CheckTable<T>();
 
-            // Get a specific note.
-            var data = await _database.Table<T>()
-                            .Where(i => i.Id.Equals(id))
-                            .FirstOrDefaultAsync();
-
+            var data = await AttemptAndRetry(() => _database.Table<T>()
+                                                   .Where(i => i.Id.Equals(id))
+                                                   .FirstOrDefaultAsync())
+                                 .ConfigureAwait(false);
             return data;
         }
 
-        public async Task<bool> SaveAsyn<T>(T data) where T : class, IWithId, new()
+        public async Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new()
         {
             await CheckTable<T>();
 
             //Create
             if (data.Id == 0)
             {
-                var updated = await _database.InsertAsync(data);
+                var updated = await AttemptAndRetry(() => _database.InsertAsync(data)).ConfigureAwait(false);
                 return updated == 1;
             }
             else //Update
             {
-                var updated = await _database.UpdateAsync(data);
+                var updated = await AttemptAndRetry(() => _database.UpdateAsync(data)).ConfigureAwait(false);
                 return updated == 1;
             }
         }
@@ -61,7 +63,7 @@ namespace Climber.Forms.Core
         {
             await CheckTable<T>();
 
-            var updated = await _database.DeleteAsync(data);
+            var updated = await AttemptAndRetry(() => _database.DeleteAsync(data)).ConfigureAwait(false);
             return updated == 1;
         }
 
@@ -76,6 +78,21 @@ namespace Climber.Forms.Core
                 await _database.EnableWriteAheadLoggingAsync().ConfigureAwait(false);
                 await _database.CreateTablesAsync(CreateFlags.None, typeof(T)).ConfigureAwait(false);
             }
+        }
+
+        /// <summary>
+        /// Retry task if a SQLiteException is thrown. Using Exponential backoff the error will be thrown after about 4s.
+        /// https://codetraveler.io/2019/11/26/efficiently-initializing-sqlite-database/
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="action"></param>
+        /// <param name="numRetries"></param>
+        /// <returns></returns>
+        static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 10)
+        {
+            return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
+
+            static TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromMilliseconds(Math.Pow(2, attemptNumber));
         }
 
         #endregion

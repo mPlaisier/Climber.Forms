@@ -9,7 +9,7 @@ namespace Climber.Forms.Core
 
         Task<List<T>> GetListAsync<T>() where T : class, new();
         Task<T> GetAsync<T>(string id) where T : class, IWithId, new();
-        Task<bool> SaveAsyn<T>(T data) where T : class, IWithId, new();
+        Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new();
         Task<bool> DeleteAsync<T>(T data) where T : class, new();
 
         #endregion
