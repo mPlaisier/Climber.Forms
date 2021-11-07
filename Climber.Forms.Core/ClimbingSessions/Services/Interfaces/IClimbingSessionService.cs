@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
@@ -6,7 +7,7 @@ namespace Climber.Forms.Core
     {
         #region Methods
 
-        List<ClimbingSessionItem> GetClimbingSessions();
+        Task<List<ClimbingSessionItem>> GetClimbingSessions();
 
         #endregion
     }

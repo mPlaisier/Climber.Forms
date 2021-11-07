@@ -22,7 +22,7 @@ namespace Climber.Forms.Core
 
         void InitializeServices()
         {
-            FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
+            FreshIOC.Container.Register<IDatabaseService, LocalDatabase>();
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
         }
@@ -35,7 +35,7 @@ namespace Climber.Forms.Core
                 BarTextColor = Color.White,
             };
 
-            mainPage.AddTab<SubscriptionViewModel>("Subscriptions", null);
+            mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
             mainPage.AddTab<ClimbingSessionsViewModel>("Sessions", null);
 
             MainPage = mainPage;
