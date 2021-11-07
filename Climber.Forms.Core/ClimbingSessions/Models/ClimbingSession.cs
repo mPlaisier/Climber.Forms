@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SQLite;
 
 namespace Climber.Forms.Core
 {
@@ -7,14 +8,17 @@ namespace Climber.Forms.Core
     {
         #region Properties
 
+        [PrimaryKey]
         public string Id { get; }
 
         public DateTime Data { get; }
 
+        [Ignore]
         public string LblDate => Data.ToLongDateString().FirstCharToUpper();
 
         public string SubscriptionId { get; set; }
 
+        [Ignore]
         public List<string> MaterialId { get; set; }
 
         public decimal Cost { get; set; }
@@ -24,6 +28,11 @@ namespace Climber.Forms.Core
         #endregion
 
         #region Constructor
+
+        public ClimbingSessionItem()
+        {
+
+        }
 
         public ClimbingSessionItem(DateTime date, EClimbingType type)
         {

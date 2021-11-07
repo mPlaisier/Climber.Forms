@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
@@ -28,7 +29,16 @@ namespace Climber.Forms.Core
 
         public override void Init()
         {
-            var sessions = _climbingSessionService.GetClimbingSessions();
+            LoadData().ConfigureAwait(false);
+        }
+
+        #endregion
+
+        #region private
+
+        async Task LoadData()
+        {
+            var sessions = await _climbingSessionService.GetClimbingSessions();
             Sessions = new ObservableCollection<ClimbingSessionItem>(sessions.OrderByDescending(x => x.Data));
         }
 

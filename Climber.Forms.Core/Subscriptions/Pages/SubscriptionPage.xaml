@@ -9,11 +9,11 @@
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="Add" Command="{Binding CommandAddSubscription}" Order="Primary" Priority="0" />
 	</ContentPage.ToolbarItems>
-	<CollectionView ItemsSource="{Binding Sessions}" Margin="0,10,0,10">
+	<CollectionView ItemsSource="{Binding Subscriptions}" Margin="0,10,0,10">
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
 				<ContentView>
-					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True">
+					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />

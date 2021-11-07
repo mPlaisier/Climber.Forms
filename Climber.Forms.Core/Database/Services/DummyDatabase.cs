@@ -1,29 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using static Climber.Forms.Core.Enums;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
     public class DummyDatabase : IDatabaseService
     {
-        List<Subscription> _subscriptions;
+        List<DbSubscription> _subscriptions;
 
         #region Public
 
-        public T Get<T>(EDatabaseKeys key) where T : class
+        public Task<List<T>> GetListAsync<T>() where T : class, new()
         {
-            if (key == EDatabaseKeys.ClimbingSessions)
-                return (T)Convert.ChangeType(GetClimbingSessions(), typeof(T));
-            else if (key == EDatabaseKeys.Subscriptions)
-                return (T)Convert.ChangeType(GetSubscriptions(), typeof(T));
+            if (typeof(T) == typeof(DbSubscription))
+                return Task.FromResult((List<T>)Convert.ChangeType(GetSubscriptions(), typeof(List<T>)));
+            else if (typeof(T) == typeof(ClimbingSessionItem))
+                return Task.FromResult((List<T>)Convert.ChangeType(GetClimbingSessions(), typeof(List<T>)));
 
-            throw new NotImplementedException($"Data not setup for key: {key}");
+            throw new NotImplementedException($"Data not setup for {typeof(T)}");
         }
 
-        public void Add<T>(T data, EDatabaseKeys key) where T : class
+        public Task<T> GetAsync<T>(string id) where T : class, IWithId, new()
         {
-            if (key == EDatabaseKeys.Subscriptions)
-                AddSubscription((List<Subscription>)Convert.ChangeType(data, typeof(List<Subscription>)));
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new()
+        {
+            if (typeof(T) == typeof(DbSubscription))
+            {
+                if (data.Id == 0)
+                {
+                    AddSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
+                    return Task.FromResult(true);
+                }
+                else //Update
+                {
+                    UpdateSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
+                    return Task.FromResult(true);
+                }
+            }
+
+            throw new NotImplementedException($"Data not setup for {typeof(T)}");
+        }
+
+        public Task<bool> DeleteAsync<T>(T data) where T : class, new()
+        {
+            if (typeof(T) == typeof(DbSubscription))
+            {
+                DeleteSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
+                return Task.FromResult(true);
+            }
+
+            throw new NotImplementedException($"Data not setup for {typeof(T)}");
         }
 
         #endregion
@@ -61,25 +90,43 @@ namespace Climber.Forms.Core
             };
         }
 
-        List<Subscription> GetSubscriptions()
+        List<DbSubscription> GetSubscriptions()
         {
             if (_subscriptions == null || _subscriptions.Count == 0)
             {
-                _subscriptions = new List<Subscription>()
+                _subscriptions = new List<DbSubscription>()
                 {
-                    new Subscription(new DateTime(2021, 6, 27), ESubscriptionType.TenTurnCard, 90, false),
-                    new Subscription(new DateTime(2021, 8, 22), ESubscriptionType.ThreeMonthSubscription, 130)
+                    new DbSubscription(1, new DateTime(2021, 6, 27), ESubscriptionType.TenTurnCard, 90, false),
+                    new DbSubscription(2, new DateTime(2021, 8, 22), ESubscriptionType.ThreeMonthSubscription, 130, true)
                 };
             }
             return _subscriptions;
         }
 
-        void AddSubscription(List<Subscription> subscription)
+        void AddSubscription(DbSubscription subscription)
         {
             if (_subscriptions == null || _subscriptions.Count == 0)
                 return;
 
-            _subscriptions = subscription;
+            subscription.Id = _subscriptions.Count + 1;
+
+            _subscriptions.Add(subscription);
+        }
+
+        void UpdateSubscription(DbSubscription subscription)
+        {
+            var index = _subscriptions.FindIndex(x => x.Id.Equals(subscription.Id));
+
+            if (index != -1)
+                _subscriptions[index] = subscription;
+            else
+                throw new ArgumentException("Update failed for Subscription. Id not found in database.");
+        }
+
+        void DeleteSubscription(DbSubscription subscription)
+        {
+            var item = _subscriptions.Find(x => x.Id.Equals(subscription.Id));
+            _subscriptions.Remove(item);
         }
 
         #endregion

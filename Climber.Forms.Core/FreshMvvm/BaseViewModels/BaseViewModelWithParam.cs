@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using FreshMvvm;
 
 namespace Climber.Forms.Core

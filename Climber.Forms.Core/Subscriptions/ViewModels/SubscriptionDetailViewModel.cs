@@ -1,48 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using PropertyChanged;
 using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
     [AddINotifyPropertyChangedInterface]
-    public class SubscriptionDetailViewModel : BaseViewModel<SubscriptionDetailParameter>
+    public class SubscriptionDetailViewModel : BaseViewModel<Subscription>
     {
         readonly ISubscriptionService _subscriptionService;
 
+        Subscription _subscription;
+
         #region Properties
 
-        public override string Title => "Create subscription";
+        public override string Title => Labels.SubscriptionDetail_Title;
 
         //Date
-        public string DatePlaceholder => "Purchase date";
+        public string DatePlaceholder => Labels.SubscriptionDetail_Date_Placeholder;
 
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public DateTime? SelectedDate { get; set; } = DateTime.Now;
 
-
         //Subscription Type
-        public string SubscriptionTypePlaceholder => "Subscription type";
+        public string SubscriptionTypePlaceholder => Labels.SubscriptionDetail_Type_Placeholder;
 
         public List<SubscriptionType> Subscriptions => SubscriptionType.GetSubscriptionTypes();
+
+        public string DefaultTypeValue { get; set; }
+
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public SubscriptionType SelectedType { get; set; }
 
         //Price
-        public string PricePlaceholder => "Price";
+        public string PricePlaceholder => Labels.SubscriptionDetail_Price_Placeholder;
 
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public string PriceValue { get; set; }
-        public decimal Price => 0;
 
         //Active subscription
-        public string IsActiveLabel => "Is active?";
+        public string IsActiveLabel => Labels.SubscriptionDetail_Active_Switch_Label;
 
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public bool IsActive { get; set; } = true;
 
         //Confirm button
-        public string ConfirmButtonLabel => "Create Subscription";
+        public string ConfirmButtonLabel => _subscription == null
+                                                ? Labels.SubscriptionDetail_Button_Create_Confirm
+                                                : Labels.SubscriptionDetail_Button_Update_Confirm;
 
         public bool IsConfirmButtonEnabled => IsValid();
 
@@ -50,9 +57,11 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        //TODO Add command
         Command _commandConfirm;
         public Command CommandConfirm => _commandConfirm ??= new Command(SaveSubscription);
+
+        Command _commandDeleteSubscription;
+        public Command CommandDeleteSubscription => _commandDeleteSubscription ??= new Command(async () => await DeleteSubscription());
 
         #endregion
 
@@ -67,9 +76,28 @@ namespace Climber.Forms.Core
 
         #region LifeCycle
 
-        public override void Init(SubscriptionDetailParameter parameter)
+        public override void Init(Subscription parameter)
         {
+            _subscription = parameter;
+        }
 
+        protected override void ViewIsAppearing(object sender, EventArgs e)
+        {
+            base.ViewIsAppearing(sender, e);
+
+            if (_subscription != null)
+            {
+                SelectedDate = _subscription.DatePurchase;
+
+                var type = Subscriptions.First(s => s.Type == _subscription.Type);
+                DefaultTypeValue = type.Label;
+                SelectedType = type;
+
+                PriceValue = _subscription.Price.ToString();
+                IsActive = _subscription.IsActive;
+            }
+
+            RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
         }
 
         #endregion
@@ -84,7 +112,7 @@ namespace Climber.Forms.Core
             if (SelectedType == null)
                 return false;
 
-            if (PriceValue == null || PriceValue == string.Empty)
+            if (PriceValue == null || PriceValue == string.Empty || !decimal.TryParse(PriceValue, out _))
                 return false;
 
             return true;
@@ -92,14 +120,38 @@ namespace Climber.Forms.Core
 
         void SaveSubscription()
         {
-            var subscription = new Subscription(SelectedDate.Value, SelectedType.Type, Price, IsActive);
+            decimal.TryParse(PriceValue, out var price);
 
-            _subscriptionService.AddSubscription(subscription);
+            //Create
+            if (_subscription == null)
+            {
+                var subscription = new Subscription(SelectedDate.Value, SelectedType.Type, price, IsActive);
 
-            //TODO confirm with toast/message
+                _subscriptionService.AddSubscription(subscription);
+            }
+            else //Update
+            {
+                _subscription.DatePurchase = SelectedDate.Value;
+                _subscription.Type = SelectedType.Type;
+                _subscription.Price = price;
+                _subscription.IsActive = IsActive;
 
-            //TODO return to overview screen
-            CoreMethods.PopPageModel(true, false, true);
+                _subscriptionService.UpdateSubscription(_subscription);
+            }
+
+            CoreMethods.PopPageModel(new SubscriptionDetailResult(true, _subscription != null ? ECrud.Update : ECrud.Create), false, true);
+        }
+
+        async Task DeleteSubscription()
+        {
+            var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
+
+            if (delete)
+            {
+                await _subscriptionService.DeleteSubscription(_subscription);
+
+                await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, ECrud.Delete), false, true);
+            }
         }
 
         #endregion

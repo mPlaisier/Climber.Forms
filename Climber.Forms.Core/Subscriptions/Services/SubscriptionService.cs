@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static Climber.Forms.Core.Enums;
+using System.Threading.Tasks;
 
 namespace Climber.Forms.Core
 {
@@ -19,19 +19,31 @@ namespace Climber.Forms.Core
 
         #region Public
 
-        public IEnumerable<Subscription> GetSubScriptions()
+        public async Task<IEnumerable<Subscription>> GetSubScriptions()
         {
-            var subscriptions = _database.Get<List<Subscription>>(EDatabaseKeys.Subscriptions);
-            return subscriptions.OrderByDescending(o => o.IsActive)
-                                .ThenByDescending(t => t.DatePurchase);
+            var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
+
+            //Conver Core to Api
+            var subscriptions = dbsubscriptions.Select(subscription => (Subscription)subscription)
+                                               .OrderByDescending(o => o.IsActive)
+                                               .ThenByDescending(t => t.DatePurchase);
+
+            return subscriptions;
         }
 
-        public void AddSubscription(Subscription subscription)
+        public async Task AddSubscription(Subscription subscription)
         {
-            var subscriptions = GetSubScriptions().ToList();
-            subscriptions.Add(subscription);
+            await _database.SaveAsync((DbSubscription)subscription);
+        }
 
-            _database.Add(subscriptions, EDatabaseKeys.Subscriptions);
+        public async Task UpdateSubscription(Subscription subscription)
+        {
+            await _database.SaveAsync((DbSubscription)subscription);
+        }
+
+        public async Task DeleteSubscription(Subscription subscription)
+        {
+            await _database.DeleteAsync((DbSubscription)subscription);
         }
 
         #endregion
