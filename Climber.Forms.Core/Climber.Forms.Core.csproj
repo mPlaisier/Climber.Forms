@@ -43,5 +43,7 @@
 		<Folder Include="Subscriptions\Utils\" />
 		<Folder Include="Utils\" />
 		<Folder Include="Database\Interfaces\" />
+		<Folder Include="General\" />
+		<Folder Include="General\Enums\" />
 	</ItemGroup>
 </Project>

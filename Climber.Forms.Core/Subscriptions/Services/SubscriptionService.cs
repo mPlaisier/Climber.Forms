@@ -41,6 +41,11 @@ namespace Climber.Forms.Core
             await _database.SaveAsync((DbSubscription)subscription);
         }
 
+        public async Task DeleteSubscription(Subscription subscription)
+        {
+            await _database.DeleteAsync((DbSubscription)subscription);
+        }
+
         #endregion
     }
 }

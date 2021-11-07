@@ -9,6 +9,8 @@
         public static string Subscription_Alert_Created_Body => "New subscription has been created";
         public static string Subscription_Alert_Updated_Title => "Success";
         public static string Subscription_Alert_Updated_Body => "Subscription has been updated";
+        public static string Subscription_Alert_Deleted_Title => "Success";
+        public static string Subscription_Alert_Deleted_Body => "Subscription has been deleted";
 
         //Subscription Detail
         public static string SubscriptionDetail_Title => "Create subscription";

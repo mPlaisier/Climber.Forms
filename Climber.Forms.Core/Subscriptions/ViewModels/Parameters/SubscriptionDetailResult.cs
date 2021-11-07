@@ -6,16 +6,16 @@
 
         public bool IsSuccess { get; }
 
-        public bool IsUpdate { get; }
+        public ECrud Action { get; }
 
         #endregion
 
         #region Constructor
 
-        public SubscriptionDetailResult(bool isSuccess, bool isUpdate)
+        public SubscriptionDetailResult(bool isSuccess, ECrud action)
         {
             IsSuccess = isSuccess;
-            IsUpdate = isUpdate;
+            Action = action;
         }
 
         #endregion

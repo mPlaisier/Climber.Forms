@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PropertyChanged;
 using Xamarin.Forms;
 
@@ -58,6 +59,9 @@ namespace Climber.Forms.Core
 
         Command _commandConfirm;
         public Command CommandConfirm => _commandConfirm ??= new Command(SaveSubscription);
+
+        Command _commandDeleteSubscription;
+        public Command CommandDeleteSubscription => _commandDeleteSubscription ??= new Command(async () => await DeleteSubscription());
 
         #endregion
 
@@ -135,7 +139,19 @@ namespace Climber.Forms.Core
                 _subscriptionService.UpdateSubscription(_subscription);
             }
 
-            CoreMethods.PopPageModel(new SubscriptionDetailResult(true, _subscription != null), false, true);
+            CoreMethods.PopPageModel(new SubscriptionDetailResult(true, _subscription != null ? ECrud.Update : ECrud.Create), false, true);
+        }
+
+        async Task DeleteSubscription()
+        {
+            var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
+
+            if (delete)
+            {
+                await _subscriptionService.DeleteSubscription(_subscription);
+
+                await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, ECrud.Delete), false, true);
+            }
         }
 
         #endregion
