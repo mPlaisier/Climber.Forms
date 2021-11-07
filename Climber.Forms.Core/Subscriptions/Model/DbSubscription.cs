@@ -28,6 +28,8 @@ namespace Climber.Forms.Core
 
         public DbSubscription(int id, DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive)
         {
+            Id = id;
+
             DatePurchase = datePurchase;
             Type = type;
             Price = price;
