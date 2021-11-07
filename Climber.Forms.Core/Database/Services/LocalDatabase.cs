@@ -51,6 +51,11 @@ namespace Climber.Forms.Core
             };
         }
 
+        public void Update<T>(T data, EDatabaseKeys key) where T : class
+        {
+            //TODO
+        }
+
         #endregion
     }
 }

@@ -28,10 +28,12 @@ namespace Climber.Forms.Core
 
         public void AddSubscription(Subscription subscription)
         {
-            var subscriptions = GetSubScriptions().ToList();
-            subscriptions.Add(subscription);
+            _database.Add(subscription, EDatabaseKeys.Subscriptions);
+        }
 
-            _database.Add(subscriptions, EDatabaseKeys.Subscriptions);
+        public void UpdateSubscription(Subscription subscription)
+        {
+            _database.Update(subscription, EDatabaseKeys.Subscriptions);
         }
 
         #endregion

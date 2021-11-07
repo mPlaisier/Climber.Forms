@@ -8,6 +8,7 @@ namespace Climber.Forms.Core
 
         T Get<T>(EDatabaseKeys key) where T : class;
         void Add<T>(T data, EDatabaseKeys key) where T : class;
+        void Update<T>(T data, EDatabaseKeys key) where T : class;
 
         #endregion
     }

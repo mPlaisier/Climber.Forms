@@ -23,7 +23,13 @@ namespace Climber.Forms.Core
         public void Add<T>(T data, EDatabaseKeys key) where T : class
         {
             if (key == EDatabaseKeys.Subscriptions)
-                AddSubscription((List<Subscription>)Convert.ChangeType(data, typeof(List<Subscription>)));
+                AddSubscription((Subscription)Convert.ChangeType(data, typeof(Subscription)));
+        }
+
+        public void Update<T>(T data, EDatabaseKeys key) where T : class
+        {
+            if (key == EDatabaseKeys.Subscriptions)
+                UpdateSubscription((Subscription)Convert.ChangeType(data, typeof(Subscription)));
         }
 
         #endregion
@@ -74,12 +80,22 @@ namespace Climber.Forms.Core
             return _subscriptions;
         }
 
-        void AddSubscription(List<Subscription> subscription)
+        void AddSubscription(Subscription subscription)
         {
             if (_subscriptions == null || _subscriptions.Count == 0)
                 return;
 
-            _subscriptions = subscription;
+            _subscriptions.Add(subscription);
+        }
+
+        void UpdateSubscription(Subscription subscription)
+        {
+            var index = _subscriptions.FindIndex(x => x.Id.Equals(subscription.Id));
+
+            if (index != -1)
+                _subscriptions[index] = subscription;
+            else
+                throw new ArgumentException("Update failed for Subscription. Id not found in database.");
         }
 
         #endregion

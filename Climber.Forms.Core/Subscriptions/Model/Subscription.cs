@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -6,17 +8,28 @@ namespace Climber.Forms.Core
     {
         #region Properties
 
-        public DateTime DatePurchase { get; }
+        public string Id { get; }
+
+        public DateTime DatePurchase { get; set; }
 
         public string LblDate => DatePurchase.ToShortDateString();
 
-        public ESubscriptionType Type { get; }
+        public ESubscriptionType Type { get; set; }
 
         public string LblType => Type.GetLabel();
 
-        public decimal Price { get; }
+        public decimal Price { get; set; }
 
-        public bool IsActive { get; }
+        public bool IsActive { get; set; }
+
+        public Action ActionClicked { get; set; }
+
+        #endregion
+
+        #region Commands
+
+        ICommand _commandClicked;
+        public ICommand CommandClicked => _commandClicked ??= new Command(ActionClicked);
 
         #endregion
 
@@ -24,6 +37,8 @@ namespace Climber.Forms.Core
 
         public Subscription(DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive = true)
         {
+            Id = Guid.NewGuid().ToString();
+
             DatePurchase = datePurchase;
             Type = type;
             Price = price;
