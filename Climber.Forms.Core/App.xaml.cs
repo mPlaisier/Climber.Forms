@@ -23,7 +23,7 @@ namespace Climber.Forms.Core
         void InitializeServices()
         {
             //Db
-            FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
+            FreshIOC.Container.Register<IDatabaseService, LocalDatabase>();
 
             //Climbing services
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
