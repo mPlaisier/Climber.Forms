@@ -7,6 +7,7 @@ namespace Climber.Forms.Core
     public class DummyDatabase : IDatabaseService
     {
         List<DbSubscription> _subscriptions;
+        List<DbEquipment> _equipment;
 
         #region Public
 
@@ -39,6 +40,16 @@ namespace Climber.Forms.Core
                 else //Update
                 {
                     UpdateSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
+                    return Task.FromResult(true);
+                }
+            }
+
+            if (typeof(T) == typeof(DbEquipment))
+            {
+                //Create
+                if (data.Id == 0)
+                {
+                    AddEquipment((DbEquipment)Convert.ChangeType(data, typeof(DbEquipment)));
                     return Task.FromResult(true);
                 }
             }
@@ -133,11 +144,25 @@ namespace Climber.Forms.Core
 
         List<DbEquipment> GetClimbingEquipment()
         {
-            return new List<DbEquipment>()
+            if (_equipment == null)
             {
-                new DbEquipment(1, new DateTime(2021, 6,27),"Climbing shoes", 76),
-                new DbEquipment(1, new DateTime(2021, 9, 3),"Zekeringtoestel", 90),
-            };
+                _equipment = new List<DbEquipment>()
+                {
+                    new DbEquipment(1, new DateTime(2021, 6,27),"Climbing shoes", 76),
+                    new DbEquipment(1, new DateTime(2021, 9, 3),"Zekeringtoestel", 90),
+                };
+            }
+            return _equipment;
+        }
+
+        void AddEquipment(DbEquipment equipment)
+        {
+            if (_equipment == null)
+                return;
+
+            equipment.Id = _equipment.Count + 1;
+
+            _equipment.Add(equipment);
         }
 
         #endregion

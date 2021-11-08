@@ -45,6 +45,14 @@ namespace Climber.Forms.Core
             IsActive = equipment.IsActive;
         }
 
+        public Equipment(DateTime datePurchase, string description, decimal price, bool isActive)
+        {
+            DatePurchase = datePurchase;
+            Description = description;
+            Price = price;
+            IsActive = isActive;
+        }
+
         #endregion
 
         #region Static

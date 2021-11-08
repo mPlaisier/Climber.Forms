@@ -52,5 +52,6 @@
 		<Folder Include="ClimbingEquipment\Models\" />
 		<Folder Include="ClimbingEquipment\Pages\" />
 		<Folder Include="ClimbingEquipment\Services\Interfaces\" />
+		<Folder Include="ClimbingEquipment\ViewModels\Models\" />
 	</ItemGroup>
 </Project>

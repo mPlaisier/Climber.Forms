@@ -5,6 +5,9 @@
 	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
     x:Class="Climber.Forms.Core.EquipmentOverviewPage"
 	Title="{Binding Title}">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Add" Command="{Binding CommandAddEquipment}" Order="Primary" Priority="0" />
+	</ContentPage.ToolbarItems>
 	<CollectionView ItemsSource="{Binding Equipment}" Margin="0,10,0,10">
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
