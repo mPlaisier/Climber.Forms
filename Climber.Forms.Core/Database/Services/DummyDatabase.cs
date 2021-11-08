@@ -16,6 +16,8 @@ namespace Climber.Forms.Core
                 return Task.FromResult((List<T>)Convert.ChangeType(GetSubscriptions(), typeof(List<T>)));
             else if (typeof(T) == typeof(ClimbingSessionItem))
                 return Task.FromResult((List<T>)Convert.ChangeType(GetClimbingSessions(), typeof(List<T>)));
+            else if (typeof(T) == typeof(DbEquipment))
+                return Task.FromResult((List<T>)Convert.ChangeType(GetClimbingEquipment(), typeof(List<T>)));
 
             throw new NotImplementedException($"Data not setup for {typeof(T)}");
         }
@@ -127,6 +129,15 @@ namespace Climber.Forms.Core
         {
             var item = _subscriptions.Find(x => x.Id.Equals(subscription.Id));
             _subscriptions.Remove(item);
+        }
+
+        List<DbEquipment> GetClimbingEquipment()
+        {
+            return new List<DbEquipment>()
+            {
+                new DbEquipment(1, new DateTime(2021, 6,27),"Climbing shoes", 76),
+                new DbEquipment(1, new DateTime(2021, 9, 3),"Zekeringtoestel", 90),
+            };
         }
 
         #endregion
