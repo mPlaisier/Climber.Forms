@@ -9,6 +9,8 @@
         public static string Equipment_Alert_Created_Body => "New equipment has been added";
         public static string Equipment_Alert_Updated_Title => "Success";
         public static string Equipment_Alert_Updated_Body => "Equipment has been updated";
+        public static string Equipment_Alert_Deleted_Title => "Success";
+        public static string Equipment_Alert_Deleted_Body => "Equipment has been deleted";
 
         //Equipment detail
         public static string Equipment_Detail_Create_Title => "Add equipment";
