@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -15,6 +17,16 @@ namespace Climber.Forms.Core
         public override string Title => Labels.Equipment_Title;
 
         public ObservableCollection<Equipment> Equipment { get; private set; }
+
+        #endregion
+
+        #region Commands
+
+        ICommand _commandAddEquipment;
+        public ICommand CommandAddEquipment => _commandAddEquipment ??= new Command(async () =>
+        {
+            await CoreMethods.PushPageModel<EquipmentDetailViewModel>();
+        });
 
         #endregion
 
@@ -32,6 +44,19 @@ namespace Climber.Forms.Core
         public override void Init()
         {
             LoadData().ConfigureAwait(false);
+        }
+
+        public override void ReverseInit(object returnedData)
+        {
+            base.ReverseInit(returnedData);
+
+            if (returnedData is EquipmentDetailResult result && result.IsSuccess)
+            {
+                if (result.Action == ECrud.Create)
+                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Created_Title, Labels.Equipment_Alert_Created_Body, Labels.Ok);
+
+                Init();
+            }
         }
 
         #endregion
