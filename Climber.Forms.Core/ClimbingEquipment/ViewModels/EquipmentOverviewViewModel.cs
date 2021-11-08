@@ -56,6 +56,8 @@ namespace Climber.Forms.Core
                     CoreMethods.DisplayAlert(Labels.Equipment_Alert_Created_Title, Labels.Equipment_Alert_Created_Body, Labels.Ok);
                 else if (result.Action == ECrud.Update)
                     CoreMethods.DisplayAlert(Labels.Equipment_Alert_Updated_Title, Labels.Equipment_Alert_Updated_Body, Labels.Ok);
+                else if (result.Action == ECrud.Delete)
+                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Deleted_Title, Labels.Equipment_Alert_Deleted_Body, Labels.Ok);
 
                 Init();
             }

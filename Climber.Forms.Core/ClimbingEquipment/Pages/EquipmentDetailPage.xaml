@@ -5,6 +5,9 @@
 	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
     x:Class="Climber.Forms.Core.EquipmentDetailPage"
 	Title="{Binding Title}">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="DELETE" Icon="ic_delete" Command="{Binding CommandDeleteEquipment}" Order="Primary" Priority="0" />
+	</ContentPage.ToolbarItems>
 	<ContentPage.Content>
 		<StackLayout Margin="10">
 			<!-- Equipment Date -->

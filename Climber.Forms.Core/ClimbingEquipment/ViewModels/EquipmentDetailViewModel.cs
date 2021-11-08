@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using PropertyChanged;
 using Xamarin.Forms;
 
@@ -53,8 +54,11 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        Command _commandConfirm;
-        public Command CommandConfirm => _commandConfirm ??= new Command(async () => await SaveEquipment().ConfigureAwait(false));
+        ICommand _commandConfirm;
+        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveEquipment().ConfigureAwait(false));
+
+        ICommand _commandDeleteEquipment;
+        public ICommand CommandDeleteEquipment => _commandDeleteEquipment ??= new Command(async () => await DeleteEquipment());
 
         #endregion
 
@@ -147,6 +151,26 @@ namespace Climber.Forms.Core
             }
         }
 
+        async Task DeleteEquipment()
+        {
+            if (_equipment != null)
+            {
+                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
+
+                if (delete)
+                {
+                    try
+                    {
+                        await _equipmentService.DeleteEquipment(_equipment);
+                        await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Delete), false, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
