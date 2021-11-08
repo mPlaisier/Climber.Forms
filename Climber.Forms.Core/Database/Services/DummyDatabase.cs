@@ -7,6 +7,7 @@ namespace Climber.Forms.Core
     public class DummyDatabase : IDatabaseService
     {
         List<DbSubscription> _subscriptions;
+        List<DbEquipment> _equipment;
 
         #region Public
 
@@ -16,6 +17,8 @@ namespace Climber.Forms.Core
                 return Task.FromResult((List<T>)Convert.ChangeType(GetSubscriptions(), typeof(List<T>)));
             else if (typeof(T) == typeof(ClimbingSessionItem))
                 return Task.FromResult((List<T>)Convert.ChangeType(GetClimbingSessions(), typeof(List<T>)));
+            else if (typeof(T) == typeof(DbEquipment))
+                return Task.FromResult((List<T>)Convert.ChangeType(GetClimbingEquipment(), typeof(List<T>)));
 
             throw new NotImplementedException($"Data not setup for {typeof(T)}");
         }
@@ -37,6 +40,16 @@ namespace Climber.Forms.Core
                 else //Update
                 {
                     UpdateSubscription((DbSubscription)Convert.ChangeType(data, typeof(DbSubscription)));
+                    return Task.FromResult(true);
+                }
+            }
+
+            if (typeof(T) == typeof(DbEquipment))
+            {
+                //Create
+                if (data.Id == 0)
+                {
+                    AddEquipment((DbEquipment)Convert.ChangeType(data, typeof(DbEquipment)));
                     return Task.FromResult(true);
                 }
             }
@@ -127,6 +140,29 @@ namespace Climber.Forms.Core
         {
             var item = _subscriptions.Find(x => x.Id.Equals(subscription.Id));
             _subscriptions.Remove(item);
+        }
+
+        List<DbEquipment> GetClimbingEquipment()
+        {
+            if (_equipment == null)
+            {
+                _equipment = new List<DbEquipment>()
+                {
+                    new DbEquipment(1, new DateTime(2021, 6,27),"Climbing shoes", 76),
+                    new DbEquipment(1, new DateTime(2021, 9, 3),"Zekeringtoestel", 90),
+                };
+            }
+            return _equipment;
+        }
+
+        void AddEquipment(DbEquipment equipment)
+        {
+            if (_equipment == null)
+                return;
+
+            equipment.Id = _equipment.Count + 1;
+
+            _equipment.Add(equipment);
         }
 
         #endregion

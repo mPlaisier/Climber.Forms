@@ -29,7 +29,6 @@
 		<Folder Include="ClimbingSessions\Pages\" />
 		<Folder Include="ClimbingSessions\Converter\" />
 		<Folder Include="FreshMvvm\" />
-		<Folder Include="Extensions\" />
 		<Folder Include="ClimbingSessions\Enums\" />
 		<Folder Include="Subscriptions\" />
 		<Folder Include="Subscriptions\Model\" />
@@ -41,9 +40,18 @@
 		<Folder Include="Subscriptions\ViewModels\Parameters\" />
 		<Folder Include="FreshMvvm\BaseViewModels\" />
 		<Folder Include="Subscriptions\Utils\" />
-		<Folder Include="Utils\" />
 		<Folder Include="Database\Interfaces\" />
 		<Folder Include="General\" />
 		<Folder Include="General\Enums\" />
+		<Folder Include="General\Utils\" />
+		<Folder Include="General\Extensions\" />
+		<Folder Include="ClimbingEquipment\" />
+		<Folder Include="ClimbingEquipment\ViewModels\" />
+		<Folder Include="ClimbingEquipment\Utils\" />
+		<Folder Include="ClimbingEquipment\Services\" />
+		<Folder Include="ClimbingEquipment\Models\" />
+		<Folder Include="ClimbingEquipment\Pages\" />
+		<Folder Include="ClimbingEquipment\Services\Interfaces\" />
+		<Folder Include="ClimbingEquipment\ViewModels\Models\" />
 	</ItemGroup>
 </Project>
