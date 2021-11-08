@@ -22,9 +22,13 @@ namespace Climber.Forms.Core
 
         void InitializeServices()
         {
-            FreshIOC.Container.Register<IDatabaseService, LocalDatabase>();
+            //Db
+            FreshIOC.Container.Register<IDatabaseService, DummyDatabase>();
+
+            //Climbing services
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
+            FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
         }
 
         void InitializeNavigation()
@@ -37,6 +41,7 @@ namespace Climber.Forms.Core
 
             mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
             mainPage.AddTab<ClimbingSessionsViewModel>("Sessions", null);
+            mainPage.AddTab<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
 
             MainPage = mainPage;
         }
