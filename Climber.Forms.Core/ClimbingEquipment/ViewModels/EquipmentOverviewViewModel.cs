@@ -54,6 +54,8 @@ namespace Climber.Forms.Core
             {
                 if (result.Action == ECrud.Create)
                     CoreMethods.DisplayAlert(Labels.Equipment_Alert_Created_Title, Labels.Equipment_Alert_Created_Body, Labels.Ok);
+                else if (result.Action == ECrud.Update)
+                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Updated_Title, Labels.Equipment_Alert_Updated_Body, Labels.Ok);
 
                 Init();
             }
@@ -77,17 +79,17 @@ namespace Climber.Forms.Core
 
             if (data != null)
             {
-                var equipment = new ObservableCollection<Equipment>(data);
+                var lstEquipment = new ObservableCollection<Equipment>(data);
 
-                equipment.ForEach((subscription) =>
+                lstEquipment.ForEach((equipment) =>
                 {
-                    subscription.ActionClicked = () =>
+                    equipment.ActionClicked = () =>
                     {
-                        //TODO Navigation to detail (issue #23)
+                        CoreMethods.PushPageModel<EquipmentDetailViewModel>(equipment);
                     };
                 });
 
-                Equipment = equipment;
+                Equipment = lstEquipment;
             }
         }
 

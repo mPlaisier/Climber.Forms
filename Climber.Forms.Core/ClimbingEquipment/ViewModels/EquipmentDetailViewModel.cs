@@ -10,9 +10,13 @@ namespace Climber.Forms.Core
     {
         readonly IEquipmentService _equipmentService;
 
+        Equipment _equipment;
+
         #region Properties
 
-        public override string Title => Labels.Equipment_Detail_Title;
+        public override string Title => _equipment == null
+                                           ? Labels.Equipment_Detail_Create_Title
+                                           : Labels.Equipment_Detail_Update_Title;
 
         //Date
         public string DatePlaceholder => Labels.Equipment_Detail_Date_Placeholder;
@@ -39,7 +43,9 @@ namespace Climber.Forms.Core
         public bool IsActive { get; set; } = true;
 
         //Confirm button
-        public string ConfirmButtonLabel => Labels.Equipment_Detail_Button_Create_Confirm;
+        public string ConfirmButtonLabel => _equipment == null
+                                           ? Labels.Equipment_Detail_Button_Create_Confirm
+                                           : Labels.Equipment_Detail_Button_Update_Confirm;
 
         public bool IsConfirmButtonEnabled => IsValid();
 
@@ -65,11 +71,22 @@ namespace Climber.Forms.Core
 
         public override void Init(Equipment parameter)
         {
+            _equipment = parameter;
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
+
+            if (_equipment != null)
+            {
+                SelectedDate = _equipment.DatePurchase;
+
+                Description = _equipment.Description;
+
+                PriceValue = _equipment.Price.ToString();
+                IsActive = _equipment.IsActive;
+            }
 
             RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
         }
@@ -96,16 +113,37 @@ namespace Climber.Forms.Core
         {
             decimal.TryParse(PriceValue, out var price);
 
-            var equipment = new Equipment(SelectedDate.Value, Description, price, IsActive);
+            //Create
+            if (_equipment == null)
+            {
+                var equipment = new Equipment(SelectedDate.Value, Description, price, IsActive);
 
-            try
-            {
-                await _equipmentService.AddEquipment(equipment);
-                await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Create), false, true);
+                try
+                {
+                    await _equipmentService.AddEquipment(equipment);
+                    await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Create), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
-            catch (Exception ex)
+            else //Update
             {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                _equipment.DatePurchase = SelectedDate.Value;
+                _equipment.Description = Description;
+                _equipment.Price = price;
+                _equipment.IsActive = IsActive;
+
+                try
+                {
+                    await _equipmentService.UpdateEquipment(_equipment);
+                    await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Update), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
         }
 
