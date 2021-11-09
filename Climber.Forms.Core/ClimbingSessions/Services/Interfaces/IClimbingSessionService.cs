@@ -9,6 +9,7 @@ namespace Climber.Forms.Core
 
         Task<IEnumerable<ClimbingSession>> GetClimbingSessions();
         Task SaveSession(ClimbingSession session);
+        Task DeleteSession(ClimbingSession session);
 
         #endregion
     }

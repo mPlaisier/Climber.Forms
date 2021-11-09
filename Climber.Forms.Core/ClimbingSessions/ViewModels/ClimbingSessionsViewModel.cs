@@ -54,6 +54,10 @@ namespace Climber.Forms.Core
             {
                 if (result.Action == ECrud.Create)
                     CoreMethods.DisplayAlert(Labels.Session_Alert_Created_Title, Labels.Session_Alert_Created_Body, Labels.Ok);
+                if (result.Action == ECrud.Update)
+                    CoreMethods.DisplayAlert(Labels.Session_Alert_Updated_Title, Labels.Session_Alert_Updated_Body, Labels.Ok);
+                if (result.Action == ECrud.Delete)
+                    CoreMethods.DisplayAlert(Labels.Session_Alert_Deleted_Title, Labels.Session_Alert_Deleted_Body, Labels.Ok);
 
                 Init();
             }

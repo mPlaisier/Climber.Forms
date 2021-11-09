@@ -38,6 +38,12 @@ namespace Climber.Forms.Core
             await _database.SaveAsync(dbClimbingSession);
         }
 
+        public async Task DeleteSession(ClimbingSession session)
+        {
+            var dbClimbingSession = CreateDbSession(session);
+            await _database.DeleteAsync(dbClimbingSession);
+        }
+
         #endregion
 
         #region Private
