@@ -7,6 +7,10 @@
 
         public static string Session_Alert_Created_Title => "Success";
         public static string Session_Alert_Created_Body => "Session has been added";
+        public static string Session_Alert_Updated_Title => "Success";
+        public static string Session_Alert_Updated_Body => "Session has been updated";
+        public static string Session_Alert_Deleted_Title => "Success";
+        public static string Session_Alert_Deleted_Body => "Session has been deleted";
 
         //Session detail
         public static string Session_Detail_Create_Title => "Add session";

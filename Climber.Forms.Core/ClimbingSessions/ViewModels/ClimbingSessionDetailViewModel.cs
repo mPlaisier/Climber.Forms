@@ -61,6 +61,10 @@ namespace Climber.Forms.Core
         ICommand _commandConfirm;
         public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveSession().ConfigureAwait(false));
 
+        ICommand _commandDeleteSession;
+        public ICommand CommandDeleteSession => _commandDeleteSession ??= new Command(async () => await DeleteSession());
+
+
         #endregion
 
         #region Constructor
@@ -173,6 +177,27 @@ namespace Climber.Forms.Core
             catch (Exception ex)
             {
                 await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+            }
+        }
+
+        async Task DeleteSession()
+        {
+            if (_session != null)
+            {
+                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
+
+                if (delete)
+                {
+                    try
+                    {
+                        await _climbingSessionService.DeleteSession(_session);
+                        await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Delete), false, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                    }
+                }
             }
         }
 
