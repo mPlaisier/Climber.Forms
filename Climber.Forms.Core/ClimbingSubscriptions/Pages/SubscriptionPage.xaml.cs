@@ -2,9 +2,9 @@
 
 namespace Climber.Forms.Core
 {
-    public partial class MainPage : ContentPage
+    public partial class SubscriptionPage : ContentPage
     {
-        public MainPage()
+        public SubscriptionPage()
         {
             InitializeComponent();
         }

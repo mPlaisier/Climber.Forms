@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Climber.Forms.Droid", "Clim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Climber.Forms.iOS", "Climber.Forms.iOS\Climber.Forms.iOS.csproj", "{A66526DF-BBA9-4FB9-9C7E-ACDFF10A13C1}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Climber.Forms", "Climber.Forms\Climber.Forms.shproj", "{A2F56774-C593-470B-9179-BCAD858F91E7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Climber.Forms.Core", "Climber.Forms.Core\Climber.Forms.Core.csproj", "{AA73FA49-7418-4DFB-AA90-7E2A0A7EE83B}"
 EndProject
 Global

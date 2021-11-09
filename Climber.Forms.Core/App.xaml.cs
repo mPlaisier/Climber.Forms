@@ -5,25 +5,47 @@ namespace Climber.Forms.Core
 {
     public partial class App : Application
     {
+        #region Constructor
+
         public App()
         {
             InitializeComponent();
+            XF.Material.Forms.Material.Init(this);
 
-            var page = FreshPageModelResolver.ResolvePageModel<MainViewModel>();
-            var basicNavContainer = new FreshNavigationContainer(page);
-            MainPage = basicNavContainer;
+            InitializeServices();
+            InitializeNavigation();
         }
 
-        protected override void OnStart()
+        #endregion
+
+        #region Private
+
+        void InitializeServices()
         {
+            //Db
+            FreshIOC.Container.Register<IDatabaseService, LocalDatabase>();
+
+            //Climbing services
+            FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
+            FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
+            FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
         }
 
-        protected override void OnSleep()
+        void InitializeNavigation()
         {
+            var mainPage = new FreshTabbedFONavigationContainer(Labels.Climber)
+            {
+                BarBackgroundColor = Color.FromHex("880e4f"),
+                BarTextColor = Color.White,
+            };
+
+            mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
+            mainPage.AddTab<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
+            mainPage.AddTab<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
+
+            MainPage = mainPage;
         }
 
-        protected override void OnResume()
-        {
-        }
+        #endregion
     }
 }
