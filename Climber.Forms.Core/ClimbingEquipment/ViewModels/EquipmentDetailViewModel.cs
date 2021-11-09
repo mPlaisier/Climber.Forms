@@ -73,7 +73,7 @@ namespace Climber.Forms.Core
 
         #region LifeCycle
 
-        public override void Init(Equipment parameter)
+        public override void Prepare(Equipment parameter)
         {
             _equipment = parameter;
         }

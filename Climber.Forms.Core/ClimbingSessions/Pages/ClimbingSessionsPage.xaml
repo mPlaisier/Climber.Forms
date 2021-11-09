@@ -6,6 +6,9 @@
 	xmlns:converter="clr-namespace:Climber.Forms.Core"
     x:Class="Climber.Forms.Core.ClimbingSessionsPage"
 	Title="{Binding Title}">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Add" Command="{Binding CommandAddSession}" Order="Primary" Priority="0" />
+	</ContentPage.ToolbarItems>
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<converter:EnumToDescriptionConverter x:Key="enumToDescriptionConverter" />

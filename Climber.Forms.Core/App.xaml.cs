@@ -33,14 +33,14 @@ namespace Climber.Forms.Core
 
         void InitializeNavigation()
         {
-            var mainPage = new FreshTabbedFONavigationContainer("Climber")
+            var mainPage = new FreshTabbedFONavigationContainer(Labels.Climber)
             {
                 BarBackgroundColor = Color.FromHex("880e4f"),
                 BarTextColor = Color.White,
             };
 
             mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
-            mainPage.AddTab<ClimbingSessionsViewModel>("Sessions", null);
+            mainPage.AddTab<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
             mainPage.AddTab<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
 
             MainPage = mainPage;
