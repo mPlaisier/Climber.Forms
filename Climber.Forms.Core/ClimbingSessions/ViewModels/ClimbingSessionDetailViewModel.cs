@@ -14,9 +14,13 @@ namespace Climber.Forms.Core
         readonly IClimbingSessionService _climbingSessionService;
         readonly ISubscriptionService _subscriptionService;
 
+        ClimbingSession _session;
+
         #region Properties
 
-        public override string Title => Labels.Session_Detail_Create_Title;
+        public override string Title => _session == null
+                                            ? Labels.Session_Detail_Create_Title
+                                            : Labels.Session_Detail_Update_Title;
 
         //Date
         public string DatePlaceholder => Labels.Session_Detail_Date_Placeholder;
@@ -44,7 +48,9 @@ namespace Climber.Forms.Core
         public ClimbingType SelectedClimbingType { get; set; }
 
         //Confirm button
-        public string ConfirmButtonLabel => Labels.Session_Detail_Button_Create_Confirm;
+        public string ConfirmButtonLabel => _session == null
+                                                ? Labels.Session_Detail_Button_Create_Confirm
+                                                : Labels.Session_Detail_Button_Update_Confirm;
 
         public bool IsConfirmButtonEnabled => IsValid();
 
@@ -71,6 +77,7 @@ namespace Climber.Forms.Core
 
         public override void Prepare(ClimbingSession parameter)
         {
+            _session = parameter;
         }
 
         public override void Init()
@@ -81,6 +88,16 @@ namespace Climber.Forms.Core
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
+
+            if (_session != null)
+            {
+                SelectedDate = _session.Date;
+
+                //Climbing type
+                var type = ClimbingTypes.First(s => s.Type == _session.Type);
+                DefaultClimbingTypeValue = type.Label;
+                SelectedClimbingType = type;
+            }
 
             RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
         }
@@ -105,16 +122,36 @@ namespace Climber.Forms.Core
 
         async Task SaveSession()
         {
-            var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClimbingType);
+            //Create
+            if (_session == null)
+            {
+                var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClimbingType);
 
-            try
-            {
-                await _climbingSessionService.AddSession(session);
-                await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Create), false, true);
+                try
+                {
+                    await _climbingSessionService.SaveSession(session);
+                    await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Create), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
-            catch (Exception ex)
+            else //Update
             {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                _session.Date = SelectedDate.Value;
+                _session.Subscription = SelectedSubscription;
+                _session.Type = SelectedClimbingType.Type;
+
+                try
+                {
+                    await _climbingSessionService.SaveSession(_session);
+                    await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Update), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
         }
 
@@ -125,6 +162,13 @@ namespace Climber.Forms.Core
                 var result = await _subscriptionService.GetSubScriptions().ConfigureAwait(false);
 
                 Subscriptions = result.ToList();
+
+                if (_session != null)
+                {
+                    var subscription = Subscriptions.First(s => s.Id == _session.Subscription.Id);
+                    DefaultSubscriptionValue = subscription.LblType;
+                    SelectedSubscription = subscription;
+                }
             }
             catch (Exception ex)
             {

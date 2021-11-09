@@ -32,11 +32,9 @@ namespace Climber.Forms.Core
             return lstEquipment.OrderByDescending(o => o.Date);
         }
 
-        public async Task AddSession(ClimbingSession session)
+        public async Task SaveSession(ClimbingSession session)
         {
-            var equipmentJson = GetEquipmentJson(session);
-            var dbClimbingSession = new DbClimbingSession(session, equipmentJson);
-
+            var dbClimbingSession = CreateDbSession(session);
             await _database.SaveAsync(dbClimbingSession);
         }
 
@@ -72,6 +70,12 @@ namespace Climber.Forms.Core
                 return new List<Equipment>();
 
             return sessionDbClimbingList.Select(x => new Equipment(x)).ToList();
+        }
+
+        DbClimbingSession CreateDbSession(ClimbingSession session)
+        {
+            var equipmentJson = GetEquipmentJson(session);
+            return new DbClimbingSession(session, equipmentJson);
         }
 
         string GetEquipmentJson(ClimbingSession session)

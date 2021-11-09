@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -9,11 +11,11 @@ namespace Climber.Forms.Core
 
         public int Id { get; }
 
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
         public string LblDate => Date.ToLongDateString().FirstCharToUpper();
 
-        public Subscription Subscription { get; }
+        public Subscription Subscription { get; set; }
 
         public decimal Cost { get; set; }
 
@@ -21,7 +23,17 @@ namespace Climber.Forms.Core
 
         public List<Equipment> LstClimbingEquipmentItems { get; }
 
+        public Action ActionClicked { get; set; }
+
         #endregion
+
+        #region Commands
+
+        ICommand _commandClicked;
+        public ICommand CommandClicked => _commandClicked ??= new Command(ActionClicked);
+
+        #endregion
+
 
         #region Constructor
 
