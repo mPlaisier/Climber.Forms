@@ -1,52 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-using SQLite;
 
 namespace Climber.Forms.Core
 {
-    public class ClimbingSessionItem
+    public class ClimbingSession
     {
         #region Properties
 
-        [PrimaryKey]
-        public string Id { get; }
+        public int Id { get; }
 
-        public DateTime Data { get; }
+        public DateTime Date { get; }
 
-        [Ignore]
-        public string LblDate => Data.ToLongDateString().FirstCharToUpper();
+        public string LblDate => Date.ToLongDateString().FirstCharToUpper();
 
-        public string SubscriptionId { get; set; }
-
-        [Ignore]
-        public List<string> MaterialId { get; set; }
+        public Subscription Subscription { get; }
 
         public decimal Cost { get; set; }
 
         public EClimbingType Type { get; set; }
 
+        public List<Equipment> LstClimbingEquipmentItems { get; }
+
         #endregion
 
         #region Constructor
 
-        public ClimbingSessionItem()
+        public ClimbingSession()
         {
-
         }
 
-        public ClimbingSessionItem(DateTime date, EClimbingType type)
+        public ClimbingSession(DbClimbingSession dbClimbingSession, List<Equipment> lstClimbingEquipmentItems, Subscription subscription)
         {
-            Data = date;
-            Type = type;
+            Id = dbClimbingSession.Id;
+            Date = dbClimbingSession.Date;
+            Cost = dbClimbingSession.Cost;
+            Type = dbClimbingSession.Type;
+
+            LstClimbingEquipmentItems = lstClimbingEquipmentItems;
+
+            Subscription = subscription;
         }
 
-        public ClimbingSessionItem(string id, DateTime date, string subscriptionId, List<string> materialId, decimal cost)
+        public ClimbingSession(DateTime selectedDate, Subscription subscription, ClimbingType climbingType)
         {
-            Id = id;
-            Data = date;
-            SubscriptionId = subscriptionId;
-            MaterialId = materialId;
-            Cost = cost;
+            Date = selectedDate;
+            Subscription = subscription;
+            Type = climbingType.Type;
         }
 
         #endregion

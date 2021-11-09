@@ -31,7 +31,7 @@ namespace Climber.Forms.Core
             return data;
         }
 
-        public async Task<T> GetAsync<T>(string id) where T : class, IWithId, new()
+        public async Task<T> GetAsync<T>(int id) where T : class, IWithId, new()
         {
             await CheckTable<T>();
 

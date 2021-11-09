@@ -76,7 +76,7 @@ namespace Climber.Forms.Core
 
         #region LifeCycle
 
-        public override void Init(Subscription parameter)
+        public override void Prepare(Subscription parameter)
         {
             _subscription = parameter;
         }
