@@ -30,12 +30,14 @@
 
 			<!-- Subscription active -->
 			<Line BackgroundColor="LightGray" HeightRequest="1" Margin="5,20,5,5"/>
-			<StackLayout Orientation="Horizontal" Margin="5,0,5,5">
-				<material:MaterialLabel Text="{Binding IsActiveLabel}"
-										TypeScale="Body2"
-										VerticalOptions="CenterAndExpand"/>
-				<material:MaterialSwitch IsActivated="{Binding IsActive}" HorizontalOptions="EndAndExpand"/>
-			</StackLayout>
+			<material:MaterialCard BackgroundColor="#EAEAEA" Margin="5,0,5,5">
+				<StackLayout Orientation="Horizontal" Padding="0">
+					<material:MaterialLabel Text="{Binding IsActiveLabel}"
+											TypeScale="Body2"
+											VerticalOptions="CenterAndExpand"/>
+					<material:MaterialSwitch IsActivated="{Binding IsActive}" HorizontalOptions="EndAndExpand"/>
+				</StackLayout>
+			</material:MaterialCard>
 
 			<!-- Confirm button -->
 			<material:MaterialButton Text="{Binding ConfirmButtonLabel}"
