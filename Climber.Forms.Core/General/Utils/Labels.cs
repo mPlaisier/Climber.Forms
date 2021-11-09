@@ -2,6 +2,8 @@
 {
     public static partial class Labels
     {
+        public static string Climber => "Climber";
+
         //General
         public static string Ok => "Ok";
         public static string LblYes => "Yes";

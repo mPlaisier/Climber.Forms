@@ -3,9 +3,13 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
 	xmlns:converter="clr-namespace:Climber.Forms.Core"
     x:Class="Climber.Forms.Core.ClimbingSessionsPage"
 	Title="{Binding Title}">
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Name="Add" Command="{Binding CommandAddSession}" Order="Primary" Priority="0" />
+	</ContentPage.ToolbarItems>
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<converter:EnumToDescriptionConverter x:Key="enumToDescriptionConverter" />
@@ -16,7 +20,7 @@
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
 				<ContentView>
-					<Frame HasShadow="true" Margin="20,5,20,5" CornerRadius="10">
+					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
@@ -40,7 +44,7 @@
 									VerticalTextAlignment="Center"/>
 							</yummy:PancakeView>
 						</Grid>
-					</Frame>
+					</material:MaterialCard>
 				</ContentView>
 			</DataTemplate>
 		</CollectionView.ItemTemplate>
