@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
 {
@@ -63,8 +65,30 @@ namespace Climber.Forms.Core
 
         async Task LoadData()
         {
-            var sessions = await _climbingSessionService.GetClimbingSessions();
-            Sessions = new ObservableCollection<ClimbingSession>(sessions.OrderByDescending(x => x.Date));
+            IEnumerable<ClimbingSession> data = null;
+            try
+            {
+                data = await _climbingSessionService.GetClimbingSessions();
+            }
+            catch (Exception ex)
+            {
+                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+            }
+
+            if (data != null)
+            {
+                var lstSessions = new ObservableCollection<ClimbingSession>(data);
+
+                lstSessions.ForEach((session) =>
+                {
+                    session.ActionClicked = () =>
+                    {
+                        CoreMethods.PushPageModel<ClimbingSessionDetailViewModel>(session);
+                    };
+                });
+
+                Sessions = lstSessions;
+            }
         }
 
         #endregion
