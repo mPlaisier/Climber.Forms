@@ -163,7 +163,7 @@ namespace Climber.Forms.Core
         {
             try
             {
-                var result = await _subscriptionService.GetSubScriptions().ConfigureAwait(false);
+                var result = await _subscriptionService.GetActiveSubscriptions().ConfigureAwait(false);
 
                 Subscriptions = result.ToList();
 

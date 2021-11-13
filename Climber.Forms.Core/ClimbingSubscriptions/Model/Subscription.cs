@@ -25,6 +25,8 @@ namespace Climber.Forms.Core
 
         public Action ActionClicked { get; set; }
 
+        public bool IsProtected { get; internal set; }
+
         #endregion
 
         #region Commands
@@ -43,10 +45,12 @@ namespace Climber.Forms.Core
             DatePurchase = subscription.DatePurchase;
             Type = subscription.Type;
             Price = subscription.Price;
+
             IsActive = subscription.IsActive;
+            IsProtected = subscription.IsProtected;
         }
 
-        public Subscription(DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive = true)
+        public Subscription(DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive)
         {
             DatePurchase = datePurchase;
             Type = type;
@@ -62,6 +66,14 @@ namespace Climber.Forms.Core
         {
             var dbSubscription = new DbSubscription(subscription);
             return dbSubscription;
+        }
+
+        public static Subscription CreateProgramSubscription()
+        {
+            return new Subscription(DateTime.Now, ESubscriptionType.SingleEntree, 0, true)
+            {
+                IsProtected = true
+            };
         }
 
         #endregion

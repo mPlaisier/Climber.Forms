@@ -6,7 +6,8 @@ namespace Climber.Forms.Core
     {
         TenTurnCard,
         ThreeMonthSubscription,
-        OneYearSubscription
+        OneYearSubscription,
+        SingleEntree
     }
 
     public static class ESubscriptionTypeExtension
@@ -18,8 +19,8 @@ namespace Climber.Forms.Core
                 ESubscriptionType.TenTurnCard => "10 Turn card",
                 ESubscriptionType.ThreeMonthSubscription => "3 Month subscription",
                 ESubscriptionType.OneYearSubscription => "Year subscription",
+                ESubscriptionType.SingleEntree => "Single entree",
                 _ => throw new ArgumentException($"No label found for type {type}")
-
             };
         }
     }

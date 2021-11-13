@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        int Id { get; }
+        int Id { get; set; }
 
         #endregion
     }
