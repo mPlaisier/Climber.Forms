@@ -5,7 +5,8 @@ namespace Climber.Forms.Core
 {
     public interface ISubscriptionService
     {
-        Task<IEnumerable<Subscription>> GetSubScriptions();
+        Task<IEnumerable<Subscription>> GetAllSubscriptions();
+        Task<IEnumerable<Subscription>> GetUserSubScriptions();
         Task<IEnumerable<Subscription>> GetActiveSubscriptions();
 
         Task AddSubscription(Subscription subscription);

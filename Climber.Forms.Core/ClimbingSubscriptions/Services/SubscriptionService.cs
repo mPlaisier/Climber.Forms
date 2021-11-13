@@ -19,16 +19,29 @@ namespace Climber.Forms.Core
 
         #region Public
 
+        public async Task<IEnumerable<Subscription>> GetAllSubscriptions()
+        {
+            var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
+
+            //Conver Core to Api
+            var subscriptions = dbsubscriptions.Select(subscription => (Subscription)subscription)
+                                               .OrderByDescending(o => o.IsActive)
+                                               .ThenByDescending(t => t.DatePurchase);
+
+            return subscriptions;
+        }
+
         /// <summary>
         /// Get all subscriptions of the user.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Subscription>> GetSubScriptions()
+        public async Task<IEnumerable<Subscription>> GetUserSubScriptions()
         {
-            var dbsubscriptions = await _database.GetListAsync<DbSubscription>(x => !x.IsProtected);
+            var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
 
             //Conver Core to Api
-            var subscriptions = dbsubscriptions.Select(subscription => (Subscription)subscription)
+            var subscriptions = dbsubscriptions.Where(x => !x.IsProtected)
+                                               .Select(subscription => (Subscription)subscription)
                                                .OrderByDescending(o => o.IsActive)
                                                .ThenByDescending(t => t.DatePurchase);
 
