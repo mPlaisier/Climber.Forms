@@ -64,10 +64,16 @@ namespace Climber.Forms.Core
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Subscription subscription))
+            if (!(obj is Subscription subscription))
                 return false;
 
             return Id == subscription.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 17;
+            return hash * 23 * Id.GetHashCode();
         }
 
         #endregion
