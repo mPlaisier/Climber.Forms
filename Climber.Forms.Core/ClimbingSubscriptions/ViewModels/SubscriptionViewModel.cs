@@ -71,7 +71,7 @@ namespace Climber.Forms.Core
             IEnumerable<Subscription> data = null;
             try
             {
-                data = await _subscriptionService.GetSubScriptions();
+                data = await _subscriptionService.GetUserSubScriptions();
             }
             catch (Exception ex)
             {
