@@ -163,16 +163,16 @@ namespace Climber.Forms.Core
         {
             try
             {
-                var allSubscriptions = await _subscriptionService.GetAllSubscriptions().ConfigureAwait(false);
                 var activeSubscriptions = await _subscriptionService.GetActiveSubscriptions().ConfigureAwait(false);
-
                 Subscriptions = activeSubscriptions.ToList();
 
                 if (_session != null)
                 {
-                    var subscription = allSubscriptions.First(s => s.Id == _session.Subscription.Id);
-                    DefaultSubscriptionValue = subscription.LblType;
-                    SelectedSubscription = subscription;
+                    if (!_session.Subscription.IsActive)
+                        Subscriptions.Add(_session.Subscription);
+
+                    DefaultSubscriptionValue = _session.Subscription.LblType;
+                    SelectedSubscription = _session.Subscription;
                 }
             }
             catch (Exception ex)

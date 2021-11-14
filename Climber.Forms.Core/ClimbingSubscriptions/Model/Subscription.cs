@@ -60,6 +60,24 @@ namespace Climber.Forms.Core
 
         #endregion
 
+        #region Equqls
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Subscription subscription))
+                return false;
+
+            return Id == subscription.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 17;
+            return hash * 23 * Id.GetHashCode();
+        }
+
+        #endregion
+
         #region Static
 
         public static explicit operator DbSubscription(Subscription subscription)
