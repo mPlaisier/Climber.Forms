@@ -18,6 +18,8 @@ namespace Climber.Forms.Core
 
         public bool IsActive { get; set; }
 
+        public bool IsProtected { get; set; }
+
         #endregion
 
         #region Constructor
@@ -43,7 +45,9 @@ namespace Climber.Forms.Core
             DatePurchase = subscription.DatePurchase;
             Type = subscription.Type;
             Price = subscription.Price;
+
             IsActive = subscription.IsActive;
+            IsProtected = subscription.IsProtected;
         }
 
         #endregion
