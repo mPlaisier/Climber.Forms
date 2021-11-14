@@ -60,6 +60,18 @@ namespace Climber.Forms.Core
 
         #endregion
 
+        #region Equqls
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || !(obj is Subscription subscription))
+                return false;
+
+            return Id == subscription.Id;
+        }
+
+        #endregion
+
         #region Static
 
         public static explicit operator DbSubscription(Subscription subscription)
