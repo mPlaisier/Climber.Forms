@@ -33,17 +33,14 @@ namespace Climber.Forms.Core
 
         void InitializeNavigation()
         {
-            var mainPage = new FreshTabbedFONavigationContainer(Labels.Climber)
-            {
-                BarBackgroundColor = Color.FromHex("880e4f"),
-                BarTextColor = Color.White,
-            };
+            var masterDetailNav = new FreshMasterDetailNavigationContainer();
+            masterDetailNav.Init("Menu");
 
-            mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
-            mainPage.AddTab<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
-            mainPage.AddTab<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
+            masterDetailNav.AddPage<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
+            masterDetailNav.AddPage<SubscriptionViewModel>(Labels.Subscription_Title, null);
+            masterDetailNav.AddPage<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
 
-            MainPage = mainPage;
+            MainPage = masterDetailNav;
         }
 
         #endregion
