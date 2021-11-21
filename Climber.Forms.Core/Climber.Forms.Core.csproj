@@ -56,5 +56,12 @@
 		<Folder Include="ClimbingEquipment\Services\Interfaces\" />
 		<Folder Include="ClimbingEquipment\ViewModels\Models\" />
 		<Folder Include="ClimbingSessions\Utils\" />
+		<Folder Include="ClimbingClub\" />
+		<Folder Include="ClimbingClub\ViewModels\" />
+		<Folder Include="ClimbingClub\Pages\" />
+		<Folder Include="ClimbingClub\Models\" />
+		<Folder Include="ClimbingClub\Services\" />
+		<Folder Include="ClimbingClub\Services\Interfaces\" />
+		<Folder Include="ClimbingClub\Utils\" />
 	</ItemGroup>
 </Project>
