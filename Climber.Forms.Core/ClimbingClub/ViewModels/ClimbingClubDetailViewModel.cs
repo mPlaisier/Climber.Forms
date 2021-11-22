@@ -45,6 +45,10 @@ namespace Climber.Forms.Core
         ICommand _commandConfirm;
         public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveClub().ConfigureAwait(false));
 
+        ICommand _commandDeleteClub;
+        public ICommand CommandDeleteClub => _commandDeleteClub ??= new Command(async () => await DeleteClub().ConfigureAwait(false));
+
+
         #endregion
 
         #region Constructor
@@ -110,6 +114,27 @@ namespace Climber.Forms.Core
                 catch (Exception ex)
                 {
                     await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
+            }
+        }
+
+        async Task DeleteClub()
+        {
+            if (_club != null)
+            {
+                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
+
+                if (delete)
+                {
+                    try
+                    {
+                        await _clubService.DeleteClub(_club);
+                        await CoreMethods.PopPageModel(new CrudResult(ECrud.Delete), false, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                    }
                 }
             }
         }
