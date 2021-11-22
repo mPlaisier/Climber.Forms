@@ -16,7 +16,7 @@
         {
         }
 
-        public CrudResult(ECrud action, bool isSuccess = true)
+        public CrudResult(ECrud action, bool isSuccess)
         {
             IsSuccess = isSuccess;
             Action = action;
