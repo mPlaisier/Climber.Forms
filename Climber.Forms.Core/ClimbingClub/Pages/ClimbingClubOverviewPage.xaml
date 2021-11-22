@@ -12,7 +12,11 @@
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
 				<ContentView>
-					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True">
+					<material:MaterialCard CornerRadius="10"
+										   Margin="20,5,20,5"
+										   Elevation="1"
+										   IsClickable="True"
+										   ClickCommand="{Binding CommandClicked}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />

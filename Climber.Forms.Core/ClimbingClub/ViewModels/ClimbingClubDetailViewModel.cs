@@ -7,13 +7,17 @@ using Xamarin.Forms;
 namespace Climber.Forms.Core
 {
     [AddINotifyPropertyChangedInterface]
-    public class ClimbingClubDetailViewModel : BaseViewModel<Equipment>
+    public class ClimbingClubDetailViewModel : BaseViewModel<ClimbingClub>
     {
         readonly IClimbingClubService _clubService;
 
+        ClimbingClub _club;
+
         #region Properties
 
-        public override string Title => Labels.Club_Detail_Create_Title;
+        public override string Title => _club == null
+                                           ? Labels.Club_Detail_Create_Title
+                                           : Labels.Club_Detail_Update_Title;
 
         //Name
         public string NamePlaceholder => Labels.Club_detail_Name_Placeholder;
@@ -28,7 +32,9 @@ namespace Climber.Forms.Core
         public bool IsMember { get; set; }
 
         //Confirm button
-        public string ConfirmButtonLabel => Labels.Club_Detail_Button_Create_Confirm;
+        public string ConfirmButtonLabel => _club == null
+                                           ? Labels.Club_Detail_Button_Create_Confirm
+                                           : Labels.Club_Detail_Button_Update_Confirm;
 
         public bool IsConfirmButtonEnabled => Name != null && !Name.Equals(string.Empty);
 
@@ -52,9 +58,22 @@ namespace Climber.Forms.Core
 
         #region LifeCycle
 
-        public override void Prepare(Equipment parameter)
+        public override void Prepare(ClimbingClub parameter)
         {
-            //Done in #58
+            _club = parameter;
+        }
+
+        protected override void ViewIsAppearing(object sender, EventArgs e)
+        {
+            base.ViewIsAppearing(sender, e);
+
+            if (_club != null)
+            {
+                Name = _club.Name;
+                IsMember = _club.IsMember;
+            }
+
+            RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
         }
 
         #endregion
@@ -63,16 +82,35 @@ namespace Climber.Forms.Core
 
         async Task SaveClub()
         {
-            var club = new ClimbingClub(Name, IsMember);
+            //Create
+            if (_club == null)
+            {
+                var club = new ClimbingClub(Name, IsMember);
 
-            try
-            {
-                await _clubService.AddClub(club);
-                await CoreMethods.PopPageModel(new CrudResult(ECrud.Create), false, true);
+                try
+                {
+                    await _clubService.AddClub(club);
+                    await CoreMethods.PopPageModel(new CrudResult(ECrud.Create), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
-            catch (Exception ex)
+            else //Update
             {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                _club.Name = Name;
+                _club.IsMember = IsMember;
+
+                try
+                {
+                    await _clubService.UpdateClub(_club);
+                    await CoreMethods.PopPageModel(new CrudResult(ECrud.Update), false, true);
+                }
+                catch (Exception ex)
+                {
+                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+                }
             }
         }
 
