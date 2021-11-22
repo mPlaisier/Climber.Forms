@@ -54,6 +54,7 @@ namespace Climber.Forms.Core
 
         public override void Prepare(Equipment parameter)
         {
+            //Done in #58
         }
 
         #endregion

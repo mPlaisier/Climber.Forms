@@ -12,6 +12,10 @@
 
         #region Constructor
 
+        public CrudResult(ECrud action) : this(action, true)
+        {
+        }
+
         public CrudResult(ECrud action, bool isSuccess = true)
         {
             IsSuccess = isSuccess;
