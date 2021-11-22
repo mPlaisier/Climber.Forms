@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
 {
@@ -80,7 +81,17 @@ namespace Climber.Forms.Core
 
             if (data != null)
             {
-                Clubs = new ObservableCollection<ClimbingClub>(data);
+                var clubs = new ObservableCollection<ClimbingClub>(data);
+
+                clubs.ForEach((club) =>
+                {
+                    club.ActionClicked = () =>
+                    {
+                        CoreMethods.PushPageModel<ClimbingClubDetailViewModel>(club);
+                    };
+                });
+
+                Clubs = clubs;
             }
         }
 
