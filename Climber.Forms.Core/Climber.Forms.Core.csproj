@@ -63,5 +63,6 @@
 		<Folder Include="ClimbingClub\Services\" />
 		<Folder Include="ClimbingClub\Services\Interfaces\" />
 		<Folder Include="ClimbingClub\Utils\" />
+		<Folder Include="General\Models\" />
 	</ItemGroup>
 </Project>

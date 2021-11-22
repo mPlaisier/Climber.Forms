@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -14,6 +16,16 @@ namespace Climber.Forms.Core
         public override string Title => Labels.Club_Overview_Title;
 
         public ObservableCollection<ClimbingClub> Clubs { get; private set; }
+
+        #endregion
+
+        #region Commands
+
+        ICommand _commandAddEquipment;
+        public ICommand CommandAddClub => _commandAddEquipment ??= new Command(async () =>
+        {
+            await CoreMethods.PushPageModel<ClimbingClubDetailViewModel>();
+        });
 
         #endregion
 
@@ -31,6 +43,23 @@ namespace Climber.Forms.Core
         public override void Init()
         {
             LoadData().ConfigureAwait(false);
+        }
+
+        public override void ReverseInit(object returnedData)
+        {
+            base.ReverseInit(returnedData);
+
+            if (returnedData is CrudResult result && result.IsSuccess)
+            {
+                if (result.Action == ECrud.Create)
+                    CoreMethods.DisplayAlert(Labels.Club_Overview_Alert_Created_Title, Labels.Club_Overview_Alert_Created_Body, Labels.Ok);
+                else if (result.Action == ECrud.Update)
+                    CoreMethods.DisplayAlert(Labels.Club_Overview_Alert_Updated_Title, Labels.Club_Overview_Alert_Updated_Body, Labels.Ok);
+                else if (result.Action == ECrud.Delete)
+                    CoreMethods.DisplayAlert(Labels.Club_Overview_Alert_Deleted_Title, Labels.Club_Overview_Alert_Deleted_Body, Labels.Ok);
+
+                Init();
+            }
         }
 
         #endregion
