@@ -27,6 +27,12 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
+        public ClimbingClub(string name, bool isMember)
+        {
+            Name = name;
+            IsMember = isMember;
+        }
+
         public ClimbingClub(DbClimbingClub club)
         {
             Id = club.Id;

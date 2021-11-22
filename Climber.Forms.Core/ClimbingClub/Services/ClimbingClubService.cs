@@ -21,13 +21,7 @@ namespace Climber.Forms.Core
 
         public async Task<IEnumerable<ClimbingClub>> GetClubs()
         {
-            //TODO until create is done
-            var dbClimbingClubs = new List<DbClimbingClub>
-            {
-                new DbClimbingClub{ Id = 0, Name = "Bleau Climbing team", IsMember = true },
-                new DbClimbingClub{ Id = 1, Name = "Rhino", IsMember = false },
-                new DbClimbingClub{ Id = 2, Name = "Balance", IsMember = false },
-            };
+            var dbClimbingClubs = await _database.GetListAsync<DbClimbingClub>();
 
             var lstClimbingClubs = dbClimbingClubs.Select(club => (ClimbingClub)club)
                                                   .OrderByDescending(o => o.IsMember)
