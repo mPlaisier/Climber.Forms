@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,12 +24,10 @@ namespace Climber.Forms.Core
         {
             var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
 
-            //Conver Core to Api
-            var subscriptions = dbsubscriptions.Select(subscription => (Subscription)subscription)
-                                               .OrderByDescending(o => o.IsActive)
-                                               .ThenByDescending(t => t.DatePurchase);
+            var subscriptions = await CreateSubscriptionsFromResult(dbsubscriptions);
 
-            return subscriptions;
+            return subscriptions.OrderByDescending(o => o.IsActive)
+                                .ThenByDescending(t => t.DatePurchase); ;
         }
 
         /// <summary>
@@ -37,15 +36,12 @@ namespace Climber.Forms.Core
         /// <returns></returns>
         public async Task<IEnumerable<Subscription>> GetUserSubScriptions()
         {
-            var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
+            var dbSubscriptions = await _database.GetListAsync<DbSubscription>();
 
-            //Conver Core to Api
-            var subscriptions = dbsubscriptions.Where(x => !x.IsProtected)
-                                               .Select(subscription => (Subscription)subscription)
-                                               .OrderByDescending(o => o.IsActive)
-                                               .ThenByDescending(t => t.DatePurchase);
+            var subscriptions = await CreateSubscriptionsFromResult(dbSubscriptions.Where(x => !x.IsProtected).ToList());
 
-            return subscriptions;
+            return subscriptions.OrderByDescending(o => o.IsActive)
+                                .ThenByDescending(t => t.DatePurchase); ;
         }
 
         /// <summary>
@@ -59,10 +55,9 @@ namespace Climber.Forms.Core
             //Check that the protected subscriptions exist
             dbSubscriptions = await ValidateProtectedValues(dbSubscriptions);
 
-            var subscriptions = dbSubscriptions.Select(subscription => (Subscription)subscription)
-                                               .OrderByDescending(t => t.DatePurchase);
+            var subscriptions = await CreateSubscriptionsFromResult(dbSubscriptions);
 
-            return subscriptions;
+            return subscriptions.OrderByDescending(t => t.DatePurchase); ;
         }
 
         public async Task AddSubscription(Subscription subscription)
@@ -93,6 +88,18 @@ namespace Climber.Forms.Core
             }
 
             return dbSubscriptions;
+        }
+
+        async Task<List<Subscription>> CreateSubscriptionsFromResult(List<DbSubscription> dbSubscriptions)
+        {
+            var subscriptions = new List<Subscription>();
+
+            foreach (var dbSubscription in dbSubscriptions)
+            {
+                var club = await _database.GetAsync<DbClimbingClub>(dbSubscription.ClubId);
+                subscriptions.Add(new Subscription(dbSubscription, club));
+            }
+            return subscriptions;
         }
 
         #endregion
