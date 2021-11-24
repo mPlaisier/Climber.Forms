@@ -58,7 +58,7 @@ namespace Climber.Forms.Core
 
                 var DbSubscription = await _database.GetAsync<DbSubscription>(dbSession.SubscriptionId);
 
-                var session = new ClimbingSession(dbSession, lstClimbingEquipmentItems, (Subscription)DbSubscription);
+                var session = new ClimbingSession(dbSession, lstClimbingEquipmentItems, new Subscription(DbSubscription, null));
 
                 lstEquipment.Add(session);
             }

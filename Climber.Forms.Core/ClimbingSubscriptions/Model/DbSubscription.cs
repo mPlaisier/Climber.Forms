@@ -12,6 +12,8 @@ namespace Climber.Forms.Core
 
         public DateTime DatePurchase { get; set; }
 
+        public int ClubId { get; set; }
+
         public ESubscriptionType Type { get; set; }
 
         public decimal Price { get; set; }
@@ -28,36 +30,18 @@ namespace Climber.Forms.Core
         {
         }
 
-        public DbSubscription(int id, DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive)
-        {
-            Id = id;
-
-            DatePurchase = datePurchase;
-            Type = type;
-            Price = price;
-            IsActive = isActive;
-        }
-
         internal DbSubscription(Subscription subscription)
         {
             Id = subscription.Id;
 
             DatePurchase = subscription.DatePurchase;
+
+            ClubId = subscription.Club.Id;
             Type = subscription.Type;
             Price = subscription.Price;
 
             IsActive = subscription.IsActive;
             IsProtected = subscription.IsProtected;
-        }
-
-        #endregion
-
-        #region Static
-
-        public static explicit operator Subscription(DbSubscription dbSubscription)
-        {
-            var subscription = new Subscription(dbSubscription);
-            return subscription;
         }
 
         #endregion

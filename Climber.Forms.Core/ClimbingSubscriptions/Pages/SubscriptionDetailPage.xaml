@@ -16,6 +16,15 @@
 										Format="dd/MM/yyyy"
 										Margin="5,20,5,5"/>
 
+			<!-- Subscription Club -->
+			<material:MaterialTextField InputType="SingleImmediateChoice"
+                                        Placeholder="{Binding ClubPlaceholder}"
+                                        Choices="{Binding Clubs}"
+                                        SelectedChoice="{Binding SelectedClub, Mode=TwoWay}"
+										Text="{Binding DefaultClubValue}"
+										ChoicesBindingName="Name"
+										Margin="5,20,5,5"/>
+
 			<!-- Subscription type -->
 			<material:MaterialTextField InputType="SingleImmediateChoice"
                                         Placeholder="{Binding SubscriptionTypePlaceholder}"

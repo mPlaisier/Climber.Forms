@@ -25,7 +25,7 @@ namespace Climber.Forms.Core
 
         public async Task<List<T>> GetListAsync<T>() where T : class, new()
         {
-            await CheckTable<T>();
+            await CheckTable<T>().ConfigureAwait(false);
 
             var data = await AttemptAndRetry(() => _database.Table<T>().ToListAsync())
                                  .ConfigureAwait(false);
