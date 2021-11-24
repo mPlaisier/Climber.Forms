@@ -41,7 +41,7 @@ namespace Climber.Forms.Core
             var subscriptions = await CreateSubscriptionsFromResult(dbSubscriptions.Where(x => !x.IsProtected).ToList()).ConfigureAwait(false);
 
             return subscriptions.OrderByDescending(o => o.IsActive)
-                                .ThenByDescending(t => t.DatePurchase); ;
+                                .ThenByDescending(t => t.DatePurchase);
         }
 
         /// <summary>
