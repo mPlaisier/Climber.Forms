@@ -40,14 +40,12 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        internal Subscription(DbSubscription subscription, DbClimbingClub club)
+        internal Subscription(DbSubscription subscription, ClimbingClub club)
         {
             Id = subscription.Id;
 
             DatePurchase = subscription.DatePurchase;
-
-            if (club != null)
-                Club = (ClimbingClub)club;
+            Club = club;
 
             Type = subscription.Type;
             Price = subscription.Price;
@@ -68,7 +66,7 @@ namespace Climber.Forms.Core
 
         #endregion
 
-        #region Equqls
+        #region Equals
 
         public override bool Equals(object obj)
         {

@@ -22,14 +22,12 @@ namespace Climber.Forms.Core
 
         public async Task<IEnumerable<ClimbingSession>> GetClimbingSessions()
         {
-            //Fetch required data
             var dbClimbingSessions = await _database.GetListAsync<DbClimbingSession>();
             var dbClimbingEquipment = await _database.GetListAsync<DbEquipment>();
 
-            //Conver Core to Api
-            var lstEquipment = await CreateClimbingSessionsFromResult(dbClimbingSessions, dbClimbingEquipment);
+            var lstSessions = await CreateClimbingSessionsFromResult(dbClimbingSessions, dbClimbingEquipment);
 
-            return lstEquipment.OrderByDescending(o => o.Date);
+            return lstSessions.OrderByDescending(o => o.Date);
         }
 
         public async Task SaveSession(ClimbingSession session)
@@ -57,8 +55,10 @@ namespace Climber.Forms.Core
                 var lstClimbingEquipmentItems = GetClimbingSessionEquipment(dbClimbingEquipment, lstEquipmentString);
 
                 var DbSubscription = await _database.GetAsync<DbSubscription>(dbSession.SubscriptionId);
+                var dbClub = await _database.GetAsync<DbClimbingClub>(dbSession.ClubId);
+                var club = (ClimbingClub)dbClub;
 
-                var session = new ClimbingSession(dbSession, lstClimbingEquipmentItems, new Subscription(DbSubscription, null));
+                var session = new ClimbingSession(dbSession, lstClimbingEquipmentItems, new Subscription(DbSubscription, club), club);
 
                 lstEquipment.Add(session);
             }

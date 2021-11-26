@@ -12,7 +12,7 @@ namespace Climber.Forms.Core
 
         public DateTime DatePurchase { get; set; }
 
-        public int ClubId { get; set; }
+        public int? ClubId { get; set; }
 
         public ESubscriptionType Type { get; set; }
 
@@ -36,7 +36,8 @@ namespace Climber.Forms.Core
 
             DatePurchase = subscription.DatePurchase;
 
-            ClubId = subscription.Club.Id;
+            ClubId = subscription.Club?.Id;
+
             Type = subscription.Type;
             Price = subscription.Price;
 

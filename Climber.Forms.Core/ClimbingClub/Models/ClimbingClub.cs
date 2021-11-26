@@ -51,5 +51,23 @@ namespace Climber.Forms.Core
         }
 
         #endregion
+
+        #region Equals
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ClimbingClub club))
+                return false;
+
+            return Id == club.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            var hash = 17;
+            return hash * 23 * Id.GetHashCode();
+        }
+
+        #endregion
     }
 }
