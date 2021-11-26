@@ -34,7 +34,7 @@ namespace Climber.Forms.Core
 
         public async Task<List<T>> GetListAsync<T>(Expression<Func<T, bool>> expression) where T : class, new()
         {
-            await CheckTable<T>();
+            await CheckTable<T>().ConfigureAwait(false);
 
             var data = await AttemptAndRetry(() => _database.Table<T>()
                                                             .Where(expression)
@@ -46,7 +46,7 @@ namespace Climber.Forms.Core
 
         public async Task<T> GetAsync<T>(int id) where T : class, IWithId, new()
         {
-            await CheckTable<T>();
+            await CheckTable<T>().ConfigureAwait(false);
 
             var data = await AttemptAndRetry(() => _database.Table<T>()
                                                             .Where(i => i.Id.Equals(id))
@@ -57,7 +57,7 @@ namespace Climber.Forms.Core
 
         public async Task<bool> SaveAsync<T>(T data) where T : class, IWithId, new()
         {
-            await CheckTable<T>();
+            await CheckTable<T>().ConfigureAwait(false);
 
             //Create
             if (data.Id == 0)
@@ -74,7 +74,7 @@ namespace Climber.Forms.Core
 
         public async Task<bool> DeleteAsync<T>(T data) where T : class, new()
         {
-            await CheckTable<T>();
+            await CheckTable<T>().ConfigureAwait(false);
 
             var updated = await AttemptAndRetry(() => _database.DeleteAsync(data)).ConfigureAwait(false);
             return updated == 1;

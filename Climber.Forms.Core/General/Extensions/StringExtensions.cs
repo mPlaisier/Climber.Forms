@@ -10,7 +10,7 @@ namespace Climber.Forms.Core
             {
                 null => throw new ArgumentNullException(nameof(input)),
                 "" => throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input)),
-                _ => input[0].ToString().ToUpper() + input[1..]
+                _ => input[0].ToString().ToUpperInvariant() + input[1..]
             };
         }
     }

@@ -25,7 +25,7 @@ namespace Climber.Forms.Core
 
         public static List<ClimbingType> GetClimbingTypes()
         {
-            return new List<ClimbingType>()
+            return new List<ClimbingType>
             {
                 new ClimbingType(EClimbingType.Boulder),
                 new ClimbingType(EClimbingType.Length),

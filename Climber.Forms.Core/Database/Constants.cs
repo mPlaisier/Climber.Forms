@@ -7,9 +7,9 @@ namespace Climber.Forms.Core
     {
         #region Properties
 
-        public const string DatabaseFilename = "ClimberFormSQLite.db3";
+        public static string DatabaseFilename => "ClimberFormSQLite.db3";
 
-        public const SQLite.SQLiteOpenFlags Flags =
+        public static SQLite.SQLiteOpenFlags Flags =>
             // open the database in read/write mode
             SQLite.SQLiteOpenFlags.ReadWrite |
             // create the database if it doesn't exist

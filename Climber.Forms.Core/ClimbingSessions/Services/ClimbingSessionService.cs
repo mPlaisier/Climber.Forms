@@ -25,7 +25,7 @@ namespace Climber.Forms.Core
             var dbClimbingSessions = await _database.GetListAsync<DbClimbingSession>();
             var dbClimbingEquipment = await _database.GetListAsync<DbEquipment>();
 
-            var lstSessions = await CreateClimbingSessionsFromResult(dbClimbingSessions, dbClimbingEquipment);
+            var lstSessions = await CreateClimbingSessionsFromResult(dbClimbingSessions, dbClimbingEquipment).ConfigureAwait(false);
 
             return lstSessions.OrderByDescending(o => o.Date);
         }

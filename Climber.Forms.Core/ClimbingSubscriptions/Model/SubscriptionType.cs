@@ -25,7 +25,7 @@ namespace Climber.Forms.Core
 
         public static List<SubscriptionType> GetSubscriptionTypes()
         {
-            return new List<SubscriptionType>()
+            return new List<SubscriptionType>
             {
                 new SubscriptionType(ESubscriptionType.OneYearSubscription),
                 new SubscriptionType(ESubscriptionType.ThreeMonthSubscription),
