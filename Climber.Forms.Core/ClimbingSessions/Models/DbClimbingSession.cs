@@ -14,6 +14,8 @@ namespace Climber.Forms.Core
 
         public int SubscriptionId { get; set; }
 
+        public int ClubId { get; set; }
+
         public string EquipmentJson { get; set; }
 
         public decimal Cost { get; set; }
@@ -34,6 +36,7 @@ namespace Climber.Forms.Core
             Date = session.Date;
 
             SubscriptionId = session.Subscription.Id;
+            ClubId = session.Club.Id;
             EquipmentJson = equipmentJson;
 
             Cost = session.Cost;

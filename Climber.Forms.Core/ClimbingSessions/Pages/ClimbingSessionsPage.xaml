@@ -29,9 +29,11 @@
 							<Grid.RowDefinitions>
 								<RowDefinition Height="*" />
 								<RowDefinition Height="*" />
+								<RowDefinition Height="*" />
 							</Grid.RowDefinitions>
 							<Label Text="{Binding LblDate}" Style="{DynamicResource BodyStyle}" FontAttributes="Bold" />
-							<Label Text="{Binding Subscription.LblType}" Style="{DynamicResource BodyStyle}" Grid.Row="1"/>
+							<Label Text="{Binding Subscription.Club.Name}" Style="{DynamicResource BodyStyle}" Grid.Row="1"/>
+							<Label Text="{Binding Subscription.LblType}" Style="{DynamicResource BodyStyle}" Grid.Row="2"/>
 							<yummy:PancakeView Grid.Column="1" Grid.RowSpan="2">
 								<yummy:PancakeView.Border>
 									<yummy:Border Color="#000000" Thickness="1" />

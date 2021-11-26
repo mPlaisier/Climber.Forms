@@ -34,8 +34,9 @@ namespace Climber.Forms.Core
 
         public static explicit operator ClimbingClub(DbClimbingClub dbClimbingClub)
         {
-            var climbingClub = new ClimbingClub(dbClimbingClub);
-            return climbingClub;
+            if (dbClimbingClub != null)
+                return new ClimbingClub(dbClimbingClub);
+            return default;
         }
 
         #endregion

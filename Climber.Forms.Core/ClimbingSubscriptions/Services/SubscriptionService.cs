@@ -96,8 +96,11 @@ namespace Climber.Forms.Core
 
             foreach (var dbSubscription in dbSubscriptions)
             {
-                var club = await _database.GetAsync<DbClimbingClub>(dbSubscription.ClubId);
-                subscriptions.Add(new Subscription(dbSubscription, club));
+                DbClimbingClub dbClub = null;
+                if (dbSubscription.ClubId.HasValue)
+                    dbClub = await _database.GetAsync<DbClimbingClub>(dbSubscription.ClubId.Value);
+
+                subscriptions.Add(new Subscription(dbSubscription, (ClimbingClub)dbClub));
             }
             return subscriptions;
         }
