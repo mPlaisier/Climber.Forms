@@ -1,5 +1,8 @@
 ﻿using FreshMvvm;
 using Xamarin.Forms;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Climber.Forms.Core
 {
@@ -14,6 +17,21 @@ namespace Climber.Forms.Core
 
             InitializeServices();
             InitializeNavigation();
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+#if DEBUG
+            AppCenter.Start("android=ad52d1cf-7df9-4325-a1dd-517dff0d7699;" +
+                            "ios=34001207-590e-4587-b15a-d5ff9884d9a0",
+                            typeof(Analytics), typeof(Crashes));
+#else
+            AppCenter.Start("android=42e8ebb0-974a-4b2c-9091-c2821a0e985d;" +
+                           "ios=2d1f238d-97da-4332-a4ad-1c491f37f322",
+                           typeof(Analytics), typeof(Crashes));
+#endif
         }
 
         #endregion
