@@ -55,7 +55,12 @@ namespace Climber.Forms.Core
                 var lstClimbingEquipmentItems = GetClimbingSessionEquipment(dbClimbingEquipment, lstEquipmentString);
 
                 var DbSubscription = await _database.GetAsync<DbSubscription>(dbSession.SubscriptionId);
-                var dbClub = await _database.GetAsync<DbClimbingClub>(dbSession.ClubId);
+
+                DbClimbingClub dbClub;
+                if (dbSession.ClubId == 0 && DbSubscription.ClubId.HasValue && DbSubscription.ClubId.Value != 0)
+                    dbClub = await _database.GetAsync<DbClimbingClub>(DbSubscription.ClubId.Value);
+                else
+                    dbClub = await _database.GetAsync<DbClimbingClub>(dbSession.ClubId);
                 var club = (ClimbingClub)dbClub;
 
                 var session = new ClimbingSession(dbSession, lstClimbingEquipmentItems, new Subscription(DbSubscription, club), club);
