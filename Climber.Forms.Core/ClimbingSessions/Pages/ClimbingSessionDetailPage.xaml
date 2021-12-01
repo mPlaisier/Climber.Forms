@@ -22,7 +22,8 @@
                                         Choices="{Binding Subscriptions}"
                                         SelectedChoice="{Binding SelectedSubscription, Mode=TwoWay}"
 										Text="{Binding DefaultSubscriptionValue}"
-										ChoicesBindingName="LblType"
+										ChoicesBindingName="LblTypeAndClub"
+										ChoicesResultBindingName="LblType"
 										Margin="5,20,5,5"/>
 
 			<!-- Subscription Club -->

@@ -21,6 +21,10 @@ namespace Climber.Forms.Core
 
         public string LblType => Type.GetLabel();
 
+        public string LblTypeAndClub => Club != null
+                                            ? $"{Type.GetLabel()} ({Club?.Name})"
+                                            : Type.GetLabel();
+
         public decimal Price { get; set; }
 
         public bool IsActive { get; set; }

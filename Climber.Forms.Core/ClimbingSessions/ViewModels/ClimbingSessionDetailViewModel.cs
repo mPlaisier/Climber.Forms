@@ -182,6 +182,7 @@ namespace Climber.Forms.Core
             {
                 _session.Date = SelectedDate.Value;
                 _session.Subscription = SelectedSubscription;
+                _session.Club = SelectedClub;
                 _session.Type = SelectedClimbingType.Type;
 
                 try
@@ -216,8 +217,16 @@ namespace Climber.Forms.Core
                     SelectedSubscription = _session.Subscription;
 
                     //Club
-                    DefaultClubValue = _session.Club?.Name;
-                    SelectedClub = _session.Club;
+                    if (_session.Club == null && SelectedSubscription.Club != null)
+                    {
+                        DefaultClubValue = SelectedSubscription.Club?.Name;
+                        SelectedClub = SelectedSubscription.Club;
+                    }
+                    else
+                    {
+                        DefaultClubValue = _session.Club?.Name;
+                        SelectedClub = _session.Club;
+                    }
                 }
             }
             catch (Exception ex)
