@@ -57,7 +57,7 @@ namespace Climber.Forms.Core
 
             var subscriptions = await CreateSubscriptionsFromResult(dbSubscriptions).ConfigureAwait(false);
 
-            return subscriptions.OrderByDescending(t => t.DatePurchase);
+            return subscriptions.OrderByDescending(s => !s.IsProtected).ThenByDescending(t => t.DatePurchase);
         }
 
         public async Task AddSubscription(Subscription subscription)
