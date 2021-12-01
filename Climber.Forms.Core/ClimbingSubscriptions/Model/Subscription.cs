@@ -13,11 +13,17 @@ namespace Climber.Forms.Core
 
         public DateTime DatePurchase { get; set; }
 
+        public ClimbingClub Club { get; set; }
+
         public string LblDate => DatePurchase.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
 
         public ESubscriptionType Type { get; set; }
 
         public string LblType => Type.GetLabel();
+
+        public string LblTypeAndClub => Club != null
+                                            ? $"{Type.GetLabel()} ({Club?.Name})"
+                                            : Type.GetLabel();
 
         public decimal Price { get; set; }
 
@@ -38,11 +44,13 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        internal Subscription(DbSubscription subscription)
+        internal Subscription(DbSubscription subscription, ClimbingClub club)
         {
             Id = subscription.Id;
 
             DatePurchase = subscription.DatePurchase;
+            Club = club;
+
             Type = subscription.Type;
             Price = subscription.Price;
 
@@ -50,9 +58,11 @@ namespace Climber.Forms.Core
             IsProtected = subscription.IsProtected;
         }
 
-        public Subscription(DateTime datePurchase, ESubscriptionType type, decimal price, bool isActive)
+        public Subscription(DateTime datePurchase, ClimbingClub club, ESubscriptionType type, decimal price, bool isActive)
         {
             DatePurchase = datePurchase;
+            Club = club;
+
             Type = type;
             Price = price;
             IsActive = isActive;
@@ -60,7 +70,7 @@ namespace Climber.Forms.Core
 
         #endregion
 
-        #region Equqls
+        #region Equals
 
         public override bool Equals(object obj)
         {
@@ -88,7 +98,7 @@ namespace Climber.Forms.Core
 
         public static Subscription CreateProgramSubscription()
         {
-            return new Subscription(DateTime.Now, ESubscriptionType.SingleEntree, 0, true)
+            return new Subscription(DateTime.Now, null, ESubscriptionType.SingleEntree, 0, true)
             {
                 IsProtected = true
             };

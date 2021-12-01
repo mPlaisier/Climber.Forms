@@ -1,5 +1,8 @@
 ﻿using FreshMvvm;
 using Xamarin.Forms;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Climber.Forms.Core
 {
@@ -16,6 +19,21 @@ namespace Climber.Forms.Core
             InitializeNavigation();
         }
 
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+#if DEBUG
+            AppCenter.Start("android=ad52d1cf-7df9-4325-a1dd-517dff0d7699;" +
+                            "ios=34001207-590e-4587-b15a-d5ff9884d9a0",
+                            typeof(Analytics), typeof(Crashes));
+#else
+            AppCenter.Start("android=42e8ebb0-974a-4b2c-9091-c2821a0e985d;" +
+                           "ios=2d1f238d-97da-4332-a4ad-1c491f37f322",
+                           typeof(Analytics), typeof(Crashes));
+#endif
+        }
+
         #endregion
 
         #region Private
@@ -29,21 +47,20 @@ namespace Climber.Forms.Core
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
             FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
+            FreshIOC.Container.Register<IClimbingClubService, ClimbingClubService>();
         }
 
         void InitializeNavigation()
         {
-            var mainPage = new FreshTabbedFONavigationContainer(Labels.Climber)
-            {
-                BarBackgroundColor = Color.FromHex("880e4f"),
-                BarTextColor = Color.White,
-            };
+            var masterDetailNav = new FreshMasterDetailNavigationContainer();
+            masterDetailNav.Init("Menu");
 
-            mainPage.AddTab<SubscriptionViewModel>(Labels.Subscription_Title, null);
-            mainPage.AddTab<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
-            mainPage.AddTab<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
+            masterDetailNav.AddPage<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
+            masterDetailNav.AddPage<SubscriptionViewModel>(Labels.Subscription_Title, null);
+            masterDetailNav.AddPage<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);
+            masterDetailNav.AddPage<ClimbingClubOverviewViewModel>(Labels.Club_Title, null);
 
-            MainPage = mainPage;
+            MainPage = masterDetailNav;
         }
 
         #endregion

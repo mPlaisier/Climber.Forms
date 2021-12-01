@@ -22,7 +22,18 @@
                                         Choices="{Binding Subscriptions}"
                                         SelectedChoice="{Binding SelectedSubscription, Mode=TwoWay}"
 										Text="{Binding DefaultSubscriptionValue}"
-										ChoicesBindingName="LblType"
+										ChoicesBindingName="LblTypeAndClub"
+										ChoicesResultBindingName="LblType"
+										Margin="5,20,5,5"/>
+
+			<!-- Subscription Club -->
+			<material:MaterialTextField InputType="SingleImmediateChoice"
+                                        Placeholder="{Binding ClubPlaceholder}"
+                                        Choices="{Binding Clubs}"
+										IsEnabled="{Binding IsClubEnabled}"
+                                        SelectedChoice="{Binding SelectedClub, Mode=TwoWay}"
+										Text="{Binding DefaultClubValue}"
+										ChoicesBindingName="Name"
 										Margin="5,20,5,5"/>
 
 			<!-- Climbing type -->

@@ -3,32 +3,31 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-    x:Class="Climber.Forms.Core.SubscriptionPage"
+    x:Class="Climber.Forms.Core.ClimbingClubOverviewPage"
 	Title="{Binding Title}">
 	<ContentPage.ToolbarItems>
-		<ToolbarItem Name="Add" Command="{Binding CommandAddSubscription}" Order="Primary" Priority="0" />
+		<ToolbarItem Name="Add" Command="{Binding CommandAddClub}" Order="Primary" Priority="0" />
 	</ContentPage.ToolbarItems>
-	<CollectionView ItemsSource="{Binding Subscriptions}" Margin="0,10,0,10">
+	<CollectionView ItemsSource="{Binding Clubs}" Margin="0,10,0,10">
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
 				<ContentView>
-					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
+					<material:MaterialCard CornerRadius="10"
+										   Margin="20,5,20,5"
+										   Elevation="1"
+										   IsClickable="True"
+										   ClickCommand="{Binding CommandClicked}">
 						<Grid>
 							<Grid.ColumnDefinitions>
 								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="Auto" />
+								<ColumnDefinition Width="15" />
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="1*" />
-								<RowDefinition Height="1*" />
 							</Grid.RowDefinitions>
-							<Label Text="{Binding LblType}" Style="{DynamicResource ListItemDetailTextStyle}" />
-							<Label Text="{Binding Club.Name}"
-								   Grid.Row="1"/>
-							<Label Text="{Binding LblDate}"
-								   Grid.Row="1" Grid.Column="1"/>
-							<Label Text="A"
-								   IsVisible="{Binding IsActive}"
+							<Label Text="{Binding Name}" Style="{DynamicResource ListItemDetailTextStyle}" />
+							<Label Text="M"
+								   IsVisible="{Binding IsMember}"
 								   Grid.Column="1"/>
 						</Grid>
 					</material:MaterialCard>

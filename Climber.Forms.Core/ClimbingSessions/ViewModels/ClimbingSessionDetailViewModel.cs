@@ -13,6 +13,7 @@ namespace Climber.Forms.Core
     {
         readonly IClimbingSessionService _climbingSessionService;
         readonly ISubscriptionService _subscriptionService;
+        readonly IClimbingClubService _clubService;
 
         ClimbingSession _session;
 
@@ -34,8 +35,41 @@ namespace Climber.Forms.Core
         public List<Subscription> Subscriptions { get; set; }
         public string DefaultSubscriptionValue { get; set; }
 
+        Subscription _selectedSubscription;
+        [AlsoNotifyFor(nameof(IsConfirmButtonEnabled), nameof(IsClubEnabled))]
+        public Subscription SelectedSubscription
+        {
+            get => _selectedSubscription;
+            set
+            {
+                _selectedSubscription = value;
+                if (_selectedSubscription != null && !_selectedSubscription.IsProtected)
+                {
+                    if (SelectedClub != _selectedSubscription.Club)
+                    {
+                        DefaultClubValue = _selectedSubscription.Club?.Name;
+                        SelectedClub = _selectedSubscription.Club;
+                    }
+                }
+                else if (_selectedSubscription != null)
+                {
+                    DefaultClubValue = string.Empty;
+                    SelectedClub = null;
+                }
+            }
+        }
+
+        //Club
+        public string ClubPlaceholder => Labels.Session_Detail_Club_Placeholder;
+
+        public List<ClimbingClub> Clubs { get; private set; }
+        public string DefaultClubValue { get; set; }
+
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
-        public Subscription SelectedSubscription { get; set; }
+        public ClimbingClub SelectedClub { get; set; }
+
+        //If user selct Single entree the user can select the club
+        public bool IsClubEnabled => SelectedSubscription != null && SelectedSubscription.IsProtected;
 
         //Climbing Type
         public string ClimbingTypePlaceholder => Labels.Session_Detail_Climbing_Type_Placeholder;
@@ -62,17 +96,17 @@ namespace Climber.Forms.Core
         public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveSession().ConfigureAwait(false));
 
         ICommand _commandDeleteSession;
-        public ICommand CommandDeleteSession => _commandDeleteSession ??= new Command(async () => await DeleteSession());
-
+        public ICommand CommandDeleteSession => _commandDeleteSession ??= new Command(async () => await DeleteSession().ConfigureAwait(false));
 
         #endregion
 
         #region Constructor
 
-        public ClimbingSessionDetailViewModel(IClimbingSessionService climbingSessionService, ISubscriptionService subscriptionService)
+        public ClimbingSessionDetailViewModel(IClimbingSessionService climbingSessionService, ISubscriptionService subscriptionService, IClimbingClubService clubService)
         {
             _climbingSessionService = climbingSessionService;
             _subscriptionService = subscriptionService;
+            _clubService = clubService;
         }
 
         #endregion
@@ -118,6 +152,9 @@ namespace Climber.Forms.Core
             if (SelectedSubscription == null)
                 return false;
 
+            if (SelectedClub == null)
+                return false;
+
             if (SelectedClimbingType == null)
                 return false;
 
@@ -129,7 +166,7 @@ namespace Climber.Forms.Core
             //Create
             if (_session == null)
             {
-                var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClimbingType);
+                var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClub, SelectedClimbingType);
 
                 try
                 {
@@ -145,6 +182,7 @@ namespace Climber.Forms.Core
             {
                 _session.Date = SelectedDate.Value;
                 _session.Subscription = SelectedSubscription;
+                _session.Club = SelectedClub;
                 _session.Type = SelectedClimbingType.Type;
 
                 try
@@ -166,13 +204,29 @@ namespace Climber.Forms.Core
                 var activeSubscriptions = await _subscriptionService.GetActiveSubscriptions().ConfigureAwait(false);
                 Subscriptions = activeSubscriptions.ToList();
 
+                var clubs = await _clubService.GetClubs().ConfigureAwait(false);
+                Clubs = clubs.ToList();
+
                 if (_session != null)
                 {
+                    //Subscription
                     if (!_session.Subscription.IsActive)
                         Subscriptions.Add(_session.Subscription);
 
                     DefaultSubscriptionValue = _session.Subscription.LblType;
                     SelectedSubscription = _session.Subscription;
+
+                    //Club
+                    if (_session.Club == null && SelectedSubscription.Club != null)
+                    {
+                        DefaultClubValue = SelectedSubscription.Club?.Name;
+                        SelectedClub = SelectedSubscription.Club;
+                    }
+                    else
+                    {
+                        DefaultClubValue = _session.Club?.Name;
+                        SelectedClub = _session.Club;
+                    }
                 }
             }
             catch (Exception ex)

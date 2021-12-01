@@ -11,6 +11,7 @@ namespace Climber.Forms.Core
     public class SubscriptionDetailViewModel : BaseViewModel<Subscription>
     {
         readonly ISubscriptionService _subscriptionService;
+        readonly IClimbingClubService _clubService;
 
         Subscription _subscription;
 
@@ -23,6 +24,15 @@ namespace Climber.Forms.Core
 
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public DateTime? SelectedDate { get; set; } = DateTime.Now;
+
+        //Club
+        public string ClubPlaceholder => Labels.SubscriptionDetail_Club_Placeholder;
+
+        public List<ClimbingClub> Clubs { get; private set; }
+        public string DefaultClubValue { get; set; }
+
+        [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
+        public ClimbingClub SelectedClub { get; set; }
 
         //Subscription Type
         public string SubscriptionTypePlaceholder => Labels.SubscriptionDetail_Type_Placeholder;
@@ -61,15 +71,16 @@ namespace Climber.Forms.Core
         public Command CommandConfirm => _commandConfirm ??= new Command(SaveSubscription);
 
         Command _commandDeleteSubscription;
-        public Command CommandDeleteSubscription => _commandDeleteSubscription ??= new Command(async () => await DeleteSubscription());
+        public Command CommandDeleteSubscription => _commandDeleteSubscription ??= new Command(async () => await DeleteSubscription().ConfigureAwait(false));
 
         #endregion
 
         #region Constructor
 
-        public SubscriptionDetailViewModel(ISubscriptionService subscriptionService)
+        public SubscriptionDetailViewModel(ISubscriptionService subscriptionService, IClimbingClubService clubService)
         {
             _subscriptionService = subscriptionService;
+            _clubService = clubService;
         }
 
         #endregion
@@ -79,6 +90,11 @@ namespace Climber.Forms.Core
         public override void Prepare(Subscription parameter)
         {
             _subscription = parameter;
+        }
+
+        public override void Init()
+        {
+            LoadData().ConfigureAwait(false);
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
@@ -106,16 +122,10 @@ namespace Climber.Forms.Core
 
         bool IsValid()
         {
-            if (SelectedDate == null)
-                return false;
-
-            if (SelectedType == null)
-                return false;
-
-            if (PriceValue == null || PriceValue == string.Empty || !decimal.TryParse(PriceValue, out _))
-                return false;
-
-            return true;
+            return SelectedDate != null
+                && SelectedClub != null
+                && SelectedType != null
+                && PriceValue != null && PriceValue != string.Empty && decimal.TryParse(PriceValue, out _);
         }
 
         void SaveSubscription()
@@ -125,13 +135,14 @@ namespace Climber.Forms.Core
             //Create
             if (_subscription == null)
             {
-                var subscription = new Subscription(SelectedDate.Value, SelectedType.Type, price, IsActive);
+                var subscription = new Subscription(SelectedDate.Value, SelectedClub, SelectedType.Type, price, IsActive);
 
                 _subscriptionService.AddSubscription(subscription);
             }
             else //Update
             {
                 _subscription.DatePurchase = SelectedDate.Value;
+                _subscription.Club = SelectedClub;
                 _subscription.Type = SelectedType.Type;
                 _subscription.Price = price;
                 _subscription.IsActive = IsActive;
@@ -151,6 +162,31 @@ namespace Climber.Forms.Core
                 await _subscriptionService.DeleteSubscription(_subscription);
 
                 await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, ECrud.Delete), false, true);
+            }
+        }
+
+        async Task LoadData()
+        {
+            IEnumerable<ClimbingClub> data = null;
+            try
+            {
+                data = await _clubService.GetClubs();
+            }
+            catch (Exception ex)
+            {
+                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
+            }
+
+            if (data != null)
+            {
+                Clubs = new List<ClimbingClub>(data);
+
+                if (_subscription?.Club != null)
+                {
+                    var club = Clubs.First(s => s.Id == _subscription.Club.Id);
+                    DefaultClubValue = club.Name;
+                    SelectedClub = club;
+                }
             }
         }
 
