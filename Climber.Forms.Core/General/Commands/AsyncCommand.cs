@@ -114,17 +114,17 @@ namespace Climber.Forms.Core
         {
         }
 
-        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute = null)
+        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute)
             : this(execute, canExecute, null)
         {
         }
 
-        public AsyncCommand(Func<T, Task> execute, IErrorHandler errorHandler = null)
+        public AsyncCommand(Func<T, Task> execute, IErrorHandler errorHandler)
             : this(execute, null, errorHandler)
         {
         }
 
-        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute = null, IErrorHandler errorHandler = null)
+        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute, IErrorHandler errorHandler)
         {
             _execute = execute;
             _canExecute = canExecute;
