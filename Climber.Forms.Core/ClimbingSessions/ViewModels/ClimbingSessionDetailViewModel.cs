@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PropertyChanged;
-using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -92,11 +90,11 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandConfirm;
-        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveSession().ConfigureAwait(false));
+        IAsyncCommand _commandConfirm;
+        public IAsyncCommand CommandConfirm => _commandConfirm ??= new AsyncCommand(SaveSession, IsValid);
 
-        ICommand _commandDeleteSession;
-        public ICommand CommandDeleteSession => _commandDeleteSession ??= new Command(async () => await DeleteSession().ConfigureAwait(false));
+        IAsyncCommand _commandDeleteSession;
+        public IAsyncCommand CommandDeleteSession => _commandDeleteSession ??= new AsyncCommand(DeleteSession);
 
         #endregion
 

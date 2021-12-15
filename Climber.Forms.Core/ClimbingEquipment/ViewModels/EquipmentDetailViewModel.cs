@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PropertyChanged;
-using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -54,11 +52,11 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandConfirm;
-        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveEquipment().ConfigureAwait(false));
+        IAsyncCommand _commandConfirm;
+        public IAsyncCommand CommandConfirm => _commandConfirm ??= new AsyncCommand(SaveEquipment, IsValid);
 
-        ICommand _commandDeleteEquipment;
-        public ICommand CommandDeleteEquipment => _commandDeleteEquipment ??= new Command(async () => await DeleteEquipment());
+        IAsyncCommand _commandDeleteEquipment;
+        public IAsyncCommand CommandDeleteEquipment => _commandDeleteEquipment ??= new AsyncCommand(DeleteEquipment);
 
         #endregion
 

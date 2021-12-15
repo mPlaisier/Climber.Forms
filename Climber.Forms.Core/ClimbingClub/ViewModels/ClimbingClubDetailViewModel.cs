@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PropertyChanged;
-using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -36,17 +34,17 @@ namespace Climber.Forms.Core
                                            ? Labels.Club_Detail_Button_Create_Confirm
                                            : Labels.Club_Detail_Button_Update_Confirm;
 
-        public bool IsConfirmButtonEnabled => Name != null && !Name.Equals(string.Empty);
+        public bool IsConfirmButtonEnabled => IsValid();
 
         #endregion
 
         #region Commands
 
-        ICommand _commandConfirm;
-        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveClub().ConfigureAwait(false));
+        IAsyncCommand _commandConfirm;
+        public IAsyncCommand CommandConfirm => _commandConfirm ??= new AsyncCommand(SaveClub, IsValid);
 
-        ICommand _commandDeleteClub;
-        public ICommand CommandDeleteClub => _commandDeleteClub ??= new Command(async () => await DeleteClub().ConfigureAwait(false));
+        IAsyncCommand _commandDeleteClub;
+        public IAsyncCommand CommandDeleteClub => _commandDeleteClub ??= new AsyncCommand(DeleteClub);
 
 
         #endregion
@@ -83,6 +81,11 @@ namespace Climber.Forms.Core
         #endregion
 
         #region Private
+
+        bool IsValid()
+        {
+            return Name != null && !Name.Equals(string.Empty);
+        }
 
         async Task SaveClub()
         {

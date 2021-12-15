@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -22,8 +20,8 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandAddEquipment;
-        public ICommand CommandAddEquipment => _commandAddEquipment ??= new Command(async () =>
+        IAsyncCommand _commandAddEquipment;
+        public IAsyncCommand CommandAddEquipment => _commandAddEquipment ??= new AsyncCommand(async () =>
         {
             await CoreMethods.PushPageModel<EquipmentDetailViewModel>();
         });
