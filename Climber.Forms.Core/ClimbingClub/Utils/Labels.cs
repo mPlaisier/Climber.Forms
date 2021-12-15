@@ -20,6 +20,7 @@
 
         public static string Club_detail_Name_Placeholder => "Name";
         public static string Club_Detail_Member_Label => "Do you have a membership?";
+        public static string Club_detail_City_Placeholder => "City";
 
         public static string Club_Detail_Button_Create_Confirm => "Add club";
         public static string Club_Detail_Button_Update_Confirm => "Update club";
