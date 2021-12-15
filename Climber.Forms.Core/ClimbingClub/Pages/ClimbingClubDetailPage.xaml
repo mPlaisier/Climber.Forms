@@ -27,6 +27,12 @@
 				</StackLayout>
 			</material:MaterialCard>
 
+			<!-- Club Name -->
+			<material:MaterialTextField InputType="Text"
+                                        Placeholder="{Binding CityPlaceholder}"
+										Text="{Binding City}"
+										Margin="5,20,5,5"/>
+
 			<!-- Confirm button -->
 			<material:MaterialButton Text="{Binding ConfirmButtonLabel}"
 									 IsEnabled="{Binding IsConfirmButtonEnabled}"

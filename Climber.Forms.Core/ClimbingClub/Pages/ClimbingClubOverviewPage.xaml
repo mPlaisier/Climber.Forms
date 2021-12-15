@@ -23,12 +23,15 @@
 								<ColumnDefinition Width="15" />
 							</Grid.ColumnDefinitions>
 							<Grid.RowDefinitions>
-								<RowDefinition Height="1*" />
+								<RowDefinition Height="*" />
+								<RowDefinition Height="*" />
 							</Grid.RowDefinitions>
-							<Label Text="{Binding Name}" Style="{DynamicResource ListItemDetailTextStyle}" />
+							<Label Text="{Binding Name}" Style="{DynamicResource BodyStyle}" FontAttributes="Bold" />
 							<Label Text="M"
 								   IsVisible="{Binding IsMember}"
 								   Grid.Column="1"/>
+
+							<Label Text="{Binding City}" Style="{DynamicResource BodyStyle}" Grid.Row="1"/>
 						</Grid>
 					</material:MaterialCard>
 				</ContentView>

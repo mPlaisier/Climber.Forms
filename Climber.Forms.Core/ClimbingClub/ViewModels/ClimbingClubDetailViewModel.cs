@@ -31,12 +31,18 @@ namespace Climber.Forms.Core
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public bool IsMember { get; set; }
 
+        //City
+        public string CityPlaceholder => Labels.Club_detail_City_Placeholder;
+
+        [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
+        public string City { get; set; }
+
         //Confirm button
         public string ConfirmButtonLabel => _club == null
                                            ? Labels.Club_Detail_Button_Create_Confirm
                                            : Labels.Club_Detail_Button_Update_Confirm;
 
-        public bool IsConfirmButtonEnabled => Name != null && !Name.Equals(string.Empty);
+        public bool IsConfirmButtonEnabled => IsValid();
 
         #endregion
 
@@ -75,6 +81,7 @@ namespace Climber.Forms.Core
             {
                 Name = _club.Name;
                 IsMember = _club.IsMember;
+                City = _club.City;
             }
 
             RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
@@ -86,10 +93,13 @@ namespace Climber.Forms.Core
 
         async Task SaveClub()
         {
+            Name = Name.Trim();
+            City = City.Trim();
+
             //Create
             if (_club == null)
             {
-                var club = new ClimbingClub(Name, IsMember);
+                var club = new ClimbingClub(Name, IsMember, City);
 
                 try
                 {
@@ -105,6 +115,7 @@ namespace Climber.Forms.Core
             {
                 _club.Name = Name;
                 _club.IsMember = IsMember;
+                _club.City = City;
 
                 try
                 {
@@ -137,6 +148,17 @@ namespace Climber.Forms.Core
                     }
                 }
             }
+        }
+
+        bool IsValid()
+        {
+            if (Name == null || City == null)
+                return false;
+
+            var name = Name.Trim();
+            var city = City.Trim();
+
+            return !name.Equals(string.Empty) && !city.Equals(string.Empty);
         }
 
         #endregion

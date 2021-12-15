@@ -14,6 +14,8 @@ namespace Climber.Forms.Core
 
         public bool IsMember { get; set; }
 
+        public string City { get; set; }
+
         public Action ActionClicked { get; set; }
 
         #endregion
@@ -27,10 +29,11 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public ClimbingClub(string name, bool isMember)
+        public ClimbingClub(string name, bool isMember, string city)
         {
             Name = name;
             IsMember = isMember;
+            City = city;
         }
 
         public ClimbingClub(DbClimbingClub club)
@@ -38,6 +41,7 @@ namespace Climber.Forms.Core
             Id = club.Id;
             Name = club.Name;
             IsMember = club.IsMember;
+            City = club.City;
         }
 
         #endregion
