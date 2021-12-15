@@ -6,12 +6,12 @@ namespace Climber.Forms.Core
     public static class TaskExtensions
     {
 #pragma warning disable RECS0165 // Asynchronous methods should return a Task instead of void
-        public static async void FireAndForgetSafeAsync(this Task task, IErrorHandler handler = null)
+        public static async void FireAndForgetSafeAsync(this Task task, IErrorHandler handler)
 #pragma warning restore RECS0165 // Asynchronous methods should return a Task instead of void
         {
             try
             {
-                await task;
+                await task.ConfigureAwait(false);
             }
             catch (Exception ex)
             {

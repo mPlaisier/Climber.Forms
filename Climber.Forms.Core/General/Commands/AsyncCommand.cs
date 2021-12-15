@@ -23,7 +23,22 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public AsyncCommand(Func<Task> execute, Func<bool> canExecute = null, IErrorHandler errorHandler = null)
+        public AsyncCommand(Func<Task> execute)
+            : this(execute, null, null)
+        {
+        }
+
+        public AsyncCommand(Func<Task> execute, Func<bool> canExecute)
+            : this(execute, canExecute, null)
+        {
+        }
+
+        public AsyncCommand(Func<Task> execute, IErrorHandler errorHandler)
+            : this(execute, null, errorHandler)
+        {
+        }
+
+        public AsyncCommand(Func<Task> execute, Func<bool> canExecute, IErrorHandler errorHandler)
         {
             _execute = execute;
             _canExecute = canExecute;
@@ -46,7 +61,7 @@ namespace Climber.Forms.Core
                 try
                 {
                     _isExecuting = true;
-                    await _execute();
+                    await _execute().ConfigureAwait(false);
                 }
                 finally
                 {
@@ -94,6 +109,21 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
+        public AsyncCommand(Func<T, Task> execute)
+            : this(execute, null, null)
+        {
+        }
+
+        public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute = null)
+            : this(execute, canExecute, null)
+        {
+        }
+
+        public AsyncCommand(Func<T, Task> execute, IErrorHandler errorHandler = null)
+            : this(execute, null, errorHandler)
+        {
+        }
+
         public AsyncCommand(Func<T, Task> execute, Func<T, bool> canExecute = null, IErrorHandler errorHandler = null)
         {
             _execute = execute;
@@ -117,7 +147,7 @@ namespace Climber.Forms.Core
                 try
                 {
                     _isExecuting = true;
-                    await _execute(parameter);
+                    await _execute(parameter).ConfigureAwait(false);
                 }
                 finally
                 {

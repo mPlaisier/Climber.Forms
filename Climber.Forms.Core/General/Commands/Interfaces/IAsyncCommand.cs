@@ -9,7 +9,7 @@ namespace Climber.Forms.Core
         bool CanExecute();
     }
 
-    public interface IAsyncCommand<T> : ICommand
+    public interface IAsyncCommand<in T> : ICommand
     {
         Task ExecuteAsync(T parameter);
         bool CanExecute(T parameter);
