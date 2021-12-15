@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -21,8 +20,8 @@ namespace Climber.Forms.Core
 
         #region Commandse
 
-        Command _commandAddSubscription;
-        public Command CommandAddSubscription => _commandAddSubscription ??= new Command(async () =>
+        IAsyncCommand _commandAddSubscription;
+        public IAsyncCommand CommandAddSubscription => _commandAddSubscription ??= new AsyncCommand(async () =>
         {
             await CoreMethods.PushPageModel<SubscriptionDetailViewModel>();
         });

@@ -67,5 +67,8 @@
 		<Folder Include="ClimbingClub\Services\Interfaces\" />
 		<Folder Include="ClimbingClub\Utils\" />
 		<Folder Include="General\Models\" />
+		<Folder Include="General\Commands\" />
+		<Folder Include="ErrorHandler\" />
+		<Folder Include="General\Commands\Interfaces\" />
 	</ItemGroup>
 </Project>

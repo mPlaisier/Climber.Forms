@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -22,8 +20,8 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandAddSession;
-        public ICommand CommandAddSession => _commandAddSession ??= new Command(async () =>
+        IAsyncCommand _commandAddSession;
+        public IAsyncCommand CommandAddSession => _commandAddSession ??= new AsyncCommand(async () =>
         {
             await CoreMethods.PushPageModel<ClimbingSessionDetailViewModel>();
         });
