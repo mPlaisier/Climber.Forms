@@ -9,6 +9,8 @@ namespace Climber.Forms.Core
     public class ClimbingSessionsViewModel : BaseViewModel
     {
         readonly IClimbingSessionService _climbingSessionService;
+        readonly IMessageService _messageService;
+        readonly ClimbingTaskService _taskService;
 
         #region Properties
 
@@ -30,9 +32,11 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public ClimbingSessionsViewModel(IClimbingSessionService climbingSessionService)
+        public ClimbingSessionsViewModel(IClimbingSessionService climbingSessionService, IMessageService messageService, ClimbingTaskService taskService)
         {
             _climbingSessionService = climbingSessionService;
+            _messageService = messageService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -51,11 +55,11 @@ namespace Climber.Forms.Core
             if (returnedData is SessionDetailResult result && result.IsSuccess)
             {
                 if (result.Action == ECrud.Create)
-                    CoreMethods.DisplayAlert(Labels.Session_Alert_Created_Title, Labels.Session_Alert_Created_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Session_Alert_Created_Body, EMessagePriority.Low);
                 if (result.Action == ECrud.Update)
-                    CoreMethods.DisplayAlert(Labels.Session_Alert_Updated_Title, Labels.Session_Alert_Updated_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Session_Alert_Updated_Body, EMessagePriority.Low);
                 if (result.Action == ECrud.Delete)
-                    CoreMethods.DisplayAlert(Labels.Session_Alert_Deleted_Title, Labels.Session_Alert_Deleted_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Session_Alert_Deleted_Body, EMessagePriority.Medium);
 
                 Init();
             }
@@ -68,14 +72,11 @@ namespace Climber.Forms.Core
         async Task LoadData()
         {
             IEnumerable<ClimbingSession> data = null;
-            try
+
+            await _taskService.Execute(async () =>
             {
                 data = await _climbingSessionService.GetClimbingSessions();
-            }
-            catch (Exception ex)
-            {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-            }
+            });
 
             if (data != null)
             {

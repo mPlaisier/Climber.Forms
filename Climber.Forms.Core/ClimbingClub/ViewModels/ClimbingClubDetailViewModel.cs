@@ -8,6 +8,7 @@ namespace Climber.Forms.Core
     public class ClimbingClubDetailViewModel : BaseViewModel<ClimbingClub>
     {
         readonly IClimbingClubService _clubService;
+        readonly IClimbingTaskService _taskService;
 
         ClimbingClub _club;
 
@@ -52,14 +53,14 @@ namespace Climber.Forms.Core
         IAsyncCommand _commandDeleteClub;
         public IAsyncCommand CommandDeleteClub => _commandDeleteClub ??= new AsyncCommand(DeleteClub);
 
-
         #endregion
 
         #region Constructor
 
-        public ClimbingClubDetailViewModel(IClimbingClubService clubService)
+        public ClimbingClubDetailViewModel(IClimbingClubService clubService, IClimbingTaskService taskService)
         {
             _clubService = clubService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -89,11 +90,6 @@ namespace Climber.Forms.Core
 
         #region Private
 
-        bool IsValid()
-        {
-            return Name != null && !Name.Equals(string.Empty);
-        }
-
         async Task SaveClub()
         {
             Name = Name.Trim();
@@ -104,15 +100,11 @@ namespace Climber.Forms.Core
             {
                 var club = new ClimbingClub(Name, IsMember, City);
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _clubService.AddClub(club);
                     await CoreMethods.PopPageModel(new CrudResult(ECrud.Create), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
             else //Update
             {
@@ -120,15 +112,11 @@ namespace Climber.Forms.Core
                 _club.IsMember = IsMember;
                 _club.City = City;
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _clubService.UpdateClub(_club);
                     await CoreMethods.PopPageModel(new CrudResult(ECrud.Update), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
         }
 
@@ -136,20 +124,11 @@ namespace Climber.Forms.Core
         {
             if (_club != null)
             {
-                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
-
-                if (delete)
+                await _taskService.ExecuteDelete(async () =>
                 {
-                    try
-                    {
-                        await _clubService.DeleteClub(_club);
-                        await CoreMethods.PopPageModel(new CrudResult(ECrud.Delete), false, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                    }
-                }
+                    await _clubService.DeleteClub(_club);
+                    await CoreMethods.PopPageModel(new CrudResult(ECrud.Delete), false, true);
+                });
             }
         }
 

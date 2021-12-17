@@ -1,9 +1,11 @@
-﻿using Android.App;
+﻿using Acr.UserDialogs;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using AndroidX.AppCompat.App;
 using Climber.Forms.Core;
+using Xamarin.Forms.Platform.Android;
 
 namespace Climber.Forms.Droid
 {
@@ -22,6 +24,8 @@ namespace Climber.Forms.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            UserDialogs.Init(this);
 
             XF.Material.Droid.Material.Init(this, savedInstanceState);
 

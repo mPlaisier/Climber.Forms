@@ -11,6 +11,7 @@ namespace Climber.Forms.Core
     {
         readonly ISubscriptionService _subscriptionService;
         readonly IClimbingClubService _clubService;
+        readonly IClimbingTaskService _taskService;
 
         Subscription _subscription;
 
@@ -76,10 +77,11 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public SubscriptionDetailViewModel(ISubscriptionService subscriptionService, IClimbingClubService clubService)
+        public SubscriptionDetailViewModel(ISubscriptionService subscriptionService, IClimbingClubService clubService, IClimbingTaskService taskService)
         {
             _subscriptionService = subscriptionService;
             _clubService = clubService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -136,7 +138,11 @@ namespace Climber.Forms.Core
             {
                 var subscription = new Subscription(SelectedDate.Value, SelectedClub, SelectedType.Type, price, IsActive);
 
-                await _subscriptionService.AddSubscription(subscription);
+                await _taskService.Execute(async () =>
+                {
+                    await _subscriptionService.AddSubscription(subscription);
+                });
+
             }
             else //Update
             {
@@ -146,7 +152,10 @@ namespace Climber.Forms.Core
                 _subscription.Price = price;
                 _subscription.IsActive = IsActive;
 
-                await _subscriptionService.UpdateSubscription(_subscription);
+                await _taskService.Execute(async () =>
+                {
+                    await _subscriptionService.UpdateSubscription(_subscription);
+                });
             }
 
             await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, _subscription != null ? ECrud.Update : ECrud.Create), false, true);
@@ -154,27 +163,24 @@ namespace Climber.Forms.Core
 
         async Task DeleteSubscription()
         {
-            var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
-
-            if (delete)
+            if (_subscription != null)
             {
-                await _subscriptionService.DeleteSubscription(_subscription);
-
-                await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, ECrud.Delete), false, true);
+                await _taskService.ExecuteDelete(async () =>
+                {
+                    await _subscriptionService.DeleteSubscription(_subscription);
+                    await CoreMethods.PopPageModel(new SubscriptionDetailResult(true, ECrud.Delete), false, true);
+                });
             }
         }
 
         async Task LoadData()
         {
             IEnumerable<ClimbingClub> data = null;
-            try
+
+            await _taskService.Execute(async () =>
             {
                 data = await _clubService.GetClubs();
-            }
-            catch (Exception ex)
-            {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-            }
+            });
 
             if (data != null)
             {

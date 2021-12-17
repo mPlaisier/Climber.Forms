@@ -21,6 +21,7 @@
 		<PackageReference Include="Microsoft.AppCenter" Version="4.4.0" />
 		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="4.4.0" />
 		<PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.4.0" />
+		<PackageReference Include="Acr.UserDialogs" Version="7.2.0.561" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="ClimbingSessions\" />
@@ -70,5 +71,13 @@
 		<Folder Include="General\Commands\" />
 		<Folder Include="ErrorHandler\" />
 		<Folder Include="General\Commands\Interfaces\" />
+		<Folder Include="Messages\" />
+		<Folder Include="Messages\ToastMessage\" />
+		<Folder Include="Messages\Utils\" />
+		<Folder Include="Messages\Interfaces\" />
+		<Folder Include="Messages\DialogMessage\" />
+		<Folder Include="Messages\DialogMessage\Interfaces\" />
+		<Folder Include="ClimbingTasks\" />
+		<Folder Include="ClimbingTasks\Interfaces\" />
 	</ItemGroup>
 </Project>
