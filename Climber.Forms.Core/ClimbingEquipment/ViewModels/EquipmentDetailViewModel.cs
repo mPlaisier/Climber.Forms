@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PropertyChanged;
-using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -10,6 +8,7 @@ namespace Climber.Forms.Core
     public class EquipmentDetailViewModel : BaseViewModel<Equipment>
     {
         readonly IEquipmentService _equipmentService;
+        readonly IClimbingTaskService _taskService;
 
         Equipment _equipment;
 
@@ -54,19 +53,20 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandConfirm;
-        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveEquipment().ConfigureAwait(false));
+        IAsyncCommand _commandConfirm;
+        public IAsyncCommand CommandConfirm => _commandConfirm ??= new AsyncCommand(SaveEquipment, IsValid);
 
-        ICommand _commandDeleteEquipment;
-        public ICommand CommandDeleteEquipment => _commandDeleteEquipment ??= new Command(async () => await DeleteEquipment());
+        IAsyncCommand _commandDeleteEquipment;
+        public IAsyncCommand CommandDeleteEquipment => _commandDeleteEquipment ??= new AsyncCommand(DeleteEquipment);
 
         #endregion
 
         #region Constructor
 
-        public EquipmentDetailViewModel(IEquipmentService equipmentService)
+        public EquipmentDetailViewModel(IEquipmentService equipmentService, IClimbingTaskService taskService)
         {
             _equipmentService = equipmentService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -122,15 +122,11 @@ namespace Climber.Forms.Core
             {
                 var equipment = new Equipment(SelectedDate.Value, Description, price, IsActive);
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _equipmentService.AddEquipment(equipment);
                     await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Create), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
             else //Update
             {
@@ -139,15 +135,11 @@ namespace Climber.Forms.Core
                 _equipment.Price = price;
                 _equipment.IsActive = IsActive;
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _equipmentService.UpdateEquipment(_equipment);
                     await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Update), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
         }
 
@@ -155,20 +147,11 @@ namespace Climber.Forms.Core
         {
             if (_equipment != null)
             {
-                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
-
-                if (delete)
+                await _taskService.ExecuteDelete(async () =>
                 {
-                    try
-                    {
-                        await _equipmentService.DeleteEquipment(_equipment);
-                        await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Delete), false, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                    }
-                }
+                    await _equipmentService.DeleteEquipment(_equipment);
+                    await CoreMethods.PopPageModel(new EquipmentDetailResult(true, ECrud.Delete), false, true);
+                });
             }
         }
 

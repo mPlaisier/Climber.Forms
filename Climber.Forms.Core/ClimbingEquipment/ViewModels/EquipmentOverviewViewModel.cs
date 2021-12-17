@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -11,6 +8,8 @@ namespace Climber.Forms.Core
     public class EquipmentOverviewViewModel : BaseViewModel
     {
         readonly IEquipmentService _equipmentService;
+        readonly IMessageService _messageService;
+        readonly ClimbingTaskService _taskService;
 
         #region Properties
 
@@ -22,8 +21,8 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandAddEquipment;
-        public ICommand CommandAddEquipment => _commandAddEquipment ??= new Command(async () =>
+        IAsyncCommand _commandAddEquipment;
+        public IAsyncCommand CommandAddEquipment => _commandAddEquipment ??= new AsyncCommand(async () =>
         {
             await CoreMethods.PushPageModel<EquipmentDetailViewModel>();
         });
@@ -32,9 +31,11 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public EquipmentOverviewViewModel(IEquipmentService equipmentService)
+        public EquipmentOverviewViewModel(IEquipmentService equipmentService, IMessageService messageService, ClimbingTaskService taskService)
         {
             _equipmentService = equipmentService;
+            _messageService = messageService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -53,11 +54,11 @@ namespace Climber.Forms.Core
             if (returnedData is EquipmentDetailResult result && result.IsSuccess)
             {
                 if (result.Action == ECrud.Create)
-                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Created_Title, Labels.Equipment_Alert_Created_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Equipment_Alert_Created_Body, EMessagePriority.Low);
                 else if (result.Action == ECrud.Update)
-                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Updated_Title, Labels.Equipment_Alert_Updated_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Equipment_Alert_Updated_Body, EMessagePriority.Low);
                 else if (result.Action == ECrud.Delete)
-                    CoreMethods.DisplayAlert(Labels.Equipment_Alert_Deleted_Title, Labels.Equipment_Alert_Deleted_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Equipment_Alert_Deleted_Body, EMessagePriority.Medium);
 
                 Init();
             }
@@ -70,14 +71,11 @@ namespace Climber.Forms.Core
         async Task LoadData()
         {
             IEnumerable<Equipment> data = null;
-            try
+
+            await _taskService.Execute(async () =>
             {
                 data = await _equipmentService.GetEquipment();
-            }
-            catch (Exception ex)
-            {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-            }
+            });
 
             if (data != null)
             {

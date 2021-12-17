@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using PropertyChanged;
-using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
@@ -14,6 +12,8 @@ namespace Climber.Forms.Core
         readonly IClimbingSessionService _climbingSessionService;
         readonly ISubscriptionService _subscriptionService;
         readonly IClimbingClubService _clubService;
+
+        readonly IClimbingTaskService _taskService;
 
         ClimbingSession _session;
 
@@ -92,21 +92,25 @@ namespace Climber.Forms.Core
 
         #region Commands
 
-        ICommand _commandConfirm;
-        public ICommand CommandConfirm => _commandConfirm ??= new Command(async () => await SaveSession().ConfigureAwait(false));
+        IAsyncCommand _commandConfirm;
+        public IAsyncCommand CommandConfirm => _commandConfirm ??= new AsyncCommand(SaveSession, IsValid);
 
-        ICommand _commandDeleteSession;
-        public ICommand CommandDeleteSession => _commandDeleteSession ??= new Command(async () => await DeleteSession().ConfigureAwait(false));
+        IAsyncCommand _commandDeleteSession;
+        public IAsyncCommand CommandDeleteSession => _commandDeleteSession ??= new AsyncCommand(DeleteSession);
 
         #endregion
 
         #region Constructor
 
-        public ClimbingSessionDetailViewModel(IClimbingSessionService climbingSessionService, ISubscriptionService subscriptionService, IClimbingClubService clubService)
+        public ClimbingSessionDetailViewModel(IClimbingSessionService climbingSessionService,
+                                              ISubscriptionService subscriptionService,
+                                              IClimbingClubService clubService,
+                                              IClimbingTaskService taskService)
         {
             _climbingSessionService = climbingSessionService;
             _subscriptionService = subscriptionService;
             _clubService = clubService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -168,15 +172,11 @@ namespace Climber.Forms.Core
             {
                 var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClub, SelectedClimbingType);
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _climbingSessionService.SaveSession(session);
                     await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Create), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
             else //Update
             {
@@ -185,21 +185,17 @@ namespace Climber.Forms.Core
                 _session.Club = SelectedClub;
                 _session.Type = SelectedClimbingType.Type;
 
-                try
+                await _taskService.Execute(async () =>
                 {
                     await _climbingSessionService.SaveSession(_session);
                     await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Update), false, true);
-                }
-                catch (Exception ex)
-                {
-                    await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                }
+                });
             }
         }
 
         async Task LoadData()
         {
-            try
+            await _taskService.Execute(async () =>
             {
                 var activeSubscriptions = await _subscriptionService.GetActiveSubscriptions().ConfigureAwait(false);
                 Subscriptions = activeSubscriptions.ToList();
@@ -228,31 +224,18 @@ namespace Climber.Forms.Core
                         SelectedClub = _session.Club;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-            }
+            });
         }
 
         async Task DeleteSession()
         {
             if (_session != null)
             {
-                var delete = await CoreMethods.DisplayAlert(Labels.LblDelete, Labels.LblConfirm, Labels.LblYes, Labels.LblCancel);
-
-                if (delete)
+                await _taskService.ExecuteDelete(async () =>
                 {
-                    try
-                    {
-                        await _climbingSessionService.DeleteSession(_session);
-                        await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Delete), false, true);
-                    }
-                    catch (Exception ex)
-                    {
-                        await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-                    }
-                }
+                    await _climbingSessionService.DeleteSession(_session);
+                    await CoreMethods.PopPageModel(new SessionDetailResult(true, ECrud.Delete), false, true);
+                });
             }
         }
 

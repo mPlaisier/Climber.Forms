@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Climber.Forms.Core
@@ -10,6 +8,8 @@ namespace Climber.Forms.Core
     public class SubscriptionViewModel : BaseViewModel
     {
         readonly ISubscriptionService _subscriptionService;
+        readonly IMessageService _messageService;
+        readonly ClimbingTaskService _taskService;
 
         #region Properties
 
@@ -21,8 +21,8 @@ namespace Climber.Forms.Core
 
         #region Commandse
 
-        Command _commandAddSubscription;
-        public Command CommandAddSubscription => _commandAddSubscription ??= new Command(async () =>
+        IAsyncCommand _commandAddSubscription;
+        public IAsyncCommand CommandAddSubscription => _commandAddSubscription ??= new AsyncCommand(async () =>
         {
             await CoreMethods.PushPageModel<SubscriptionDetailViewModel>();
         });
@@ -31,9 +31,11 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public SubscriptionViewModel(ISubscriptionService subscriptionService)
+        public SubscriptionViewModel(ISubscriptionService subscriptionService, IMessageService messageService, ClimbingTaskService taskService)
         {
             _subscriptionService = subscriptionService;
+            _messageService = messageService;
+            _taskService = taskService;
         }
 
         #endregion
@@ -52,11 +54,11 @@ namespace Climber.Forms.Core
             if (returnedData is SubscriptionDetailResult result && result.IsSuccess)
             {
                 if (result.Action == ECrud.Update)
-                    CoreMethods.DisplayAlert(Labels.Subscription_Alert_Updated_Title, Labels.Subscription_Alert_Updated_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Subscription_Alert_Updated_Body, EMessagePriority.Low);
                 else if (result.Action == ECrud.Create)
-                    CoreMethods.DisplayAlert(Labels.Subscription_Alert_Created_Title, Labels.Subscription_Alert_Created_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Subscription_Alert_Created_Body, EMessagePriority.Low);
                 else if (result.Action == ECrud.Delete)
-                    CoreMethods.DisplayAlert(Labels.Subscription_Alert_Deleted_Title, Labels.Subscription_Alert_Deleted_Body, Labels.Ok);
+                    _messageService.ShowInfoMessage(Labels.Subscription_Alert_Deleted_Body, EMessagePriority.Medium);
 
                 Init();
             }
@@ -69,14 +71,11 @@ namespace Climber.Forms.Core
         async Task LoadData()
         {
             IEnumerable<Subscription> data = null;
-            try
+
+            await _taskService.Execute(async () =>
             {
                 data = await _subscriptionService.GetUserSubScriptions();
-            }
-            catch (Exception ex)
-            {
-                await CoreMethods.DisplayAlert(Labels.LblError, ex.Message, Labels.Ok);
-            }
+            });
 
             if (data != null)
             {
