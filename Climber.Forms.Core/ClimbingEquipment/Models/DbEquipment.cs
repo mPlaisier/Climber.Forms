@@ -37,7 +37,12 @@ namespace Climber.Forms.Core
             IsActive = equipment.IsActive;
         }
 
-        public DbEquipment(int id, DateTime datePurchase, string description, decimal price, bool isActive = true)
+        public DbEquipment(int id, DateTime datePurchase, string description, decimal price)
+            : this(id, datePurchase, description, price, true)
+        {
+        }
+
+        public DbEquipment(int id, DateTime datePurchase, string description, decimal price, bool isActive)
         {
             Id = id;
 

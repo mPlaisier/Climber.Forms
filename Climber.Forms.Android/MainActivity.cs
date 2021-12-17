@@ -5,7 +5,6 @@ using Android.OS;
 using Android.Runtime;
 using AndroidX.AppCompat.App;
 using Climber.Forms.Core;
-using Xamarin.Forms.Platform.Android;
 
 namespace Climber.Forms.Droid
 {

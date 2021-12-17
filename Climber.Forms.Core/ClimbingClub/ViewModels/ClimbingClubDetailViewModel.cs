@@ -140,7 +140,7 @@ namespace Climber.Forms.Core
             var name = Name.Trim();
             var city = City.Trim();
 
-            return !name.Equals(string.Empty) && !city.Equals(string.Empty);
+            return !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(city);
         }
 
         #endregion

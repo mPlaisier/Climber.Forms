@@ -47,7 +47,7 @@ namespace Climber.Forms.Core
 
         public async Task<bool> AskDeleteConfirmation()
         {
-            return await AskConfirmation(Labels.LblDelete, Labels.LblConfirm);
+            return await AskConfirmation(Labels.LblDelete, Labels.LblConfirm).ConfigureAwait(false);
         }
 
         #endregion

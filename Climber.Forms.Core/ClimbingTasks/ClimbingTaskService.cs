@@ -22,7 +22,7 @@ namespace Climber.Forms.Core
         {
             try
             {
-                await func.Invoke();
+                await func.Invoke().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -35,7 +35,7 @@ namespace Climber.Forms.Core
             var delete = await _messageService.AskDeleteConfirmation();
             if (delete)
             {
-                await Execute(func);
+                await Execute(func).ConfigureAwait(false);
             }
         }
 
