@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Acr.UserDialogs;
 
 namespace Climber.Forms.Core
 {
@@ -40,10 +41,18 @@ namespace Climber.Forms.Core
 
         void InitializeServices()
         {
+            //UserDialogs/Messages
+            FreshIOC.Container.Register(UserDialogs.Instance);
+            FreshIOC.Container.Register<IToastMessageService, ToastMessageService>();
+            FreshIOC.Container.Register<IDialogService, DialogService>();
+            FreshIOC.Container.Register<IMessageService, MessageService>();
+
             //Db
             FreshIOC.Container.Register<IDatabaseService, LocalDatabase>();
 
             //Climbing services
+            FreshIOC.Container.Register<IClimbingTaskService, ClimbingTaskService>();
+
             FreshIOC.Container.Register<IClimbingSessionService, ClimbingSessionService>();
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
             FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
