@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using CBP.Extensions;
 using Xamarin.Forms;
 
 namespace Climber.Forms.Core
