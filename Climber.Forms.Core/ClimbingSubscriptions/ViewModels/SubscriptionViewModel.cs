@@ -74,7 +74,7 @@ namespace Climber.Forms.Core
 
             await _taskService.Execute(async () =>
             {
-                data = await _subscriptionService.GetUserSubScriptions();
+                data = await _subscriptionService.GetUserSubScriptions(false);
             });
 
             if (data != null)

@@ -30,6 +30,18 @@ namespace Climber.Forms.Core
             return lstSessions.OrderByDescending(o => o.Date);
         }
 
+        /// <summary>
+        /// Get the count of sessions for the <paramref name="subscription"/>.
+        /// </summary>
+        /// <param name="subscription"></param>
+        /// <returns></returns>
+        public async Task<int> GetCountForSubscription(Subscription subscription)
+        {
+            var dbClimbingSessions = await _database.GetListAsync<DbClimbingSession>(x => x.SubscriptionId == subscription.Id);
+
+            return dbClimbingSessions.Count;
+        }
+
         public async Task SaveSession(ClimbingSession session)
         {
             var dbClimbingSession = CreateDbSession(session);

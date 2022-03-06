@@ -57,6 +57,10 @@ namespace Climber.Forms.Core
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
             FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
             FreshIOC.Container.Register<IClimbingClubService, ClimbingClubService>();
+
+            //Dashboard
+            FreshIOC.Container.Register<IDashboardSubscriptionScreenManagerService, DashboardSubscriptionScreenManagerService>();
+            FreshIOC.Container.Register<IDashboardService, DashboardService>();
         }
 
         void InitializeNavigation()
@@ -64,6 +68,7 @@ namespace Climber.Forms.Core
             var masterDetailNav = new FreshMasterDetailNavigationContainer();
             masterDetailNav.Init("Menu");
 
+            masterDetailNav.AddPage<DashboardViewModel>(LblDashboard.Dashboard_Title, null);
             masterDetailNav.AddPage<ClimbingSessionsViewModel>(Labels.Session_Overview_Title, null);
             masterDetailNav.AddPage<SubscriptionViewModel>(Labels.Subscription_Title, null);
             masterDetailNav.AddPage<EquipmentOverviewViewModel>(Labels.Equipment_Title, null);

@@ -8,7 +8,7 @@ using Climber.Forms.Core;
 
 namespace Climber.Forms.Droid
 {
-    [Activity(Label = "Climber.Forms",
+    [Activity(Label = "Climber.Dev",
               Icon = "@mipmap/icon",
               Theme = "@style/MainTheme",
               MainLauncher = true,

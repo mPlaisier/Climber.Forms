@@ -2,52 +2,17 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-	xmlns:converter="clr-namespace:Climber.Forms.Core"
+	xmlns:core="clr-namespace:Climber.Forms.Core"
     x:Class="Climber.Forms.Core.ClimbingSessionsPage"
 	Title="{Binding Title}">
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="Add" Command="{Binding CommandAddSession}" Order="Primary" Priority="0" />
 	</ContentPage.ToolbarItems>
-	<ContentPage.Resources>
-		<ResourceDictionary>
-			<converter:EnumToDescriptionConverter x:Key="enumToDescriptionConverter" />
-			<converter:EClimbingTypeToColorConverter x:Key="eClimbingTypeToColorConverter" />
-		</ResourceDictionary>
-	</ContentPage.Resources>
 	<CollectionView ItemsSource="{Binding Sessions}" Margin="0,10,0,10">
 		<CollectionView.ItemTemplate>
 			<DataTemplate>
 				<ContentView>
-					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="40" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="*" />
-								<RowDefinition Height="*" />
-								<RowDefinition Height="*" />
-							</Grid.RowDefinitions>
-							<Label Text="{Binding LblDate}" Style="{DynamicResource BodyStyle}" FontAttributes="Bold" />
-							<Label Text="{Binding Subscription.Club.Name}" Style="{DynamicResource BodyStyle}" Grid.Row="1"/>
-							<Label Text="{Binding Subscription.LblType}" Style="{DynamicResource BodyStyle}" Grid.Row="2"/>
-							<yummy:PancakeView Grid.Column="1" Grid.RowSpan="2">
-								<yummy:PancakeView.Border>
-									<yummy:Border Color="#000000" Thickness="1" />
-								</yummy:PancakeView.Border>
-								<Label
-									Text="{Binding Type, Converter={StaticResource enumToDescriptionConverter}}"
-									BackgroundColor="{Binding Type, Converter={StaticResource eClimbingTypeToColorConverter}}"
-									TextColor="White"
-									Style="{DynamicResource TitleStyle}"
-									HorizontalTextAlignment="Center"
-									VerticalTextAlignment="Center"/>
-							</yummy:PancakeView>
-						</Grid>
-					</material:MaterialCard>
+					<core:ClimbingSessionTemplateView />
 				</ContentView>
 			</DataTemplate>
 		</CollectionView.ItemTemplate>
