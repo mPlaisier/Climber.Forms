@@ -80,5 +80,38 @@
 		<Folder Include="Messages\DialogMessage\Interfaces\" />
 		<Folder Include="ClimbingTasks\" />
 		<Folder Include="ClimbingTasks\Interfaces\" />
+		<Folder Include="Dashboard\" />
+		<Folder Include="Dashboard\ViewModels\" />
+		<Folder Include="Dashboard\Utils\" />
+		<Folder Include="Dashboard\Pages\" />
+		<Folder Include="Dashboard\Cells\" />
+		<Folder Include="Dashboard\Cells\Interfaces\" />
+		<Folder Include="Dashboard\Cells\Subscriptions\" />
+		<Folder Include="Dashboard\Cells\Subscriptions\Base\" />
+		<Folder Include="Dashboard\Services\" />
+		<Folder Include="Dashboard\Cells\General\" />
+		<Folder Include="Dashboard\Businesslogic\" />
+		<Folder Include="Dashboard\Services\Interfaces\" />
+		<Folder Include="Dashboard\TemplateSelector\" />
+		<Folder Include="Dashboard\TemplateSelector\Templates\" />
+		<Folder Include="ClimbingSessions\Templates\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Dashboard\" />
+	  <None Remove="Dashboard\ViewModels\" />
+	  <None Remove="Dashboard\Utils\" />
+	  <None Remove="Dashboard\Pages\" />
+	  <None Remove="Dashboard\Models\" />
+	  <None Remove="Dashboard\Cells\Interfaces\" />
+	  <None Remove="Dashboard\Cells\Subscriptions\" />
+	  <None Remove="Dashboard\Cells\Subscriptions\Base\" />
+	  <None Remove="Dashboard\Services\" />
+	  <None Remove="Dashboard\Cells\General\" />
+	  <None Remove="Dashboard\Businesslogic\" />
+	  <None Remove="Dashboard\Services\Interfaces\" />
+	  <None Remove="Dashboard\TemplateSelector\" />
+	  <None Remove="Dashboard\TemplateSelector\Templates\" />
+	  <None Remove="ClimbingSessions\Templates\" />
+	  <None Remove="SuaveControls.FloatingActionButton" />
 	</ItemGroup>
 </Project>

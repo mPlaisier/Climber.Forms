@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+    x:Class="Climber.Forms.Core.DurationSubscriptionTemplateView">
+	<ContentView.Content>
+		<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="1*" />
+					<RowDefinition Height="1*" />
+				</Grid.RowDefinitions>
+				<Label Text="{Binding LblType}" Style="{DynamicResource ListItemDetailTextStyle}" />
+				<Label Text="{Binding Club.Name}"
+								   Grid.Row="1"/>
+				<Label Text="{Binding LblExpirationDate}"
+								   Grid.Row="1" Grid.Column="1"/>
+			</Grid>
+		</material:MaterialCard>
+	</ContentView.Content>
+</ContentView>

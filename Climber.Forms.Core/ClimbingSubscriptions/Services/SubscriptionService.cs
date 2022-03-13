@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +19,10 @@ namespace Climber.Forms.Core
 
         #region Public
 
+        /// <summary>
+        /// Get all the subscriptions of the user and app-protected subscriptions.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Subscription>> GetAllSubscriptions()
         {
             var dbsubscriptions = await _database.GetListAsync<DbSubscription>();
@@ -34,18 +37,21 @@ namespace Climber.Forms.Core
         /// Get all subscriptions of the user.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Subscription>> GetUserSubScriptions()
+        public async Task<IEnumerable<Subscription>> GetUserSubScriptions(bool isOnlyActive)
         {
             var dbSubscriptions = await _database.GetListAsync<DbSubscription>();
 
-            var subscriptions = await CreateSubscriptionsFromResult(dbSubscriptions.Where(x => !x.IsProtected).ToList()).ConfigureAwait(false);
+
+            var subscriptions = isOnlyActive
+                                    ? await CreateSubscriptionsFromResult(dbSubscriptions.Where(x => !x.IsProtected && x.IsActive).ToList()).ConfigureAwait(false)
+                                    : await CreateSubscriptionsFromResult(dbSubscriptions.Where(x => !x.IsProtected).ToList()).ConfigureAwait(false);
 
             return subscriptions.OrderByDescending(o => o.IsActive)
                                 .ThenByDescending(t => t.DatePurchase);
         }
 
         /// <summary>
-        /// Gets all active subscriptions (incl. program subscriptions).
+        /// Gets all active subscriptions (incl. app-protected).
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<Subscription>> GetActiveSubscriptions()

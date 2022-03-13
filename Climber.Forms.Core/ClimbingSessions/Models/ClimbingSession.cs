@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
-    public class ClimbingSession
+    public class ClimbingSession : ICell
     {
         #region Properties
 
@@ -36,7 +36,6 @@ namespace Climber.Forms.Core
         public ICommand CommandClicked => _commandClicked ??= new Command(ActionClicked);
 
         #endregion
-
 
         #region Constructor
 
