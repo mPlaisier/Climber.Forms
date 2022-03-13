@@ -48,7 +48,7 @@ namespace Climber.Forms.Core
 
         async Task LoadData()
         {
-            Items = await _dashboardService.GetDashboardItems();
+            Items = await _dashboardService.GetDashboardItems(CoreMethods);
         }
 
         #endregion

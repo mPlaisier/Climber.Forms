@@ -28,11 +28,20 @@ namespace Climber.Forms.Core
 
         #region Public
 
-        public async Task<ObservableCollection<BaseSubscriptionDetail>> CreateSubscriptionCells(IEnumerable<Subscription> data)
+        public Task<ObservableCollection<BaseSubscriptionDetail>> CreateSubscriptionCells(IEnumerable<Subscription> data)
         {
             if (data.IsNullOrEmpty())
                 throw new ArgumentException($"Subscriptions should not be empty in {nameof(CreateSubscriptionCells)}");
 
+            return ReadSubscriptionData(data);
+        }
+
+        #endregion
+
+        #region Private
+
+        async Task<ObservableCollection<BaseSubscriptionDetail>> ReadSubscriptionData(IEnumerable<Subscription> data)
+        {
             var cells = new ObservableCollection<BaseSubscriptionDetail>();
             if (data.Any(x => x.Type == ESubscriptionType.TenTurnCard))
             {
@@ -44,10 +53,8 @@ namespace Climber.Forms.Core
                         count = await _sessionService.GetCountForSubscription(tenTurnSubscription);
                     });
 
-                    var quantity = new QuantitySubscriptionDetail(tenTurnSubscription.Id,
-                                                              tenTurnSubscription.DatePurchase,
-                                                              tenTurnSubscription.Club,
-                                                              10 - count);
+                    var quantity = new QuantitySubscriptionDetail(tenTurnSubscription,
+                                                                  10 - count);
                     cells.Add(quantity);
                 }
             }
@@ -58,10 +65,7 @@ namespace Climber.Forms.Core
                 foreach (var subscription in data.Where(x => x.Type == ESubscriptionType.OneYearSubscription
                                                           || x.Type == ESubscriptionType.ThreeMonthSubscription))
                 {
-                    var durationSubscription = new DurationSubscriptionDetail(subscription.Id,
-                                                                              subscription.DatePurchase,
-                                                                              subscription.Club,
-                                                                              subscription.Type);
+                    var durationSubscription = new DurationSubscriptionDetail(subscription);
                     cells.Add(durationSubscription);
                 }
             }

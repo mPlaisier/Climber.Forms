@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CBP.Extensions;
+using FreshMvvm;
 
 namespace Climber.Forms.Core
 {
@@ -35,16 +35,16 @@ namespace Climber.Forms.Core
 
         #region Public
 
-        public async Task<ObservableCollection<ICell>> GetDashboardItems()
+        public async Task<ObservableCollection<ICell>> GetDashboardItems(IPageModelCoreMethods pageModelCoreMethods)
         {
             var items = new RangeObservableCollection<ICell>();
 
             //Subscriptions
-            var subscriptionCells = await GetSubscriptionItems();
+            var subscriptionCells = await GetSubscriptionItems(pageModelCoreMethods);
             items.InsertRange(subscriptionCells);
 
             //Sessions
-            var sessionCells = await GetSessionItems();
+            var sessionCells = await GetSessionItems(pageModelCoreMethods);
             items.InsertRange(sessionCells);
 
             return items;
@@ -60,13 +60,10 @@ namespace Climber.Forms.Core
             {
                 new TitleCell(title),
                 new LabelCell(message),
-
-                //TODO remove?
-                //new SpaceCell()
-        };
+            };
         }
 
-        async Task<RangeObservableCollection<ICell>> GetSubscriptionItems()
+        async Task<RangeObservableCollection<ICell>> GetSubscriptionItems(IPageModelCoreMethods pageModelCoreMethods)
         {
             //get all user active subscriptions
             IEnumerable<Subscription> data = null;
@@ -83,6 +80,15 @@ namespace Climber.Forms.Core
                 };
 
                 var cells = await _subscriptionScreenManager.CreateSubscriptionCells(data);
+
+                cells.ForEach((cell) =>
+                {
+                    cell.ActionClicked = () =>
+                    {
+                        pageModelCoreMethods.PushPageModel<SubscriptionDetailViewModel>(cell.Subscription);
+                    };
+                });
+
                 details.InsertRange(cells);
 
                 return details;
@@ -93,7 +99,7 @@ namespace Climber.Forms.Core
             }
         }
 
-        async Task<RangeObservableCollection<ICell>> GetSessionItems()
+        async Task<RangeObservableCollection<ICell>> GetSessionItems(IPageModelCoreMethods pageModelCoreMethods)
         {
             //get all user active subscriptions
             IEnumerable<ClimbingSession> data = null;
@@ -115,7 +121,7 @@ namespace Climber.Forms.Core
                 {
                     session.ActionClicked = () =>
                     {
-                        //TODO
+                        pageModelCoreMethods.PushPageModel<ClimbingSessionDetailViewModel>(session);
                     };
                 });
 
@@ -125,7 +131,7 @@ namespace Climber.Forms.Core
             }
             else
             {
-                return CreateEmptySection(LblDashboard.Subscriptions_Title, LblDashboard.Subscriptions_Empty_Message);
+                return CreateEmptySection(LblDashboard.Sessions_Title, LblDashboard.Sessions_Empty_Message);
             }
         }
 

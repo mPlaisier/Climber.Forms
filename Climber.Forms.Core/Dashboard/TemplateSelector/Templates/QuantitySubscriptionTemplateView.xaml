@@ -5,7 +5,7 @@
 	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
     x:Class="Climber.Forms.Core.QuantitySubscriptionTemplateView">
 	<ContentView.Content>
-		<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True">
+		<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />

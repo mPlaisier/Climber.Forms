@@ -9,7 +9,6 @@ namespace Climber.Forms.Core
 
         //General
         public DataTemplate TitleTemplate { get; set; }
-        public DataTemplate SpaceTemplate { get; set; }
         public DataTemplate LabelTemplate { get; set; }
 
         //Subscriptions
@@ -29,8 +28,8 @@ namespace Climber.Forms.Core
             {
                 if (cell is TitleCell)
                     return TitleTemplate;
-                if (cell is SpaceCell)
-                    return SpaceTemplate;
+                if (cell is LabelCell)
+                    return LabelTemplate;
 
                 if (cell is DurationSubscriptionDetail)
                     return DurationSubscriptionTemplate;

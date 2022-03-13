@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CBP.Extensions;
 
 namespace Climber.Forms.Core
 {
     public class SubscriptionService : ISubscriptionService
     {
-        readonly IClimbingSessionService _sessionService;
         readonly IDatabaseService _database;
 
         #region Constructor
 
-        public SubscriptionService(IClimbingSessionService sessionService, IDatabaseService databaseService)
+        public SubscriptionService(IDatabaseService databaseService)
         {
-            _sessionService = sessionService;
             _database = databaseService;
         }
 

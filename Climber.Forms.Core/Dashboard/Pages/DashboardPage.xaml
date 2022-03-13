@@ -3,15 +3,16 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:core="clr-namespace:Climber.Forms.Core"
+	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
     x:Class="Climber.Forms.Core.DashboardPage"
 	Title="{Binding Title}">
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Name="Add" Command="{Binding CommandAddSession}" Order="Primary" Priority="0" />
-	</ContentPage.ToolbarItems>
 	<ContentPage.Resources>
 		<ResourceDictionary>
 			<DataTemplate x:Key="TitleTemplate">
 				<core:TitleTemplateView />
+			</DataTemplate>
+			<DataTemplate x:Key="LabelTemplate">
+				<core:LabelTemplateView />
 			</DataTemplate>
 			<DataTemplate x:Key="DurationSubscriptionTemplate">
 				<core:DurationSubscriptionTemplateView />
@@ -25,15 +26,33 @@
 			<core:DashboardTemplateSelector
 				x:Key="dashboardTemplateSelector"
 				TitleTemplate="{StaticResource TitleTemplate}"
+				LabelTemplate="{StaticResource LabelTemplate}"
 				DurationSubscriptionTemplate="{StaticResource DurationSubscriptionTemplate}"
 				QuantitySubscriptionTemplate="{StaticResource QuantitySubscriptionTemplate}"
 				ClimbingSessionTemplate="{StaticResource ClimbingSessionTemplate}"/>
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<ContentPage.Content>
-		<CollectionView ItemsSource="{Binding Items}"
-						Margin="0,10,0,10"
-						ItemTemplate="{StaticResource dashboardTemplateSelector}">
-		</CollectionView>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<CollectionView
+				ItemsSource="{Binding Items}"
+				Margin="0,10,0,10"
+				Grid.Row="0"
+				ItemTemplate="{StaticResource dashboardTemplateSelector}">
+			</CollectionView>
+			<material:MaterialIconButton
+				HorizontalOptions="End"
+				WidthRequest="56"
+				HeightRequest="56"
+				Margin="10"
+				Image="ic_add"
+				Grid.Row="0"
+				VerticalOptions="End"
+				TintColor="#ffffff"
+				Command="{Binding CommandAddSession}"/>
+		</Grid>
 	</ContentPage.Content>
 </ContentPage>

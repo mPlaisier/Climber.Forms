@@ -15,18 +15,18 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public DurationSubscriptionDetail(int subscriptionId, DateTime datePurchase, ClimbingClub club, ESubscriptionType type)
-            : base(subscriptionId, datePurchase, club)
+        public DurationSubscriptionDetail(Subscription subscription)
+            : base(subscription)
         {
-            if (type == ESubscriptionType.TenTurnCard || type == ESubscriptionType.SingleEntree)
-                throw new ArgumentException($"{type} is not a valid subscription type for {nameof(DurationSubscriptionDetail)}");
+            if (subscription.Type == ESubscriptionType.TenTurnCard || subscription.Type == ESubscriptionType.SingleEntree)
+                throw new ArgumentException($"{subscription.Type} is not a valid subscription type for {nameof(DurationSubscriptionDetail)}");
 
-            Type = type;
+            Type = subscription.Type;
 
             if (Type == ESubscriptionType.OneYearSubscription)
                 LblExpirationDate = $"Expires on {DatePurchase.AddYears(1).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}";
             else if (Type == ESubscriptionType.ThreeMonthSubscription)
-                LblExpirationDate = $"Expires on {datePurchase.AddMonths(3).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}";
+                LblExpirationDate = $"Expires on {DatePurchase.AddMonths(3).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)}";
         }
 
         #endregion

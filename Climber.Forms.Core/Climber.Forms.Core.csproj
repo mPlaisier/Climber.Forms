@@ -112,5 +112,6 @@
 	  <None Remove="Dashboard\TemplateSelector\" />
 	  <None Remove="Dashboard\TemplateSelector\Templates\" />
 	  <None Remove="ClimbingSessions\Templates\" />
+	  <None Remove="SuaveControls.FloatingActionButton" />
 	</ItemGroup>
 </Project>

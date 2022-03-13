@@ -37,7 +37,6 @@ namespace Climber.Forms.Core
 
         #endregion
 
-
         #region Constructor
 
         public ClimbingSession()

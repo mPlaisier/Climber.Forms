@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+    x:Class="Climber.Forms.Core.LabelTemplateView">
+	<ContentView.Content>
+		<material:MaterialLabel TypeScale="Body1" Text="{Binding Label}"  Margin="20,5,20,0" />
+	</ContentView.Content>
+</ContentView>

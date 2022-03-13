@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Climber.Forms.Core
+﻿namespace Climber.Forms.Core
 {
     public class QuantitySubscriptionDetail : BaseSubscriptionDetail
     {
@@ -14,8 +12,8 @@ namespace Climber.Forms.Core
 
         #region Constructor
 
-        public QuantitySubscriptionDetail(int subscriptionId, DateTime datePurchase, ClimbingClub club, int sessionsLeft)
-            : base(subscriptionId, datePurchase, club)
+        public QuantitySubscriptionDetail(Subscription subscription, int sessionsLeft)
+            : base(subscription)
         {
             LblSessionsLeft = $"{sessionsLeft} sessions left";
         }
