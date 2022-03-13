@@ -8,6 +8,7 @@ namespace Climber.Forms.Core
         #region Methods
 
         Task<IEnumerable<ClimbingSession>> GetClimbingSessions();
+        Task<int> GetCountForSubscription(Subscription subscription);
         Task SaveSession(ClimbingSession session);
         Task DeleteSession(ClimbingSession session);
 

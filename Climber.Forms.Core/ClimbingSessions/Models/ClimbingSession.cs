@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using CBP.Extensions;
 using Xamarin.Forms;
 
 namespace Climber.Forms.Core
 {
-    public class ClimbingSession
+    public class ClimbingSession : ICell
     {
         #region Properties
 
@@ -23,6 +24,8 @@ namespace Climber.Forms.Core
 
         public EClimbingType Type { get; set; }
 
+        public EGrade HighestGrade { get; set; }
+
         public List<Equipment> LstClimbingEquipmentItems { get; }
 
         public Action ActionClicked { get; set; }
@@ -35,7 +38,6 @@ namespace Climber.Forms.Core
         public ICommand CommandClicked => _commandClicked ??= new Command(ActionClicked);
 
         #endregion
-
 
         #region Constructor
 
@@ -50,6 +52,7 @@ namespace Climber.Forms.Core
             Date = dbClimbingSession.Date;
             Cost = dbClimbingSession.Cost;
             Type = dbClimbingSession.Type;
+            HighestGrade = dbClimbingSession.HighestGrade;
 
             LstClimbingEquipmentItems = lstClimbingEquipmentItems;
 
@@ -57,7 +60,7 @@ namespace Climber.Forms.Core
             Club = club;
         }
 
-        public ClimbingSession(DateTime selectedDate, Subscription subscription, ClimbingClub club, ClimbingType climbingType)
+        public ClimbingSession(DateTime selectedDate, Subscription subscription, ClimbingClub club, ClimbingType climbingType, ClimbingGrade climbingGrade)
         {
             Date = selectedDate;
 
@@ -65,6 +68,7 @@ namespace Climber.Forms.Core
             Club = club;
 
             Type = climbingType.Type;
+            HighestGrade = climbingGrade.Grade;
         }
 
         #endregion

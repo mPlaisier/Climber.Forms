@@ -7,8 +7,11 @@ namespace Climber.Forms.Core
     {
         #region Properties
 
+#if DEBUG
+        public static string DatabaseFilename => "ClimberFormSQLiteDevelopment.db3";
+#else
         public static string DatabaseFilename => "ClimberFormSQLite.db3";
-
+#endif
         public static SQLite.SQLiteOpenFlags Flags =>
             // open the database in read/write mode
             SQLite.SQLiteOpenFlags.ReadWrite |

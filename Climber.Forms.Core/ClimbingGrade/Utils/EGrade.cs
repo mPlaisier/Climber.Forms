@@ -1,0 +1,31 @@
+﻿namespace Climber.Forms.Core
+{
+    public enum EGrade
+    {
+        Unknown,
+        Four,
+        FiveA,
+        FiveB,
+        FiveC,
+        FiveCPlus,
+        SixA,
+        SixAPlus,
+        SixB,
+        SixBPlus,
+        SixC,
+        SixCPlus,
+        SevenA,
+        SevenAPlus,
+        SevenB,
+        SevenBPlus,
+        SevenC,
+        SevenCPlus,
+        EightA,
+        EightAPlus,
+        EightB,
+        EightBPlus,
+        EightC,
+        EightCPlus,
+        NineA,
+    }
+}

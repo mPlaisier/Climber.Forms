@@ -20,6 +20,7 @@
         public static string Session_Detail_Subscription_Placeholder => "Subscription";
         public static string Session_Detail_Club_Placeholder => "Club";
         public static string Session_Detail_Climbing_Type_Placeholder => "Type";
+        public static string Session_Detail_Climbing_Grade_Placeholder => "Grade";
 
         public static string Session_Detail_Button_Create_Confirm => "Add session";
         public static string Session_Detail_Button_Update_Confirm => "Update Session";

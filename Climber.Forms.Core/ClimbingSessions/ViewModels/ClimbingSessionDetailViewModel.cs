@@ -81,6 +81,16 @@ namespace Climber.Forms.Core
         [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
         public ClimbingType SelectedClimbingType { get; set; }
 
+        //Climbing Grade
+        public string ClimbingGradePlaceholder => Labels.Session_Detail_Climbing_Grade_Placeholder;
+
+        public List<ClimbingGrade> ClimbingGrades => ClimbingGrade.GetValidClimbingGrades();
+
+        public string DefaultClimbingGradeValue { get; set; }
+
+        [AlsoNotifyFor(nameof(IsConfirmButtonEnabled))]
+        public ClimbingGrade SelectedClimbingGrade { get; set; }
+
         //Confirm button
         public string ConfirmButtonLabel => _session == null
                                                 ? Labels.Session_Detail_Button_Create_Confirm
@@ -139,6 +149,11 @@ namespace Climber.Forms.Core
                 var type = ClimbingTypes.First(s => s.Type == _session.Type);
                 DefaultClimbingTypeValue = type.Label;
                 SelectedClimbingType = type;
+
+                //Climbing grade
+                var grade = ClimbingGrade.GetAllClimbingGrades().First(s => s.Grade == _session.HighestGrade);
+                DefaultClimbingGradeValue = grade.Label;
+                SelectedClimbingGrade = grade;
             }
 
             RaisePropertyChanged(nameof(IsConfirmButtonEnabled));
@@ -162,6 +177,9 @@ namespace Climber.Forms.Core
             if (SelectedClimbingType == null)
                 return false;
 
+            if (SelectedClimbingGrade == null)
+                return false;
+
             return true;
         }
 
@@ -170,7 +188,7 @@ namespace Climber.Forms.Core
             //Create
             if (_session == null)
             {
-                var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClub, SelectedClimbingType);
+                var session = new ClimbingSession(SelectedDate.Value, SelectedSubscription, SelectedClub, SelectedClimbingType, SelectedClimbingGrade);
 
                 await _taskService.Execute(async () =>
                 {
@@ -184,6 +202,7 @@ namespace Climber.Forms.Core
                 _session.Subscription = SelectedSubscription;
                 _session.Club = SelectedClub;
                 _session.Type = SelectedClimbingType.Type;
+                _session.HighestGrade = SelectedClimbingGrade.Grade;
 
                 await _taskService.Execute(async () =>
                 {

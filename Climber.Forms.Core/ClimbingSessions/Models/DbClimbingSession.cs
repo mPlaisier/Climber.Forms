@@ -22,6 +22,8 @@ namespace Climber.Forms.Core
 
         public EClimbingType Type { get; set; }
 
+        public EGrade HighestGrade { get; set; }
+
         #endregion
 
         #region Constructor
@@ -41,6 +43,7 @@ namespace Climber.Forms.Core
 
             Cost = session.Cost;
             Type = session.Type;
+            HighestGrade = session.HighestGrade;
         }
 
         #endregion
