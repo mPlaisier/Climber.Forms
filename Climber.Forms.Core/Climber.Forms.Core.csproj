@@ -95,6 +95,9 @@
 		<Folder Include="Dashboard\TemplateSelector\" />
 		<Folder Include="Dashboard\TemplateSelector\Templates\" />
 		<Folder Include="ClimbingSessions\Templates\" />
+		<Folder Include="ClimbingGrade\" />
+		<Folder Include="ClimbingGrade\Utils\" />
+		<Folder Include="ClimbingGrade\Models\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Dashboard\" />
@@ -113,5 +116,8 @@
 	  <None Remove="Dashboard\TemplateSelector\Templates\" />
 	  <None Remove="ClimbingSessions\Templates\" />
 	  <None Remove="SuaveControls.FloatingActionButton" />
+	  <None Remove="ClimbingGrade\" />
+	  <None Remove="ClimbingGrade\Utils\" />
+	  <None Remove="ClimbingGrade\Models\" />
 	</ItemGroup>
 </Project>

@@ -45,12 +45,20 @@
 										ChoicesBindingName="Label"
 										Margin="5,20,5,5"/>
 
+			<!-- Climbing grade -->
+			<material:MaterialTextField InputType="SingleImmediateChoice"
+                                        Placeholder="{Binding ClimbingGradePlaceholder}"
+                                        Choices="{Binding ClimbingGrades}"
+                                        SelectedChoice="{Binding SelectedClimbingGrade, Mode=TwoWay}"
+										Text="{Binding DefaultClimbingGradeValue}"
+										ChoicesBindingName="Label"
+										Margin="5,20,5,5"/>
+
 			<!-- Confirm button -->
 			<material:MaterialButton Text="{Binding ConfirmButtonLabel}"
 									 IsEnabled="{Binding IsConfirmButtonEnabled}"
 									 Command="{Binding CommandConfirm}"
 									 VerticalOptions="EndAndExpand"/>
 		</StackLayout>
-
 	</ContentPage.Content>
 </ContentPage>
