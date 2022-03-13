@@ -40,11 +40,11 @@ namespace Climber.Forms.Core
             var items = new RangeObservableCollection<ICell>();
 
             //Subscriptions
-            var subscriptionCells = await GetSubscriptionItems(pageModelCoreMethods);
+            var subscriptionCells = await GetSubscriptionItems(pageModelCoreMethods).ConfigureAwait(false);
             items.InsertRange(subscriptionCells);
 
             //Sessions
-            var sessionCells = await GetSessionItems(pageModelCoreMethods);
+            var sessionCells = await GetSessionItems(pageModelCoreMethods).ConfigureAwait(false);
             items.InsertRange(sessionCells);
 
             return items;
