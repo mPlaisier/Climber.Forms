@@ -5,33 +5,47 @@
 	xmlns:material="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
     x:Class="Climber.Forms.Core.EquipmentOverviewPage"
 	Title="{Binding Title}">
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Name="Add" Command="{Binding CommandAddEquipment}" Order="Primary" Priority="0" />
-	</ContentPage.ToolbarItems>
-	<CollectionView ItemsSource="{Binding Equipment}" Margin="0,10,0,10">
-		<CollectionView.ItemTemplate>
-			<DataTemplate>
-				<ContentView>
-					<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="*" />
-								<ColumnDefinition Width="10" />
-							</Grid.ColumnDefinitions>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="1*" />
-								<RowDefinition Height="1*" />
-							</Grid.RowDefinitions>
-							<Label Text="{Binding Description}" Style="{DynamicResource ListItemDetailTextStyle}" />
-							<Label Text="{Binding LblDate}"
+	<ContentPage.Content>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<CollectionView ItemsSource="{Binding Equipment}" Margin="0,10,0,10" Grid.Row="0">
+				<CollectionView.ItemTemplate>
+					<DataTemplate>
+						<ContentView>
+							<material:MaterialCard CornerRadius="10"  Margin="20,5,20,5" Elevation="1" IsClickable="True" ClickCommand="{Binding CommandClicked}">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*" />
+										<ColumnDefinition Width="10" />
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="1*" />
+										<RowDefinition Height="1*" />
+									</Grid.RowDefinitions>
+									<Label Text="{Binding Description}" Style="{DynamicResource ListItemDetailTextStyle}" />
+									<Label Text="{Binding LblDate}"
 								   Grid.Row="1"/>
-							<Label Text="A"
+									<Label Text="A"
 								   IsVisible="{Binding IsActive}"
 								   Grid.Column="1"/>
-						</Grid>
-					</material:MaterialCard>
-				</ContentView>
-			</DataTemplate>
-		</CollectionView.ItemTemplate>
-	</CollectionView>
+								</Grid>
+							</material:MaterialCard>
+						</ContentView>
+					</DataTemplate>
+				</CollectionView.ItemTemplate>
+			</CollectionView>
+			<material:MaterialIconButton
+				HorizontalOptions="End"
+				WidthRequest="56"
+				HeightRequest="56"
+				Margin="10"
+				Image="ic_add"
+				Grid.Row="0"
+				VerticalOptions="End"
+				TintColor="#ffffff"
+				Command="{Binding CommandAddEquipment}"/>
+		</Grid>
+	</ContentPage.Content>
 </ContentPage>
