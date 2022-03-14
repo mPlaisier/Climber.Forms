@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<ReleaseVersion>1.5</ReleaseVersion>
+		<ReleaseVersion>1.6</ReleaseVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="cbp-extensions" Version="2.1.0" />
