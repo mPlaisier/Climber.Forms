@@ -17,7 +17,9 @@ namespace Climber.Forms.Core
 
         #region Properties
 
-        public override string Title => Labels.SubscriptionDetail_Title;
+        public override string Title => _subscription == null
+                                            ? Labels.Subscription_Detail_Create_Title
+                                            : Labels.Subscription_Detail_Update_Title;
 
         //Date
         public string DatePlaceholder => Labels.SubscriptionDetail_Date_Placeholder;

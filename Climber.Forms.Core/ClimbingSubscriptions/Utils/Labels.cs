@@ -13,7 +13,8 @@
         public static string Subscription_Alert_Deleted_Body => "Subscription has been deleted";
 
         //Subscription Detail
-        public static string SubscriptionDetail_Title => "Create subscription";
+        public static string Subscription_Detail_Create_Title => "Create subscription";
+        public static string Subscription_Detail_Update_Title => "Subscription detail";
 
         public static string SubscriptionDetail_Date_Placeholder => "Purchase date";
         public static string SubscriptionDetail_Club_Placeholder => "Climbing Club";
