@@ -23,13 +23,17 @@
 			<DataTemplate x:Key="ClimbingSessionTemplate">
 				<core:ClimbingSessionTemplateView />
 			</DataTemplate>
+			<DataTemplate x:Key="ClimbingGradeCellTemplate">
+				<core:ClimbingGradeCellTemplateView />
+			</DataTemplate>
 			<core:DashboardTemplateSelector
 				x:Key="dashboardTemplateSelector"
 				TitleTemplate="{StaticResource TitleTemplate}"
 				LabelTemplate="{StaticResource LabelTemplate}"
 				DurationSubscriptionTemplate="{StaticResource DurationSubscriptionTemplate}"
 				QuantitySubscriptionTemplate="{StaticResource QuantitySubscriptionTemplate}"
-				ClimbingSessionTemplate="{StaticResource ClimbingSessionTemplate}"/>
+				ClimbingSessionTemplate="{StaticResource ClimbingSessionTemplate}"
+				ClimbingGradeTemplate="{StaticResource ClimbingGradeCellTemplate}" />
 		</ResourceDictionary>
 	</ContentPage.Resources>
 	<ContentPage.Content>

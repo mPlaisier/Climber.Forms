@@ -98,6 +98,8 @@
 		<Folder Include="ClimbingGrade\" />
 		<Folder Include="ClimbingGrade\Utils\" />
 		<Folder Include="ClimbingGrade\Models\" />
+		<Folder Include="ClimbingGrade\Services\" />
+		<Folder Include="ClimbingGrade\Services\Interfaces\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Dashboard\" />
@@ -119,5 +121,7 @@
 	  <None Remove="ClimbingGrade\" />
 	  <None Remove="ClimbingGrade\Utils\" />
 	  <None Remove="ClimbingGrade\Models\" />
+	  <None Remove="ClimbingGrade\Services\" />
+	  <None Remove="ClimbingGrade\Services\Interfaces\" />
 	</ItemGroup>
 </Project>
