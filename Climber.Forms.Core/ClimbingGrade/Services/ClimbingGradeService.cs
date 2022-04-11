@@ -24,11 +24,11 @@ namespace Climber.Forms.Core
         {
             var grades = new List<ClimbingGradeCell>();
 
-            var highestBoulderGrade = await GetHighestGradeForType(EClimbingType.Boulder);
+            var highestBoulderGrade = await GetHighestGradeForType(EClimbingType.Boulder).ConfigureAwait(false);
             if (highestBoulderGrade.IsNotNull())
                 grades.Add(highestBoulderGrade);
 
-            var highestLengthGrade = await GetHighestGradeForType(EClimbingType.Length);
+            var highestLengthGrade = await GetHighestGradeForType(EClimbingType.Length).ConfigureAwait(false);
             if (highestLengthGrade.IsNotNull())
                 grades.Add(highestLengthGrade);
 
