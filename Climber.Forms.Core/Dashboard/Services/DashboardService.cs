@@ -14,6 +14,8 @@ namespace Climber.Forms.Core
         readonly ISubscriptionService _subscriptionService;
         readonly IClimbingSessionService _sessionService;
 
+        readonly IClimbingGradeService _climbingGradeService;
+
         readonly IDashboardSubscriptionScreenManagerService _subscriptionScreenManager;
 
         #region Constructor
@@ -21,7 +23,8 @@ namespace Climber.Forms.Core
         public DashboardService(ClimbingTaskService taskService,
                                 IClimbingSessionService sessionService,
                                 ISubscriptionService subscriptionService,
-                                IDashboardSubscriptionScreenManagerService subscriptionScreenManager)
+                                IDashboardSubscriptionScreenManagerService subscriptionScreenManager,
+                                IClimbingGradeService climbingGradeService)
         {
             _taskService = taskService;
 
@@ -29,6 +32,8 @@ namespace Climber.Forms.Core
             _subscriptionService = subscriptionService;
 
             _subscriptionScreenManager = subscriptionScreenManager;
+
+            _climbingGradeService = climbingGradeService;
         }
 
         #endregion
@@ -42,6 +47,10 @@ namespace Climber.Forms.Core
             //Subscriptions
             var subscriptionCells = await GetSubscriptionItems(pageModelCoreMethods).ConfigureAwait(false);
             items.InsertRange(subscriptionCells);
+
+            //Highest grades
+            var gradeCells = await GetHighestGradesItems().ConfigureAwait(false);
+            items.InsertRange(gradeCells);
 
             //Sessions
             var sessionCells = await GetSessionItems(pageModelCoreMethods).ConfigureAwait(false);
@@ -93,10 +102,32 @@ namespace Climber.Forms.Core
 
                 return details;
             }
-            else
+
+            return new RangeObservableCollection<ICell>();
+        }
+
+        async Task<RangeObservableCollection<ICell>> GetHighestGradesItems()
+        {
+            //get all user active subscriptions
+            IEnumerable<ClimbingGradeCell> data = null;
+            await _taskService.Execute(async () =>
             {
-                return CreateEmptySection(LblDashboard.Subscriptions_Title, LblDashboard.Subscriptions_Empty_Message);
+                data = await _climbingGradeService.GetHighestGrades();
+            });
+
+            if (data.IsNotNullAndHasItems())
+            {
+                var details = new RangeObservableCollection<ICell>
+                {
+                    new TitleCell(LblDashboard.Highest_Grade_Title)
+                };
+
+                details.InsertRange(data);
+
+                return details;
             }
+
+            return new RangeObservableCollection<ICell>();
         }
 
         async Task<RangeObservableCollection<ICell>> GetSessionItems(IPageModelCoreMethods pageModelCoreMethods)
