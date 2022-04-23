@@ -18,6 +18,9 @@ namespace Climber.Forms.Core
         //Sessions
         public DataTemplate ClimbingSessionTemplate { get; set; }
 
+        //Grades
+        public DataTemplate ClimbingGradeTemplate { get; set; }
+
         #endregion
 
         #region Protected
@@ -38,6 +41,9 @@ namespace Climber.Forms.Core
 
                 if (cell is ClimbingSession)
                     return ClimbingSessionTemplate;
+
+                if (cell is ClimbingGradeCell)
+                    return ClimbingGradeTemplate;
 
                 throw new ArgumentException($"{cell.GetType()} not setup in {nameof(DashboardTemplateSelector)}");
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms.Internals;
@@ -42,9 +43,11 @@ namespace Climber.Forms.Core
 
         #region LifeCycle
 
-        public override void Init()
+        protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             LoadData().ConfigureAwait(false);
+
+            base.ViewIsAppearing(sender, e);
         }
 
         public override void ReverseInit(object returnedData)

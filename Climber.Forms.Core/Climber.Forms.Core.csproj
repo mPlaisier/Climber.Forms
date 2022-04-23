@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
-		<ReleaseVersion>1.5</ReleaseVersion>
+		<ReleaseVersion>1.6</ReleaseVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="cbp-extensions" Version="2.1.0" />
@@ -98,6 +98,8 @@
 		<Folder Include="ClimbingGrade\" />
 		<Folder Include="ClimbingGrade\Utils\" />
 		<Folder Include="ClimbingGrade\Models\" />
+		<Folder Include="ClimbingGrade\Services\" />
+		<Folder Include="ClimbingGrade\Services\Interfaces\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Remove="Dashboard\" />
@@ -119,5 +121,7 @@
 	  <None Remove="ClimbingGrade\" />
 	  <None Remove="ClimbingGrade\Utils\" />
 	  <None Remove="ClimbingGrade\Models\" />
+	  <None Remove="ClimbingGrade\Services\" />
+	  <None Remove="ClimbingGrade\Services\Interfaces\" />
 	</ItemGroup>
 </Project>

@@ -26,6 +26,8 @@ namespace Climber.Forms.Core
 
         public EGrade HighestGrade { get; set; }
 
+        public string LblHighestGrade => HighestGrade.GetLabel();
+
         public List<Equipment> LstClimbingEquipmentItems { get; }
 
         public Action ActionClicked { get; set; }

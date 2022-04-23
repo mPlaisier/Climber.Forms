@@ -57,6 +57,7 @@ namespace Climber.Forms.Core
             FreshIOC.Container.Register<ISubscriptionService, SubscriptionService>();
             FreshIOC.Container.Register<IEquipmentService, EquipmentService>();
             FreshIOC.Container.Register<IClimbingClubService, ClimbingClubService>();
+            FreshIOC.Container.Register<IClimbingGradeService, ClimbingGradeService>();
 
             //Dashboard
             FreshIOC.Container.Register<IDashboardSubscriptionScreenManagerService, DashboardSubscriptionScreenManagerService>();
